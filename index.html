@@ -20,21 +20,10 @@
 
     <section class="main-content">
       <h1>
-<a id="caffe-gui-tool" class="anchor" href="#caffe-gui-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>CaffeGui Tool</h1>
+<a id="caffe-gui-tool" class="anchor" href="#caffe-gui-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 
 <p><iframe src="https://player.vimeo.com/video/92535766" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
-
-<p>ConvNet Setup</p>
-
-<p><img src="https://camo.githubusercontent.com/31e4f9dd627afa62bb0366eae79e9254dfb94934/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f31303836303234342f676875622f53637265656e73686f7425323066726f6d253230323031342d31302d31392532303133253341333025334132312e706e67" alt="alt tag"></p>
-
-<p>Autoencoder Setup</p>
-
-<p><img src="https://camo.githubusercontent.com/d28a002ce2c7139877f2c1e8fa3f935ed57fa055/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f31303836303234342f676875622f53637265656e73686f7425323066726f6d253230323031342d31302d31392532303133253341333025334131352e706e67" alt="alt tag"></p>
-
-<h1>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <ul>
 <li>Download the X64 Linux blender build</li>
@@ -61,7 +50,8 @@
 <li>Click the 'New' button on the bottom part of the screen to create a new network</li>
 <li>Name your network in this box, and ENSURE THE 'F' BUTTON NEXT TO THE NAME IS CHECKED</li>
 <li>Use shift+a to start adding nodes</li>
-<li>Join up, and fill in all the required fields to your taste. All networks require a data node, and solver node.</li>
+<li>Join up, and fill in all the required fields to your taste. All networks require a data node, and solver node, with paths to data correctly entered.</li>
+<li>The data node is fairly self explanatory, in the data node, snapshot data is the path trained networks are saved, and config data is the path where prototxts are saved</li>
 <li>When ready, select all nodes by single, (or double if required) tapping 'a', then press spacebar.</li>
 <li>type 'solution' in the search bar</li>
 <li>select 'create solution' and press enter</li>
@@ -70,13 +60,19 @@
 <li>run the train file</li>
 </ul>
 
+<p>ConvNet Setup</p>
+<p><img src="https://camo.githubusercontent.com/31e4f9dd627afa62bb0366eae79e9254dfb94934/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f31303836303234342f676875622f53637265656e73686f7425323066726f6d253230323031342d31302d31392532303133253341333025334132312e706e67" alt="alt tag"></p>
+<p></p>
+<p>Autoencoder Setup</p>
+<p><img src="https://camo.githubusercontent.com/d28a002ce2c7139877f2c1e8fa3f935ed57fa055/68747470733a2f2f646c2e64726f70626f7875736572636f6e74656e742e636f6d2f752f31303836303234342f676875622f53637265656e73686f7425323066726f6d253230323031342d31302d31392532303133253341333025334131352e706e67" alt="alt tag"></p>
+
 <h1>
 <a id="limitations" class="anchor" href="#limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Limitations</h1>
 
 <ul>
-<li>Negative gradient on ReLu not yet supported</li>
+<li>Negative gradient leakyness on ReLu not yet supported</li>
 <li>ReLu not calculated in place</li>
-<li>Many nodes not yet supported</li>
+<li>Some nodes not yet supported</li>
 </ul>
 
       <footer class="site-footer">
