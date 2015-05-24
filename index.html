@@ -26,21 +26,21 @@
 <p><iframe src="https://player.vimeo.com/video/92535766" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
 
 <ul>
-<li>Download the X64 Linux blender build</li>
-<li>Download two python scripts</li>
-<li>Run blender application</li>
-<li>file --&gt; user preferences --&gt; addons --&gt; install from file --&gt; select Caffe Nodes script --&gt; install</li>
-<li>tick the checkbox in the newly appeared box's top right corner</li>
-<li>file --&gt; user preferences --&gt; addons --&gt; install from file --&gt; select Caffe Generate script --&gt; install</li>
-<li>tick the checkbox in the newly appeared box's top right corner</li>
-<li>user preferences --&gt; file --&gt; uncheck relative paths (IMPORTANT)</li>
-<li>click on the cube icon in the bottom left</li>
-<li>click 'node editor' in the popup menu</li>
-<li>in the newly appeared node editor, look at the bottom panel, it should read 'view - select - add - node'</li>
-<li>immediately right of this panel there should be a set of four icons joined together. select the THIRD.</li>
-<li>file --&gt; save startup file</li>
-<li>file --&gt; user preferences --&gt; save user settings (on the bottom of the window(</li>
-<li>restart blender</li>
+<li>Download the x64 Linux blender build</li>
+<li>Download or clone the two python scripts from the master branch</li>
+<li>Run the blender application</li>
+<li>File --&gt; user preferences --&gt; addons --&gt; install from file --&gt; select Caffe Nodes script --&gt; install</li>
+<li>Tick the checkbox in the newly appeared box's top right corner</li>
+<li>File --&gt; user preferences --&gt; addons --&gt; install from file --&gt; select Caffe Generate script --&gt; install</li>
+<li>Tick the checkbox in the newly appeared box's top right corner</li>
+<li>User preferences --&gt; file --&gt; uncheck relative paths (IMPORTANT)</li>
+<li>Click on the cube icon in the bottom left</li>
+<li>Click 'node editor' in the popup menu</li>
+<li>In the newly appeared node editor, look at the bottom panel, it should read 'view - select - add - node'</li>
+<li>Immediately right of this panel there should be a set of four icons joined together. select the THIRD.</li>
+<li>File --&gt; save startup file</li>
+<li>File --&gt; user preferences --&gt; save user settings (on the bottom of the window(</li>
+<li>Restart blender</li>
 </ul>
 
 <h1>
@@ -51,13 +51,13 @@
 <li>Name your network in this box, and ENSURE THE 'F' BUTTON NEXT TO THE NAME IS CHECKED</li>
 <li>Use shift+a to start adding nodes</li>
 <li>Join up, and fill in all the required fields to your taste. All networks require a data node, and solver node, with paths to data correctly entered.</li>
-<li>The data node is fairly self explanatory, in the data node, snapshot data is the path trained networks are saved, and config data is the path where prototxts are saved</li>
-<li>When ready, select all nodes by single, (or double if required) tapping 'a', then press spacebar.</li>
-<li>type 'solution' in the search bar</li>
-<li>select 'create solution' and press enter</li>
-<li>This will create the required prototxt files in the config directory.</li>
-<li>Mark the train file as executable</li>
-<li>run the train file</li>
+<li>The data node is fairly self explanatory, however in the data node, snapshot data is the path trained networks are saved, and config data is the path where prototxts are saved</li>
+<li>When ready to train, select all nodes by single, (or double if required) tapping 'a', then press the spacebar.</li>
+<li>Type 'solution' in the search bar that appears</li>
+<li>Select 'create solution' and press enter; this will create the required prototxt files in the config directory.</li>
+<li>Mark the generated train file in your config data path as executable</li>
+<li>Run the train file</li>
+<li>Smile</li>
 </ul>
 
 <p>ConvNet Setup</p>
@@ -73,6 +73,7 @@
 <li>Negative gradient leakyness on ReLu not yet supported</li>
 <li>ReLu not calculated in place</li>
 <li>Some nodes not yet supported</li>
+<li>Made by a 17 year old with university applications to attend to</li>
 </ul>
 
       <footer class="site-footer">
