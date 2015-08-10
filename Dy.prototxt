@@ -1,0 +1,11 @@
+blobs {
+    shape {
+        dim: 1
+        dim: 1
+        dim: 2
+        dim: 1
+    }
+
+    data: -0.5
+    data: 0.5
+}

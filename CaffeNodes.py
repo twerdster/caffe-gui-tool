@@ -1064,9 +1064,9 @@ class ReLuNode(Node, CaffeTreeNode):
     
     n_type = 'ReLU'
 
-    engines = [("DEFAULT", "DEFAULT", "Default"),
-               ("CAFFE", "CAFFE", "Caffe"),
-               ("CUDNN", "CUDNN", "CUDNN")]
+    #engines = [("DEFAULT", "DEFAULT", "Default"),
+    #           ("CAFFE", "CAFFE", "Caffe"),
+    #           ("CUDNN", "CUDNN", "CUDNN")]
 
     # === Custom Properties ===
     negative_slope = bpy.props.FloatProperty(default=0)
