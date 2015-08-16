@@ -319,6 +319,7 @@ class CaffeTreeNode:
         if self.extra_params:
             layout.label("Weight Params")
             self.weight_params.draw(context, layout)
+            
             layout.label("Bias Params")
             self.bias_params.draw(context, layout)
 
@@ -857,13 +858,19 @@ class DeConvNode(Node, CaffeTreeNode):
             layout.prop(self, "stride_h")
             layout.prop(self, "stride_w")
         
-        layout.label("Weight Filler")
-        self.weight_filler.draw(context, layout)
-        
-        layout.label("bias Filler")
-        self.bias_filler.draw(context, layout)
-        
+        layout.prop(self, "use_custom_weight")
+        if self.use_custom_weight:
+            layout.prop(self, "custom_weight")
+        else:
+            layout.label("Weight Filler")
+            self.weight_filler.draw(context, layout)
+            
+            if self.bias_term:
+                layout.label("bias Filler")
+                self.bias_filler.draw(context, layout)
+
         self.draw_extra_params(context, layout)
+
 
 class FCNode(Node, CaffeTreeNode):
     # === Basics ===
