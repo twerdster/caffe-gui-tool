@@ -1,4 +1,3 @@
-#TODO: Add properties to solver
 #TODO: snapshot_format not available in this version. update later.
 
 __author__ = 'hugh'
@@ -70,13 +69,14 @@ def conv_template(node):
     convolution_param {
         num_output: %i
         bias_term: %i
+        group: %i
 %s
 %s
 %s
 %s
 %s
     }
-''' % (node.num_output, node.bias_term, padding_string, kernel_string, stride_string, weight_filler_string, bias_filler_string)
+''' % (node.num_output, node.bias_term, node.group, padding_string, kernel_string, stride_string, weight_filler_string, bias_filler_string)
     return string
 
 def data_param_template(node, source, batch_size):

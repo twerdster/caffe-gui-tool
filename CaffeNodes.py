@@ -695,7 +695,7 @@ class ConvNode(Node, CaffeTreeNode):
     kernel_h = bpy.props.IntProperty(name="Kernel height", default=5, min=1, soft_max=25)
     kernel_w = bpy.props.IntProperty(name="Kernel width", default=5, min=1, soft_max=25)
     
-    #TODO: Maybe add group
+    group = bpy.props.IntProperty(name="Group size", default=1, min=1, soft_max=25)
     
     square_stride = bpy.props.BoolProperty(name="Equal x,y stride", default=True)
     stride = bpy.props.IntProperty(name="Stride", default=1, min=1, soft_max=5)
@@ -733,6 +733,7 @@ class ConvNode(Node, CaffeTreeNode):
         layout.prop(self, "num_output")
         layout.prop(self, "bias_term")
         
+        layout.prop(self, "group")
         layout.prop(self, "square_padding")
         if self.square_padding:
             layout.prop(self, "pad")
@@ -796,7 +797,7 @@ class DeConvNode(Node, CaffeTreeNode):
     kernel_h = bpy.props.IntProperty(name="Kernel height", default=5, min=1, soft_max=25)
     kernel_w = bpy.props.IntProperty(name="Kernel width", default=5, min=1, soft_max=25)
     
-    #TODO: Maybe add group
+    group = bpy.props.IntProperty(name="Group size", default=1, min=1, soft_max=25)
     
     square_stride = bpy.props.BoolProperty(name="Equal x,y stride", default=True)
     stride = bpy.props.IntProperty(name="Stride", default=1, min=1, soft_max=5)
@@ -833,6 +834,7 @@ class DeConvNode(Node, CaffeTreeNode):
         
         layout.prop(self, "num_output")
         layout.prop(self, "bias_term")
+        layout.prop(self, "group")        
         
         layout.prop(self, "square_padding")
         if self.square_padding:
