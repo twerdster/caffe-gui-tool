@@ -1,6 +1,6 @@
 blobs {
     shape {
-        dim: 1
+        dim: 3
         dim: 1
         dim: 1
         dim: 3
@@ -9,4 +9,13 @@ blobs {
     data: -0.5
     data:  0.5
 	data:  0.0
+	
+    data: -0.5
+    data:  0.5
+	data:  0.0
+
+    data: -0.5
+    data:  0.5
+	data:  0.0
+	
 }
