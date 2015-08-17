@@ -547,6 +547,12 @@ class PoolNode(Node, CaffeTreeNode):
         layout.prop(self, "stride")
         layout.prop(self, "mode")
 
+class eltwise_coeff_p_g(bpy.types.PropertyGroup):
+    coeff = bpy.props.FloatProperty(min=0, default=1)
+    
+    def draw(self, context, layout):
+        layout.prop(self, "coeff")
+
 class EltwiseNode(Node, CaffeTreeNode):
     # === Basics ===
     # Description string
@@ -557,6 +563,8 @@ class EltwiseNode(Node, CaffeTreeNode):
     bl_label = 'Element-wise Node'
     # Icon identifier
     bl_icon = 'SOUND'
+    
+    n_type = 'Eltwise'
 
     # === Custom Properties ===
     eltwiseOps  = [
@@ -564,15 +572,28 @@ class EltwiseNode(Node, CaffeTreeNode):
         ("SUM", "SUM", "Eltwise sum: c(i) -> a(i)+b(i)"),
         ("MAX", "MAX", "Eltwise max: c(i) -> max [a(i),b(i)]"),
     ]
-    coeff = bpy.props.FloatProperty(default=2.0,soft_max=10.0,min=0)
+    coeffs = bpy.props.CollectionProperty(type=eltwise_coeff_p_g)
     stable_prod_grad = bpy.props.BoolProperty(name='Stable(slower) gradient',default=1)
-    operation  = bpy.props.EnumProperty(name='Operation', default='SUM', items=eltwiseOps)
+    operation = bpy.props.EnumProperty(name='Operation', default='SUM', items=eltwiseOps)
+    
+    def update_bottoms(self, context):
+        while len(self.inputs) < self.input_amount:
+            self.coeffs.add()
+            self.inputs.new('ImageSocketType', "Input %i" % (len(self.inputs)+1))
+        while len(self.inputs) > self.input_amount:
+            self.coeffs.remove(len(self.coeffs)-1)
+            self.inputs.remove(self.inputs[len(self.inputs)-1])
+
+    input_amount = bpy.props.IntProperty(min=1, default=2, update=update_bottoms)
     
     # === Optional Functions ===
     def init(self, context):
-        self.inputs.new('ImageSocketType', "Input blob A")
-        self.inputs.new('ImageSocketType', "Input blob B")
-        self.outputs.new('OutputSocketType', "Output blob C")
+        self.inputs.new('ImageSocketType', "Input 1")
+        self.inputs.new('ImageSocketType', "Input 2")
+        self.outputs.new('OutputSocketType', "Output blob")
+
+        self.coeffs.add()
+        self.coeffs.add()
 
     # Copy function to initialize a copied node from an existing one.
     def copy(self, node):
@@ -584,12 +605,14 @@ class EltwiseNode(Node, CaffeTreeNode):
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
+        layout.prop(self, "input_amount")
         layout.prop(self, "operation")    
         if self.operation == 'PROD':
-            layout.prop(self, "stable_prod_grad ")
+            layout.prop(self, "stable_prod_grad")
         elif self.operation == 'SUM':
-            layout.prop(self, "coeff  ")
-            
+            for coeff in self.coeffs:
+                coeff.draw(context, layout)
+
 class ExpNode(Node, CaffeTreeNode):
     # === Basics ===
     # Description string
@@ -1955,6 +1978,7 @@ node_categories = [
 def register():
     bpy.utils.register_class(filler_p_g)
     bpy.utils.register_class(params_p_g)
+    bpy.utils.register_class(eltwise_coeff_p_g)
     bpy.utils.register_class(slice_point_p_g)
     bpy.utils.register_class(OutputSocket)
     bpy.utils.register_class(CaffeTree)
@@ -1998,6 +2022,7 @@ def unregister():
 
     bpy.utils.unregister_class(filler_p_g)
     bpy.utils.unregister_class(params_p_g)
+    bpy.utils.unregister_class(eltwise_coeff_p_g)
     bpy.utils.unregister_class(slice_point_p_g)
     bpy.utils.unregister_class(OutputSocket)
     bpy.utils.unregister_class(CaffeTree)

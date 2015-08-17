@@ -419,6 +419,24 @@ def LRNtemplate(node):
     ''' % (node.size, node.alpha, node.beta, node.mode)
     return string
 
+def eltwise_template(node):
+    
+    stable_prod_grad_string = ''
+    coeffs_string = ''
+    if node.operation == 'PROD':
+        stable_prod_grad_string = tab2 + 'stable_prod_grad: %i' % node.stable_prod_grad
+    elif node.operation == 'SUM':
+        coeffs_string = '\n'.join(map(lambda x: tab2 + 'coeff: %f' % x.coeff, node.coeffs))
+
+    string = '''\
+    eltwise_param {
+        operation: %s
+%s
+%s
+    }
+''' % (node.operation, coeffs_string, stable_prod_grad_string)
+    return string
+
 
 def Relutemplate(node):
     string = '''\
@@ -562,6 +580,8 @@ class Solve(bpy.types.Operator):
                 dstring = string;
             elif node.bl_idname == 'SliceNodeType':
                 special_params.append(slicetemplate(node))
+            elif node.bl_idname == 'EltwiseNodeType':
+                special_params.append(eltwise_template(node))
             elif node.bl_idname == 'NodeReroute':
                 string = ''
                 dstring = ''
