@@ -320,6 +320,7 @@ class CaffeTreeNode:
             layout.label("Weight Params")
             self.weight_params.draw(context, layout)
             
+        if (not hasattr(self, 'bias_term')) or self.bias_term:
             layout.label("Bias Params")
             self.bias_params.draw(context, layout)
 
@@ -548,7 +549,7 @@ class PoolNode(Node, CaffeTreeNode):
         layout.prop(self, "mode")
 
 class eltwise_coeff_p_g(bpy.types.PropertyGroup):
-    coeff = bpy.props.FloatProperty(min=0, default=1)
+    coeff = bpy.props.FloatProperty(default=1)
     
     def draw(self, context, layout):
         layout.prop(self, "coeff")
@@ -1441,6 +1442,7 @@ class HDF5OutputNode(Node, CaffeTreeNode):
     
     n_type = 'HDF5Output'
     
+    
     # === Custom Properties ===
     filename = bpy.props.StringProperty \
         (
@@ -1451,7 +1453,10 @@ class HDF5OutputNode(Node, CaffeTreeNode):
          )
     # === Optional Functions ===
     def init(self, context):
-        self.inputs.new('ImageSocketType', "Input Image")
+        self.inputs.new('ImageSocketType', "Input Data")
+        self.inputs.new('ImageSocketType', "Input Label")
+
+        self.include_in = "TRAIN"
     
     
     # Copy function to initialize a copied node from an existing one.
@@ -1465,6 +1470,7 @@ class HDF5OutputNode(Node, CaffeTreeNode):
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "filename")
+        self.draw_include_in(layout)
 
 
 class LogNode(Node, CaffeTreeNode):
@@ -1541,8 +1547,6 @@ class PowerNode(Node, CaffeTreeNode):
         layout.prop(self, "power")
         layout.prop(self, "scale")
         layout.prop(self, "shift")
-        self.draw_extra_params(context, layout)
-
 
 class ReductionNode(Node, CaffeTreeNode):
     # === Basics ===

@@ -1,4 +1,6 @@
 #TODO: snapshot_format not available in this version. update later.
+#TODO: Update HDF5output to have test and train output
+
 
 __author__ = 'hugh'
 bl_info = {
@@ -209,7 +211,6 @@ def hdf5outputtemplate(node):
     hdf5_output_param {
         file_name: "%s"
     }
-}
 ''' % (node.filename)
     return string
 
@@ -361,7 +362,8 @@ def get_params(node):
     params = []
     if node.extra_params:
         params.append(param_template(node.weight_params))
-        params.append(param_template(node.bias_params))
+        if (not hasattr(node, 'bias_term')) or node.bias_term:
+             params.append(param_template(node.bias_params))
     return params
 
 def get_include_in(node):

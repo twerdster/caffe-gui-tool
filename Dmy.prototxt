@@ -6,16 +6,15 @@ blobs {
         dim: 1
     }
 
-    data: -0.5
-    data:  0.5
-	data:  0.0
+    data: -1.0
+    data:  1.0
+    data:  0.0
 	
-    data: -0.5
-    data:  0.5
-	data:  0.0
+    data: -1.0
+    data:  1.0
+    data:  0.0
 
-    data: -0.5
-    data:  0.5
-	data:  0.0
-	
+    data: -1.0
+    data:  1.0
+    data:  0.0
 }
