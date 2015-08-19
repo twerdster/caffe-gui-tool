@@ -324,6 +324,11 @@ class CaffeTreeNode:
             layout.label("Bias Params")
             self.bias_params.draw(context, layout)
 
+    def copy(self, node):
+        print("Copying from node ", node)
+        for output in self.outputs:
+            output.output_name = output.output_name + '0'
+
 
 class DataNode(Node, CaffeTreeNode):
     # === Basics ===
@@ -412,14 +417,6 @@ class DataNode(Node, CaffeTreeNode):
     def init(self, context):
         self.outputs.new('OutputSocketType', "Image Stack")
         self.outputs.new('OutputSocketType', "Label")
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -529,14 +526,6 @@ class PoolNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input image")
         self.outputs.new('OutputSocketType', "Output image")
 
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
 #        if calcsize(self, context,axis='x') != calcsize(self, context,axis='y'):
@@ -596,14 +585,6 @@ class EltwiseNode(Node, CaffeTreeNode):
         self.coeffs.add()
         self.coeffs.add()
 
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "input_amount")
@@ -639,14 +620,6 @@ class ExpNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input blob")
         self.outputs.new('OutputSocketType', "Output blob")
 
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "base")    
@@ -675,14 +648,6 @@ class MVNNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('ImageSocketType', "Input blob")
         self.outputs.new('OutputSocketType', "Output blob")
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -737,13 +702,6 @@ class ConvNode(Node, CaffeTreeNode):
         self.color = [1, 0 ,1]
         self.use_custom_color = True
 
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -839,14 +797,6 @@ class DeConvNode(Node, CaffeTreeNode):
         self.color = [1, 0 ,1]
         self.use_custom_color = True
     
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-    
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-    
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         #TODO: Finish calcsize
@@ -923,14 +873,6 @@ class FCNode(Node, CaffeTreeNode):
         self.color = [1, 0 ,0]
         self.use_custom_color = True
 
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
 #        layout.label("Network is now %s neurons" % calcsize(self, context))
@@ -965,15 +907,6 @@ class FlattenNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input image")
         self.outputs.new('OutputSocketType', "Flat output")
 
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.label("Flatten")
@@ -995,14 +928,6 @@ class SilenceNode(Node, CaffeTreeNode):
     # === Optional Functions ===
     def init(self, context):
         self.inputs.new('ImageSocketType', "Input")
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1035,15 +960,6 @@ class LRNNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input image")
         self.outputs.new('OutputSocketType', "Normalized output")
 
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "alpha")
@@ -1073,15 +989,6 @@ class ActivationNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('NAFlatSocketType', "Linear input")
         self.outputs.new('OutputSocketType', "Non Linear output")
-
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1114,15 +1021,6 @@ class ReLuNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input image")
         self.outputs.new('OutputSocketType', "Rectified output")
 
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "negative_slope")
@@ -1151,14 +1049,6 @@ class PReLuNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input image")
         self.outputs.new('OutputSocketType', "Rectified output")
 
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "channel_shared")
@@ -1184,15 +1074,6 @@ class SMLossNode(Node, CaffeTreeNode):
         self.inputs.new('NAFlatSocketType', "Input Probabilities")
         self.inputs.new('LabelSocketType', "Input Label")
         self.outputs.new('OutputSocketType', "Loss output")
-
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1222,15 +1103,6 @@ class SCELossNode(Node, CaffeTreeNode):
         self.inputs.new('AFlatSocketType', "Input values 2")
         self.outputs.new('OutputSocketType', "Loss output")
 
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.label("SCE Loss")
@@ -1258,15 +1130,6 @@ class EULossNode(Node, CaffeTreeNode):
         self.inputs.new('AFlatSocketType', "Input values 2")
         self.outputs.new('OutputSocketType', "Loss output")
 
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.label("EU Loss")
@@ -1292,15 +1155,6 @@ class DropoutNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('NAFlatSocketType', "Input image")
         self.outputs.new('OutputSocketType', "Output image")
-
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1337,15 +1191,6 @@ class ConcatNode(Node, CaffeTreeNode):
         self.inputs.new('ImageSocketType', "Input2")
         self.outputs.new('OutputSocketType', "Output image")
 
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "input_amount")
@@ -1373,17 +1218,7 @@ class AccuracyNode(Node, CaffeTreeNode):
         self.inputs.new('NAFlatSocketType', "Input class")
         self.inputs.new('LabelSocketType', "Input label")
         self.outputs.new('OutputSocketType', "Output Accuracy")
-    
         self.include_in = "TEST"
-
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1413,15 +1248,6 @@ class ArgMaxNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('LossSocketType', "Input loss")
         self.outputs.new('OutputSocketType', "Output Arg Max")
-    
-    
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-    
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
     
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1455,18 +1281,8 @@ class HDF5OutputNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('ImageSocketType', "Input Data")
         self.inputs.new('ImageSocketType', "Input Label")
-
         self.include_in = "TRAIN"
-    
-    
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-    
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
-    
+
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
         layout.prop(self, "filename")
@@ -1494,15 +1310,6 @@ class LogNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('ImageSocketType', "Input data")
         self.outputs.new('OutputSocketType', "Output data")
-    
-    
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-    
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
     
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1532,15 +1339,6 @@ class PowerNode(Node, CaffeTreeNode):
     def init(self, context):
         self.inputs.new('ImageSocketType', "Input data")
         self.outputs.new('OutputSocketType', "Output data")
-    
-    
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-    
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
     
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1575,15 +1373,6 @@ class ReductionNode(Node, CaffeTreeNode):
     def init(self, context):
        self.inputs.new('ImageSocketType', "Input data")
        self.outputs.new('OutputSocketType', "Output data")
-
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-    
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
     
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1632,14 +1421,6 @@ class SliceNode(Node, CaffeTreeNode):
         self.outputs.new('OutputSocketType', "Out1")
         self.outputs.new('OutputSocketType', "Out2")
         self.slice_points.add()
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
@@ -1804,15 +1585,6 @@ class SolverNode(Node, CaffeTreeNode):
 
 #    def init(self, context):
 #        self.inputs.new('LossSocketType', "Input Loss")
-
-
-    # Copy function to initialize a copied node from an existing one.
-    def copy(self, node):
-        print("Copying from node ", node)
-
-    # Free function to clean up on removal.
-    def free(self):
-        print("Removing node ", self, ", Goodbye!")
 
 #    def update(self):
 #        x = 0
