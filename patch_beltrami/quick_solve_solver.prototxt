@@ -1,4 +1,4 @@
- net: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/quick_solve_train_test.prototxt"
+ net: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/quick_solve_train_test.prototxt"
 test_iter: 100
 test_interval: 500
 test_compute_loss: 0
@@ -15,7 +15,7 @@ momentum: 0.900000
 weight_decay: 0.000500
 regularization_type: "L2"
 snapshot: 0
-snapshot_prefix: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/"
+snapshot_prefix: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/aaron_"
 snapshot_diff: 0
 solver_mode: CPU
 solver_type: SGD

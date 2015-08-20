@@ -1,2 +1,2 @@
 #!/usr/bin/env sh 
- '/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe/build/tools/caffe' train --solver='/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/quick_solve_solver.prototxt' 
+ '/home/gipadmin/forks/caffe/build/tools/caffe' train --solver='/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/quick_solve_solver.prototxt' 

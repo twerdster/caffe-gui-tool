@@ -4,7 +4,7 @@ layer {
     top: "data"
     top: "label"
     hdf5_data_param {
-        source: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/data.txt"
+        source: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/data.txt"
         batch_size: 1
         shuffle: 0
     }
@@ -18,7 +18,7 @@ layer {
     top: "data"
     top: "label"
     hdf5_data_param {
-        source: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/data.txt"
+        source: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/data.txt"
         batch_size: 1
         shuffle: 0
     }
@@ -101,18 +101,6 @@ layer {
     }
 }
 layer {
-    name: "HDF 5 Output Node"
-    type: "HDF5Output"
-    bottom: "Ix"
-    bottom: "label"
-    hdf5_output_param {
-        file_name: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/Ix.h5"
-    }
-    include {
-        phase: TRAIN
-    }
-}
-layer {
     name: "Ix2"
     type: "Power"
     top: "Ix2"
@@ -180,14 +168,15 @@ layer {
     }
 }
 layer {
-    name: "Iyg11"
-    type: "Eltwise"
-    top: "Iyg11"
-    bottom: "g11_rep3"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
+    name: "HDF 5 Output Node"
+    type: "HDF5Output"
+    bottom: "Ix"
+    bottom: "label"
+    hdf5_output_param {
+        file_name: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/Ix.h5"
+    }
+    include {
+        phase: TRAIN
     }
 }
 layer {
@@ -196,10 +185,21 @@ layer {
     bottom: "Ix2"
     bottom: "label"
     hdf5_output_param {
-        file_name: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/Ix2.h5"
+        file_name: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/Ix2.h5"
     }
     include {
         phase: TRAIN
+    }
+}
+layer {
+    name: "Iyg11"
+    type: "Eltwise"
+    top: "Iyg11"
+    bottom: "g11_rep3"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -435,18 +435,6 @@ layer {
     }
 }
 layer {
-    name: "HDF 5 Output Node.002"
-    type: "HDF5Output"
-    bottom: "detG"
-    bottom: "label"
-    hdf5_output_param {
-        file_name: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/detg.h5"
-    }
-    include {
-        phase: TRAIN
-    }
-}
-layer {
     name: "gm05_"
     type: "Convolution"
     top: "gm05_rep3"
@@ -470,54 +458,6 @@ layer {
             type: "xavier"
             variance_norm: FAN_IN
         }
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12"
-    bottom: "Ixg22_sub_Iyg12"
-    bottom: "gm05_rep3"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx"
-    type: "Convolution"
-    top: "Dpx"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12"
-    param {
-        lr_mult: 0.000000
-        decay_mult: 0.000000
-    }
-    convolution_param {
-        num_output: 3
-        bias_term: 0
-        group: 3
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 3
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-        data:  0.0
-        data: -1.0
-        data:  1.0
-        data:  0.0
-        data: -1.0
-        data:  1.0
     }
 }
 layer {
@@ -569,6 +509,54 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12"
+    bottom: "Ixg22_sub_Iyg12"
+    bottom: "gm05_rep3"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpx"
+    type: "Convolution"
+    top: "Dpx"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12"
+    param {
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 3
+        bias_term: 0
+        group: 3
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 3
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+        data:  0.0
+        data: -1.0
+        data:  1.0
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "div_invG_gradI.001"
     type: "Eltwise"
     top: "div_invG_gradI"
@@ -592,12 +580,24 @@ layer {
     }
 }
 layer {
+    name: "HDF 5 Output Node.002"
+    type: "HDF5Output"
+    bottom: "detG"
+    bottom: "label"
+    hdf5_output_param {
+        file_name: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/detg.h5"
+    }
+    include {
+        phase: TRAIN
+    }
+}
+layer {
     name: "HDF 5 Output Node.001"
     type: "HDF5Output"
     bottom: "gm05"
     bottom: "label"
     hdf5_output_param {
-        file_name: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/gm05.h5"
+        file_name: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/gm05.h5"
     }
     include {
         phase: TRAIN
@@ -614,7 +614,7 @@ layer {
     bottom: "output_flow"
     bottom: "output_flow"
     hdf5_output_param {
-        file_name: "/Users/fornoch/Dropbox/Lab stuff/Aaron project/caffe-gui-tool/patch_beltrami/output.h5"
+        file_name: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/output.h5"
     }
     include {
         phase: TRAIN
