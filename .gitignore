@@ -1,3 +1,9 @@
-tmp/
-TestCifar10.blend1
-PatchBeltrami.blend1
+#Blender backups
+*.blend1
+
+#Visual Studio files
+*.[Oo]bj
+*.user
+*.aps
+*.pch
+
