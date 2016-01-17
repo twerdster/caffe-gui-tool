@@ -1,47 +1,29 @@
-name: "quick_solve"
-
-input: "data"
-input_dim: 1
-input_dim: 3
-input_dim: 512
-input_dim: 512
-
-
 layer {
-    name: "Iy"
-    type: "Convolution"
-    top: "Iy"
-    bottom: "data"
-    param {
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+    name: "data"
+    type: "HDF5Data"
+    top: "data"
+    top: "label"
+    hdf5_data_param {
+        source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve/DataTrain.txt"
+        batch_size: 16
+        shuffle: 0
     }
-    convolution_param {
-        num_output: 3
-        bias_term: 0
-        group: 3
-        pad_h: 1
-        pad_w: 0
-        kernel_h: 3
-        kernel_w: 1
-        stride: 1
+    include {
+        phase: TRAIN
     }
-    blobs {
-        shape {
-            dim: 3
-            dim: 1
-            dim: 3
-            dim: 1
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
-        data: -1.0
-        data:  1.0
-        data:  0.0
-        data: -1.0
-        data:  1.0
-        data:  0.0
+}
+layer {
+    name: "data"
+    type: "HDF5Data"
+    top: "data"
+    top: "label"
+    hdf5_data_param {
+        source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve/DataTest.txt"
+        batch_size: 16
+        shuffle: 0
+    }
+    include {
+        phase: TEST
     }
 }
 layer {
@@ -50,6 +32,7 @@ layer {
     top: "Ix"
     bottom: "data"
     param {
+        name: "Ix_shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -98,10 +81,12 @@ layer {
     top: "g11"
     bottom: "Ix2"
     param {
+        name: "g11_shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
     param {
+        name: "g11_shrB"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -109,8 +94,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 0
-        kernel_size: 1
+        pad: 3
+        kernel_size: 7
         stride: 1
         weight_filler {
             type: "constant"
@@ -118,7 +103,7 @@ layer {
         }
         bias_filler {
             type: "constant"
-            value: 5570.000000
+            value: 5571.375000
         }
     }
 }
@@ -128,6 +113,7 @@ layer {
     top: "g11_rep3"
     bottom: "g11"
     param {
+        name: "g11__shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -149,14 +135,117 @@ layer {
     }
 }
 layer {
-    name: "Iyg11"
+    name: "Iy"
+    type: "Convolution"
+    top: "Iy"
+    bottom: "data"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 3
+        bias_term: 0
+        group: 3
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 3
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+        data: -1.0
+        data:  1.0
+        data:  0.0
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "IxIy"
     type: "Eltwise"
-    top: "Iyg11"
-    bottom: "g11_rep3"
+    top: "IxIy"
+    bottom: "Ix"
     bottom: "Iy"
     eltwise_param {
         operation: PROD
         stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12"
+    type: "Convolution"
+    top: "g12"
+    bottom: "IxIy"
+    param {
+        name: "g12_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_"
+    type: "Convolution"
+    top: "g12_rep3"
+    bottom: "g12"
+    param {
+        name: "g12__shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 3
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd"
+    type: "Power"
+    top: "g12_sqrd"
+    bottom: "g12"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
     }
 }
 layer {
@@ -176,10 +265,12 @@ layer {
     top: "g22"
     bottom: "Iy2"
     param {
+        name: "g22_shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
     param {
+        name: "g22_shrB"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -187,8 +278,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 0
-        kernel_size: 1
+        pad: 3
+        kernel_size: 7
         stride: 1
         weight_filler {
             type: "constant"
@@ -196,7 +287,7 @@ layer {
         }
         bias_filler {
             type: "constant"
-            value: 5570.000000
+            value: 5571.375000
         }
     }
 }
@@ -206,6 +297,7 @@ layer {
     top: "g22_rep3"
     bottom: "g22"
     param {
+        name: "g22__shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -249,126 +341,6 @@ layer {
     }
 }
 layer {
-    name: "IxIy"
-    type: "Eltwise"
-    top: "IxIy"
-    bottom: "Ix"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "g12"
-    type: "Convolution"
-    top: "g12"
-    bottom: "IxIy"
-    param {
-        lr_mult: 0.000000
-        decay_mult: 0.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad: 0
-        kernel_size: 1
-        stride: 1
-        weight_filler {
-            type: "constant"
-            value: 1.000000
-        }
-        bias_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
-        }
-    }
-}
-layer {
-    name: "g12_"
-    type: "Convolution"
-    top: "g12_rep3"
-    bottom: "g12"
-    param {
-        lr_mult: 0.000000
-        decay_mult: 0.000000
-    }
-    convolution_param {
-        num_output: 3
-        bias_term: 0
-        group: 1
-        pad: 0
-        kernel_size: 1
-        stride: 1
-        weight_filler {
-            type: "constant"
-            value: 1.000000
-        }
-        bias_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
-        }
-    }
-}
-layer {
-    name: "Ixg12"
-    type: "Eltwise"
-    top: "Ixg12"
-    bottom: "Ix"
-    bottom: "g12_rep3"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Iyg11_sub_Ixg12.002"
-    type: "Eltwise"
-    top: "Iyg11_sub_Ixg12"
-    bottom: "Ixg12"
-    bottom: "Iyg11"
-    eltwise_param {
-        operation: SUM
-        coeff: -1.000000
-        coeff: 1.000000
-    }
-}
-layer {
-    name: "Iyg12"
-    type: "Eltwise"
-    top: "Iyg12"
-    bottom: "g12_rep3"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Ixg22_sub_Iyg12.001"
-    type: "Eltwise"
-    top: "Ixg22_sub_Iyg12"
-    bottom: "Ixg22"
-    bottom: "Iyg12"
-    eltwise_param {
-        operation: SUM
-        coeff: 1.000000
-        coeff: -1.000000
-    }
-}
-layer {
-    name: "g12_sqrd"
-    type: "Power"
-    top: "g12_sqrd"
-    bottom: "g12"
-    power_param {
-        power: 2.000000
-        scale: 1.000000
-        shift: 0.000000
-    }
-}
-layer {
     name: "detG"
     type: "Eltwise"
     top: "detG"
@@ -397,6 +369,7 @@ layer {
     top: "gm05_rep3"
     bottom: "gm05"
     param {
+        name: "gm05_shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -418,51 +391,26 @@ layer {
     }
 }
 layer {
-    name: "Iyg11_sub_Ixg12.001"
+    name: "Iyg12"
     type: "Eltwise"
-    top: "gm05_mul_Iyg11_sub_Ixg12"
-    bottom: "gm05_rep3"
-    bottom: "Iyg11_sub_Ixg12"
+    top: "Iyg12"
+    bottom: "g12_rep3"
+    bottom: "Iy"
     eltwise_param {
         operation: PROD
         stable_prod_grad: 1
     }
 }
 layer {
-    name: "Dpy"
-    type: "Convolution"
-    top: "Dpy"
-    bottom: "gm05_mul_Iyg11_sub_Ixg12"
-    param {
-        lr_mult: 0.000000
-        decay_mult: 0.000000
-    }
-    convolution_param {
-        num_output: 3
-        bias_term: 0
-        group: 3
-        pad_h: 1
-        pad_w: 0
-        kernel_h: 3
-        kernel_w: 1
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 3
-            dim: 1
-            dim: 3
-            dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-        data:  0.0
-        data: -1.0
-        data:  1.0
-        data:  0.0
-        data: -1.0
-        data:  1.0
+    name: "Ixg22_sub_Iyg12.001"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12"
+    bottom: "Ixg22"
+    bottom: "Iyg12"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
     }
 }
 layer {
@@ -482,6 +430,7 @@ layer {
     top: "Dpx"
     bottom: "gm05_mul_Ixg22_sub_Iyg12"
     param {
+        name: "Dpx_shrW"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -514,6 +463,89 @@ layer {
     }
 }
 layer {
+    name: "Iyg11"
+    type: "Eltwise"
+    top: "Iyg11"
+    bottom: "g11_rep3"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12"
+    type: "Eltwise"
+    top: "Ixg12"
+    bottom: "Ix"
+    bottom: "g12_rep3"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.002"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg12"
+    bottom: "Ixg12"
+    bottom: "Iyg11"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.001"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg12"
+    bottom: "gm05_rep3"
+    bottom: "Iyg11_sub_Ixg12"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy"
+    type: "Convolution"
+    top: "Dpy"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 3
+        bias_term: 0
+        group: 3
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 3
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+        data:  0.0
+        data: -1.0
+        data:  1.0
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "div_invG_gradI.001"
     type: "Eltwise"
     top: "div_invG_gradI"
@@ -526,7 +558,7 @@ layer {
     }
 }
 layer {
-    name: "output_flow"
+    name: "gradient"
     type: "Eltwise"
     top: "output_flow"
     bottom: "div_invG_gradI"
@@ -535,4 +567,51 @@ layer {
         operation: PROD
         stable_prod_grad: 1
     }
+}
+layer {
+    name: "dt_mul_grad"
+    type: "Convolution"
+    top: "dt_mul_grad"
+    bottom: "output_flow"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 3
+        bias_term: 0
+        group: 3
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 2.700000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.002"
+    type: "Eltwise"
+    top: "finalOutput"
+    bottom: "dt_mul_grad"
+    bottom: "data"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "MRE"
+    type: "EuclideanLoss"
+    top: "MRE"
+    bottom: "finalOutput"
+    bottom: "label"
+    loss_weight: 1.000000
 }

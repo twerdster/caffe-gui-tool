@@ -13,12 +13,12 @@ caffe.reset_all()
 %deployName = 'quick_solve_deploy.prototxt';
 %modelName = 'aaron__iter_1.caffemodel';
 
-deployName = 'PBSolve/PBSolve_deploy.prototxt';
-modelName = 'PBSolve/aaron__iter_26.caffemodel';
+deployName = 'PBSolve_multi/PBSolve_multi_deploy.prototxt';
+modelName = 'PBSolve_multi/aaron__iter_13.caffemodel';
 
 trainORtest = 'test';
 
-setNameAndInputDims(deployName,'PBSolve',[1,3,512,512]);
+setNameAndInputDims(deployName,'PBSolve_multi',[1,3,512,512]);
 
 % The _tmp is the temp file with the dimensions added. Theres probably
 % a nicer way of doing this.
@@ -54,11 +54,12 @@ for i=1:n
     net.blobs('data').set_data(y_est);
     net.forward_prefilled();
     
-    delta = net.blobs('output_flow').get_data();
+   % delta = net.blobs('output_flow00').get_data();
     
-    y_est = y_est + delta*d.dt;
+   % y_est = y_est + delta*d.dt;
+    y_est = net.blobs('finalOutput00').get_data();
+    
     warning off;imshow(y_est/255);warning on
-    
     
     PSNR = 10*log10(255^2/mean((d.y(:)-y_est(:)).^2));
     PN=  10*log10(255^2/mean((d.y(:)-d.z(:)).^2));

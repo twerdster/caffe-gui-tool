@@ -1,0 +1,23 @@
+ net: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve/PBSolve_train_test.prototxt"
+test_iter: 4
+test_interval: 13
+test_compute_loss: 0
+test_initialization: 0
+base_lr: 0.000010
+display: 3
+average_loss: 1
+max_iter: 26
+iter_size: 1
+lr_policy: "step"
+gamma: 0
+stepsize: 26
+momentum: 0.900000
+weight_decay: 0.000500
+regularization_type: "L2"
+snapshot: 0
+snapshot_prefix: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve/aaron_"
+snapshot_diff: 0
+solver_mode: CPU
+solver_type: SGD
+debug_info: 0
+snapshot_after_train: 1

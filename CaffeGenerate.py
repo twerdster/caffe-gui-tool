@@ -539,8 +539,10 @@ class Solve(bpy.types.Operator):
                 special_params.append(FC_template(node))
             elif node.bl_idname == 'FlattenNodeType':
                 dstring = string
-            elif node.bl_idname == 'SilenceNodeType':
+            elif node.bl_idname == 'AbsValNodeType':
                 dstring = string
+            elif node.bl_idname == 'SilenceNodeType':
+                dstring = stringdstring
             elif node.bl_idname == 'LRNNodeType':
                 special_params.append(LRNtemplate(node))
             elif node.bl_idname == 'AcNodeType':
