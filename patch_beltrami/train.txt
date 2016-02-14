@@ -1,0 +1,1829 @@
+I0823 10:12:44.071617 22114 caffe.cpp:117] Use CPU.
+I0823 10:12:44.217941 22114 caffe.cpp:121] Starting Optimization
+I0823 10:12:44.218068 22114 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 1
+lr_policy: "step"
+gamma: 0
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 5000
+snapshot: 0
+snapshot_prefix: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/aaron_"
+snapshot_diff: false
+solver_mode: CPU
+test_compute_loss: false
+debug_info: false
+net: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/quick_solve_train_test.prototxt"
+snapshot_after_train: true
+regularization_type: "L2"
+solver_type: SGD
+test_initialization: false
+average_loss: 1
+iter_size: 1
+I0823 10:12:44.218124 22114 solver.cpp:70] Creating training net from net file: /home/gipadmin/forks/caffe-gui-tool/patch_beltrami/quick_solve_train_test.prototxt
+I0823 10:12:44.218832 22114 net.cpp:288] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0823 10:12:44.219074 22114 net.cpp:42] Initializing net from parameters: 
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "HDF5Data"
+  top: "data"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/data.txt"
+    batch_size: 1
+    shuffle: false
+  }
+}
+layer {
+  name: "Iy"
+  type: "Convolution"
+  bottom: "data"
+  top: "Iy"
+  param {
+    name: "Iy_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    shape {
+      dim: 3
+      dim: 1
+      dim: 3
+      dim: 1
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+  }
+}
+layer {
+  name: "Ix"
+  type: "Convolution"
+  bottom: "data"
+  top: "Ix"
+  param {
+    name: "Ix_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    shape {
+      dim: 3
+      dim: 1
+      dim: 1
+      dim: 3
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 0
+    pad_w: 1
+    kernel_h: 1
+    kernel_w: 3
+  }
+}
+layer {
+  name: "IxIy"
+  type: "Eltwise"
+  bottom: "Ix"
+  bottom: "Iy"
+  top: "IxIy"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "g12"
+  type: "Convolution"
+  bottom: "IxIy"
+  top: "g12"
+  param {
+    name: "g12_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1
+    bias_term: false
+    pad: 3
+    kernel_size: 7
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "g12_"
+  type: "Convolution"
+  bottom: "g12"
+  top: "g12_rep3"
+  param {
+    name: "g12__shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "g12_sqrd"
+  type: "Power"
+  bottom: "g12"
+  top: "g12_sqrd"
+  power_param {
+    power: 2
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "Ix2"
+  type: "Power"
+  bottom: "Ix"
+  top: "Ix2"
+  power_param {
+    power: 2
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "g11"
+  type: "Convolution"
+  bottom: "Ix2"
+  top: "g11"
+  param {
+    name: "g11_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1
+    bias_term: true
+    pad: 3
+    kernel_size: 7
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 5571.375
+    }
+  }
+}
+layer {
+  name: "g11_"
+  type: "Convolution"
+  bottom: "g11"
+  top: "g11_rep3"
+  param {
+    name: "g11__shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "Iyg11"
+  type: "Eltwise"
+  bottom: "g11_rep3"
+  bottom: "Iy"
+  top: "Iyg11"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Ixg12"
+  type: "Eltwise"
+  bottom: "Ix"
+  bottom: "g12_rep3"
+  top: "Ixg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Iyg11_sub_Ixg12.002"
+  type: "Eltwise"
+  bottom: "Ixg12"
+  bottom: "Iyg11"
+  top: "Iyg11_sub_Ixg12"
+  eltwise_param {
+    operation: SUM
+    coeff: -1
+    coeff: 1
+  }
+}
+layer {
+  name: "Iyg12"
+  type: "Eltwise"
+  bottom: "g12_rep3"
+  bottom: "Iy"
+  top: "Iyg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Iy2"
+  type: "Power"
+  bottom: "Iy"
+  top: "Iy2"
+  power_param {
+    power: 2
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "g22"
+  type: "Convolution"
+  bottom: "Iy2"
+  top: "g22"
+  param {
+    name: "g22_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1
+    bias_term: true
+    pad: 3
+    kernel_size: 7
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 5571.375
+    }
+  }
+}
+layer {
+  name: "g22_"
+  type: "Convolution"
+  bottom: "g22"
+  top: "g22_rep3"
+  param {
+    name: "g22__shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "g11g22"
+  type: "Eltwise"
+  bottom: "g11"
+  bottom: "g22"
+  top: "g11g22"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "detG"
+  type: "Eltwise"
+  bottom: "g11g22"
+  bottom: "g12_sqrd"
+  top: "detG"
+  eltwise_param {
+    operation: SUM
+    coeff: 1
+    coeff: -1
+  }
+}
+layer {
+  name: "gm05"
+  type: "Power"
+  bottom: "detG"
+  top: "gm05"
+  power_param {
+    power: -0.5
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "gm05_"
+  type: "Convolution"
+  bottom: "gm05"
+  top: "gm05_rep3"
+  param {
+    name: "gm05_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "Iyg11_sub_Ixg12.001"
+  type: "Eltwise"
+  bottom: "gm05_rep3"
+  bottom: "Iyg11_sub_Ixg12"
+  top: "gm05_mul_Iyg11_sub_Ixg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Dpy"
+  type: "Convolution"
+  bottom: "gm05_mul_Iyg11_sub_Ixg12"
+  top: "Dpy"
+  param {
+    name: "Dpy_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    shape {
+      dim: 3
+      dim: 1
+      dim: 3
+      dim: 1
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+  }
+}
+layer {
+  name: "Ixg22"
+  type: "Eltwise"
+  bottom: "Ix"
+  bottom: "g22_rep3"
+  top: "Ixg22"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Ixg22_sub_Iyg12.001"
+  type: "Eltwise"
+  bottom: "Ixg22"
+  bottom: "Iyg12"
+  top: "Ixg22_sub_Iyg12"
+  eltwise_param {
+    operation: SUM
+    coeff: 1
+    coeff: -1
+  }
+}
+layer {
+  name: "gm05_mul_Ixg22_sub_Iyg12"
+  type: "Eltwise"
+  bottom: "Ixg22_sub_Iyg12"
+  bottom: "gm05_rep3"
+  top: "gm05_mul_Ixg22_sub_Iyg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Dpx"
+  type: "Convolution"
+  bottom: "gm05_mul_Ixg22_sub_Iyg12"
+  top: "Dpx"
+  param {
+    name: "Dpx_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    shape {
+      dim: 3
+      dim: 1
+      dim: 1
+      dim: 3
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 0
+    pad_w: 1
+    kernel_h: 1
+    kernel_w: 3
+  }
+}
+layer {
+  name: "div_invG_gradI.001"
+  type: "Eltwise"
+  bottom: "Dpx"
+  bottom: "Dpy"
+  top: "div_invG_gradI"
+  eltwise_param {
+    operation: SUM
+    coeff: 1
+    coeff: 1
+  }
+}
+layer {
+  name: "output_flow"
+  type: "Eltwise"
+  bottom: "div_invG_gradI"
+  bottom: "gm05_rep3"
+  top: "output_flow"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "update.002"
+  type: "Eltwise"
+  bottom: "output_flow"
+  bottom: "data"
+  top: "finalOutput"
+  eltwise_param {
+    operation: SUM
+    coeff: 2548.3198
+    coeff: 1
+  }
+}
+layer {
+  name: "Silence Node"
+  type: "Silence"
+  bottom: "finalOutput"
+}
+I0823 10:12:44.219300 22114 layer_factory.hpp:74] Creating layer data
+I0823 10:12:44.219319 22114 net.cpp:91] Creating Layer data
+I0823 10:12:44.219341 22114 net.cpp:369] data -> data
+I0823 10:12:44.219380 22114 net.cpp:121] Setting up data
+I0823 10:12:44.219399 22114 hdf5_data_layer.cpp:80] Loading list of HDF5 filenames from: /home/gipadmin/forks/caffe-gui-tool/patch_beltrami/data.txt
+I0823 10:12:44.219465 22114 hdf5_data_layer.cpp:94] Number of HDF5 files: 1
+I0823 10:12:44.224545 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224591 22114 layer_factory.hpp:74] Creating layer data_data_0_split
+I0823 10:12:44.224609 22114 net.cpp:91] Creating Layer data_data_0_split
+I0823 10:12:44.224617 22114 net.cpp:411] data_data_0_split <- data
+I0823 10:12:44.224628 22114 net.cpp:369] data_data_0_split -> data_data_0_split_0
+I0823 10:12:44.224642 22114 net.cpp:369] data_data_0_split -> data_data_0_split_1
+I0823 10:12:44.224673 22114 net.cpp:369] data_data_0_split -> data_data_0_split_2
+I0823 10:12:44.224684 22114 net.cpp:121] Setting up data_data_0_split
+I0823 10:12:44.224697 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224706 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224732 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224738 22114 layer_factory.hpp:74] Creating layer Iy
+I0823 10:12:44.224769 22114 net.cpp:91] Creating Layer Iy
+I0823 10:12:44.224776 22114 net.cpp:411] Iy <- data_data_0_split_0
+I0823 10:12:44.224788 22114 net.cpp:369] Iy -> Iy
+I0823 10:12:44.224803 22114 net.cpp:121] Setting up Iy
+I0823 10:12:44.224817 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.224836 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224848 22114 layer_factory.hpp:74] Creating layer Iy_Iy_0_split
+I0823 10:12:44.224858 22114 net.cpp:91] Creating Layer Iy_Iy_0_split
+I0823 10:12:44.224865 22114 net.cpp:411] Iy_Iy_0_split <- Iy
+I0823 10:12:44.224874 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_0
+I0823 10:12:44.224884 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_1
+I0823 10:12:44.224894 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_2
+I0823 10:12:44.224903 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_3
+I0823 10:12:44.224912 22114 net.cpp:121] Setting up Iy_Iy_0_split
+I0823 10:12:44.224922 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224931 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224937 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224946 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.224952 22114 layer_factory.hpp:74] Creating layer Ix
+I0823 10:12:44.224962 22114 net.cpp:91] Creating Layer Ix
+I0823 10:12:44.224970 22114 net.cpp:411] Ix <- data_data_0_split_1
+I0823 10:12:44.224979 22114 net.cpp:369] Ix -> Ix
+I0823 10:12:44.224988 22114 net.cpp:121] Setting up Ix
+I0823 10:12:44.224997 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.225024 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225034 22114 layer_factory.hpp:74] Creating layer Ix_Ix_0_split
+I0823 10:12:44.225044 22114 net.cpp:91] Creating Layer Ix_Ix_0_split
+I0823 10:12:44.225050 22114 net.cpp:411] Ix_Ix_0_split <- Ix
+I0823 10:12:44.225059 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_0
+I0823 10:12:44.225069 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_1
+I0823 10:12:44.225077 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_2
+I0823 10:12:44.225088 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_3
+I0823 10:12:44.225097 22114 net.cpp:121] Setting up Ix_Ix_0_split
+I0823 10:12:44.225106 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225114 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225122 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225129 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225136 22114 layer_factory.hpp:74] Creating layer IxIy
+I0823 10:12:44.225148 22114 net.cpp:91] Creating Layer IxIy
+I0823 10:12:44.225155 22114 net.cpp:411] IxIy <- Ix_Ix_0_split_0
+I0823 10:12:44.225163 22114 net.cpp:411] IxIy <- Iy_Iy_0_split_0
+I0823 10:12:44.225172 22114 net.cpp:369] IxIy -> IxIy
+I0823 10:12:44.225183 22114 net.cpp:121] Setting up IxIy
+I0823 10:12:44.225194 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225203 22114 layer_factory.hpp:74] Creating layer g12
+I0823 10:12:44.225213 22114 net.cpp:91] Creating Layer g12
+I0823 10:12:44.225219 22114 net.cpp:411] g12 <- IxIy
+I0823 10:12:44.225229 22114 net.cpp:369] g12 -> g12
+I0823 10:12:44.225239 22114 net.cpp:121] Setting up g12
+I0823 10:12:44.225256 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.225266 22114 layer_factory.hpp:74] Creating layer g12_g12_0_split
+I0823 10:12:44.225275 22114 net.cpp:91] Creating Layer g12_g12_0_split
+I0823 10:12:44.225281 22114 net.cpp:411] g12_g12_0_split <- g12
+I0823 10:12:44.225291 22114 net.cpp:369] g12_g12_0_split -> g12_g12_0_split_0
+I0823 10:12:44.225301 22114 net.cpp:369] g12_g12_0_split -> g12_g12_0_split_1
+I0823 10:12:44.225309 22114 net.cpp:121] Setting up g12_g12_0_split
+I0823 10:12:44.225318 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.225327 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.225333 22114 layer_factory.hpp:74] Creating layer g12_
+I0823 10:12:44.225342 22114 net.cpp:91] Creating Layer g12_
+I0823 10:12:44.225349 22114 net.cpp:411] g12_ <- g12_g12_0_split_0
+I0823 10:12:44.225388 22114 net.cpp:369] g12_ -> g12_rep3
+I0823 10:12:44.225400 22114 net.cpp:121] Setting up g12_
+I0823 10:12:44.225412 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225420 22114 layer_factory.hpp:74] Creating layer g12_rep3_g12__0_split
+I0823 10:12:44.225427 22114 net.cpp:91] Creating Layer g12_rep3_g12__0_split
+I0823 10:12:44.225438 22114 net.cpp:411] g12_rep3_g12__0_split <- g12_rep3
+I0823 10:12:44.225450 22114 net.cpp:369] g12_rep3_g12__0_split -> g12_rep3_g12__0_split_0
+I0823 10:12:44.225460 22114 net.cpp:369] g12_rep3_g12__0_split -> g12_rep3_g12__0_split_1
+I0823 10:12:44.225468 22114 net.cpp:121] Setting up g12_rep3_g12__0_split
+I0823 10:12:44.225478 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225486 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225493 22114 layer_factory.hpp:74] Creating layer g12_sqrd
+I0823 10:12:44.225504 22114 net.cpp:91] Creating Layer g12_sqrd
+I0823 10:12:44.225512 22114 net.cpp:411] g12_sqrd <- g12_g12_0_split_1
+I0823 10:12:44.225520 22114 net.cpp:369] g12_sqrd -> g12_sqrd
+I0823 10:12:44.225530 22114 net.cpp:121] Setting up g12_sqrd
+I0823 10:12:44.225543 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.225549 22114 layer_factory.hpp:74] Creating layer Ix2
+I0823 10:12:44.225558 22114 net.cpp:91] Creating Layer Ix2
+I0823 10:12:44.225565 22114 net.cpp:411] Ix2 <- Ix_Ix_0_split_1
+I0823 10:12:44.225574 22114 net.cpp:369] Ix2 -> Ix2
+I0823 10:12:44.225582 22114 net.cpp:121] Setting up Ix2
+I0823 10:12:44.225595 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.225610 22114 layer_factory.hpp:74] Creating layer g11
+I0823 10:12:44.225620 22114 net.cpp:91] Creating Layer g11
+I0823 10:12:44.225626 22114 net.cpp:411] g11 <- Ix2
+I0823 10:12:44.225636 22114 net.cpp:369] g11 -> g11
+I0823 10:12:44.225644 22114 net.cpp:121] Setting up g11
+I0823 10:12:44.226022 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.226037 22114 layer_factory.hpp:74] Creating layer g11_g11_0_split
+I0823 10:12:44.226047 22114 net.cpp:91] Creating Layer g11_g11_0_split
+I0823 10:12:44.226053 22114 net.cpp:411] g11_g11_0_split <- g11
+I0823 10:12:44.226063 22114 net.cpp:369] g11_g11_0_split -> g11_g11_0_split_0
+I0823 10:12:44.226071 22114 net.cpp:369] g11_g11_0_split -> g11_g11_0_split_1
+I0823 10:12:44.226081 22114 net.cpp:121] Setting up g11_g11_0_split
+I0823 10:12:44.226090 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.226099 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.226105 22114 layer_factory.hpp:74] Creating layer g11_
+I0823 10:12:44.226114 22114 net.cpp:91] Creating Layer g11_
+I0823 10:12:44.226121 22114 net.cpp:411] g11_ <- g11_g11_0_split_0
+I0823 10:12:44.226130 22114 net.cpp:369] g11_ -> g11_rep3
+I0823 10:12:44.226140 22114 net.cpp:121] Setting up g11_
+I0823 10:12:44.226151 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226161 22114 layer_factory.hpp:74] Creating layer Iyg11
+I0823 10:12:44.226169 22114 net.cpp:91] Creating Layer Iyg11
+I0823 10:12:44.226176 22114 net.cpp:411] Iyg11 <- g11_rep3
+I0823 10:12:44.226186 22114 net.cpp:411] Iyg11 <- Iy_Iy_0_split_1
+I0823 10:12:44.226193 22114 net.cpp:369] Iyg11 -> Iyg11
+I0823 10:12:44.226203 22114 net.cpp:121] Setting up Iyg11
+I0823 10:12:44.226212 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226219 22114 layer_factory.hpp:74] Creating layer Ixg12
+I0823 10:12:44.226227 22114 net.cpp:91] Creating Layer Ixg12
+I0823 10:12:44.226234 22114 net.cpp:411] Ixg12 <- Ix_Ix_0_split_2
+I0823 10:12:44.226243 22114 net.cpp:411] Ixg12 <- g12_rep3_g12__0_split_0
+I0823 10:12:44.226251 22114 net.cpp:369] Ixg12 -> Ixg12
+I0823 10:12:44.226260 22114 net.cpp:121] Setting up Ixg12
+I0823 10:12:44.226269 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226276 22114 layer_factory.hpp:74] Creating layer Iyg11_sub_Ixg12.002
+I0823 10:12:44.226285 22114 net.cpp:91] Creating Layer Iyg11_sub_Ixg12.002
+I0823 10:12:44.226291 22114 net.cpp:411] Iyg11_sub_Ixg12.002 <- Ixg12
+I0823 10:12:44.226300 22114 net.cpp:411] Iyg11_sub_Ixg12.002 <- Iyg11
+I0823 10:12:44.226308 22114 net.cpp:369] Iyg11_sub_Ixg12.002 -> Iyg11_sub_Ixg12
+I0823 10:12:44.226316 22114 net.cpp:121] Setting up Iyg11_sub_Ixg12.002
+I0823 10:12:44.226325 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226332 22114 layer_factory.hpp:74] Creating layer Iyg12
+I0823 10:12:44.226341 22114 net.cpp:91] Creating Layer Iyg12
+I0823 10:12:44.226348 22114 net.cpp:411] Iyg12 <- g12_rep3_g12__0_split_1
+I0823 10:12:44.226356 22114 net.cpp:411] Iyg12 <- Iy_Iy_0_split_2
+I0823 10:12:44.226364 22114 net.cpp:369] Iyg12 -> Iyg12
+I0823 10:12:44.226373 22114 net.cpp:121] Setting up Iyg12
+I0823 10:12:44.226382 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226389 22114 layer_factory.hpp:74] Creating layer Iy2
+I0823 10:12:44.226397 22114 net.cpp:91] Creating Layer Iy2
+I0823 10:12:44.226404 22114 net.cpp:411] Iy2 <- Iy_Iy_0_split_3
+I0823 10:12:44.226413 22114 net.cpp:369] Iy2 -> Iy2
+I0823 10:12:44.226421 22114 net.cpp:121] Setting up Iy2
+I0823 10:12:44.226430 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226438 22114 layer_factory.hpp:74] Creating layer g22
+I0823 10:12:44.226446 22114 net.cpp:91] Creating Layer g22
+I0823 10:12:44.226454 22114 net.cpp:411] g22 <- Iy2
+I0823 10:12:44.226462 22114 net.cpp:369] g22 -> g22
+I0823 10:12:44.226474 22114 net.cpp:121] Setting up g22
+I0823 10:12:44.226840 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.226853 22114 layer_factory.hpp:74] Creating layer g22_g22_0_split
+I0823 10:12:44.226866 22114 net.cpp:91] Creating Layer g22_g22_0_split
+I0823 10:12:44.226878 22114 net.cpp:411] g22_g22_0_split <- g22
+I0823 10:12:44.226887 22114 net.cpp:369] g22_g22_0_split -> g22_g22_0_split_0
+I0823 10:12:44.226897 22114 net.cpp:369] g22_g22_0_split -> g22_g22_0_split_1
+I0823 10:12:44.226907 22114 net.cpp:121] Setting up g22_g22_0_split
+I0823 10:12:44.226915 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.226923 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.226930 22114 layer_factory.hpp:74] Creating layer g22_
+I0823 10:12:44.226939 22114 net.cpp:91] Creating Layer g22_
+I0823 10:12:44.226946 22114 net.cpp:411] g22_ <- g22_g22_0_split_0
+I0823 10:12:44.226955 22114 net.cpp:369] g22_ -> g22_rep3
+I0823 10:12:44.226965 22114 net.cpp:121] Setting up g22_
+I0823 10:12:44.226976 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.226985 22114 layer_factory.hpp:74] Creating layer g11g22
+I0823 10:12:44.226994 22114 net.cpp:91] Creating Layer g11g22
+I0823 10:12:44.227001 22114 net.cpp:411] g11g22 <- g11_g11_0_split_1
+I0823 10:12:44.227010 22114 net.cpp:411] g11g22 <- g22_g22_0_split_1
+I0823 10:12:44.227017 22114 net.cpp:369] g11g22 -> g11g22
+I0823 10:12:44.227027 22114 net.cpp:121] Setting up g11g22
+I0823 10:12:44.227036 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.227043 22114 layer_factory.hpp:74] Creating layer detG
+I0823 10:12:44.227051 22114 net.cpp:91] Creating Layer detG
+I0823 10:12:44.227058 22114 net.cpp:411] detG <- g11g22
+I0823 10:12:44.227066 22114 net.cpp:411] detG <- g12_sqrd
+I0823 10:12:44.227074 22114 net.cpp:369] detG -> detG
+I0823 10:12:44.227083 22114 net.cpp:121] Setting up detG
+I0823 10:12:44.227092 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.227099 22114 layer_factory.hpp:74] Creating layer gm05
+I0823 10:12:44.227108 22114 net.cpp:91] Creating Layer gm05
+I0823 10:12:44.227114 22114 net.cpp:411] gm05 <- detG
+I0823 10:12:44.227123 22114 net.cpp:369] gm05 -> gm05
+I0823 10:12:44.227133 22114 net.cpp:121] Setting up gm05
+I0823 10:12:44.227140 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.227149 22114 layer_factory.hpp:74] Creating layer gm05_
+I0823 10:12:44.227157 22114 net.cpp:91] Creating Layer gm05_
+I0823 10:12:44.227164 22114 net.cpp:411] gm05_ <- gm05
+I0823 10:12:44.227174 22114 net.cpp:369] gm05_ -> gm05_rep3
+I0823 10:12:44.227182 22114 net.cpp:121] Setting up gm05_
+I0823 10:12:44.227195 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227202 22114 layer_factory.hpp:74] Creating layer gm05_rep3_gm05__0_split
+I0823 10:12:44.227210 22114 net.cpp:91] Creating Layer gm05_rep3_gm05__0_split
+I0823 10:12:44.227217 22114 net.cpp:411] gm05_rep3_gm05__0_split <- gm05_rep3
+I0823 10:12:44.227226 22114 net.cpp:369] gm05_rep3_gm05__0_split -> gm05_rep3_gm05__0_split_0
+I0823 10:12:44.227236 22114 net.cpp:369] gm05_rep3_gm05__0_split -> gm05_rep3_gm05__0_split_1
+I0823 10:12:44.227246 22114 net.cpp:369] gm05_rep3_gm05__0_split -> gm05_rep3_gm05__0_split_2
+I0823 10:12:44.227254 22114 net.cpp:121] Setting up gm05_rep3_gm05__0_split
+I0823 10:12:44.227263 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227272 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227279 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227286 22114 layer_factory.hpp:74] Creating layer Iyg11_sub_Ixg12.001
+I0823 10:12:44.227294 22114 net.cpp:91] Creating Layer Iyg11_sub_Ixg12.001
+I0823 10:12:44.227301 22114 net.cpp:411] Iyg11_sub_Ixg12.001 <- gm05_rep3_gm05__0_split_0
+I0823 10:12:44.227309 22114 net.cpp:411] Iyg11_sub_Ixg12.001 <- Iyg11_sub_Ixg12
+I0823 10:12:44.227318 22114 net.cpp:369] Iyg11_sub_Ixg12.001 -> gm05_mul_Iyg11_sub_Ixg12
+I0823 10:12:44.227326 22114 net.cpp:121] Setting up Iyg11_sub_Ixg12.001
+I0823 10:12:44.227335 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227342 22114 layer_factory.hpp:74] Creating layer Dpy
+I0823 10:12:44.227354 22114 net.cpp:91] Creating Layer Dpy
+I0823 10:12:44.227360 22114 net.cpp:411] Dpy <- gm05_mul_Iyg11_sub_Ixg12
+I0823 10:12:44.227377 22114 net.cpp:369] Dpy -> Dpy
+I0823 10:12:44.227387 22114 net.cpp:121] Setting up Dpy
+I0823 10:12:44.227396 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.227404 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227412 22114 layer_factory.hpp:74] Creating layer Ixg22
+I0823 10:12:44.227421 22114 net.cpp:91] Creating Layer Ixg22
+I0823 10:12:44.227428 22114 net.cpp:411] Ixg22 <- Ix_Ix_0_split_3
+I0823 10:12:44.227437 22114 net.cpp:411] Ixg22 <- g22_rep3
+I0823 10:12:44.227444 22114 net.cpp:369] Ixg22 -> Ixg22
+I0823 10:12:44.227454 22114 net.cpp:121] Setting up Ixg22
+I0823 10:12:44.227463 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227470 22114 layer_factory.hpp:74] Creating layer Ixg22_sub_Iyg12.001
+I0823 10:12:44.227480 22114 net.cpp:91] Creating Layer Ixg22_sub_Iyg12.001
+I0823 10:12:44.227488 22114 net.cpp:411] Ixg22_sub_Iyg12.001 <- Ixg22
+I0823 10:12:44.227494 22114 net.cpp:411] Ixg22_sub_Iyg12.001 <- Iyg12
+I0823 10:12:44.227504 22114 net.cpp:369] Ixg22_sub_Iyg12.001 -> Ixg22_sub_Iyg12
+I0823 10:12:44.227512 22114 net.cpp:121] Setting up Ixg22_sub_Iyg12.001
+I0823 10:12:44.227521 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227529 22114 layer_factory.hpp:74] Creating layer gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.227536 22114 net.cpp:91] Creating Layer gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.227543 22114 net.cpp:411] gm05_mul_Ixg22_sub_Iyg12 <- Ixg22_sub_Iyg12
+I0823 10:12:44.227551 22114 net.cpp:411] gm05_mul_Ixg22_sub_Iyg12 <- gm05_rep3_gm05__0_split_1
+I0823 10:12:44.227563 22114 net.cpp:369] gm05_mul_Ixg22_sub_Iyg12 -> gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.227572 22114 net.cpp:121] Setting up gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.227581 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227588 22114 layer_factory.hpp:74] Creating layer Dpx
+I0823 10:12:44.227599 22114 net.cpp:91] Creating Layer Dpx
+I0823 10:12:44.227607 22114 net.cpp:411] Dpx <- gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.227615 22114 net.cpp:369] Dpx -> Dpx
+I0823 10:12:44.227625 22114 net.cpp:121] Setting up Dpx
+I0823 10:12:44.227632 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.227641 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227649 22114 layer_factory.hpp:74] Creating layer div_invG_gradI.001
+I0823 10:12:44.227658 22114 net.cpp:91] Creating Layer div_invG_gradI.001
+I0823 10:12:44.227665 22114 net.cpp:411] div_invG_gradI.001 <- Dpx
+I0823 10:12:44.227673 22114 net.cpp:411] div_invG_gradI.001 <- Dpy
+I0823 10:12:44.227681 22114 net.cpp:369] div_invG_gradI.001 -> div_invG_gradI
+I0823 10:12:44.227690 22114 net.cpp:121] Setting up div_invG_gradI.001
+I0823 10:12:44.227699 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227706 22114 layer_factory.hpp:74] Creating layer output_flow
+I0823 10:12:44.227715 22114 net.cpp:91] Creating Layer output_flow
+I0823 10:12:44.227721 22114 net.cpp:411] output_flow <- div_invG_gradI
+I0823 10:12:44.227730 22114 net.cpp:411] output_flow <- gm05_rep3_gm05__0_split_2
+I0823 10:12:44.227737 22114 net.cpp:369] output_flow -> output_flow
+I0823 10:12:44.227746 22114 net.cpp:121] Setting up output_flow
+I0823 10:12:44.227756 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227762 22114 layer_factory.hpp:74] Creating layer update.002
+I0823 10:12:44.227771 22114 net.cpp:91] Creating Layer update.002
+I0823 10:12:44.227777 22114 net.cpp:411] update.002 <- output_flow
+I0823 10:12:44.227784 22114 net.cpp:411] update.002 <- data_data_0_split_2
+I0823 10:12:44.227793 22114 net.cpp:369] update.002 -> finalOutput
+I0823 10:12:44.227802 22114 net.cpp:121] Setting up update.002
+I0823 10:12:44.227812 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.227818 22114 layer_factory.hpp:74] Creating layer Silence Node
+I0823 10:12:44.227829 22114 net.cpp:91] Creating Layer Silence Node
+I0823 10:12:44.227836 22114 net.cpp:411] Silence Node <- finalOutput
+I0823 10:12:44.227843 22114 net.cpp:121] Setting up Silence Node
+I0823 10:12:44.227854 22114 net.cpp:195] Silence Node does not need backward computation.
+I0823 10:12:44.227867 22114 net.cpp:195] update.002 does not need backward computation.
+I0823 10:12:44.227874 22114 net.cpp:195] output_flow does not need backward computation.
+I0823 10:12:44.227881 22114 net.cpp:195] div_invG_gradI.001 does not need backward computation.
+I0823 10:12:44.227888 22114 net.cpp:195] Dpx does not need backward computation.
+I0823 10:12:44.227895 22114 net.cpp:195] gm05_mul_Ixg22_sub_Iyg12 does not need backward computation.
+I0823 10:12:44.227902 22114 net.cpp:195] Ixg22_sub_Iyg12.001 does not need backward computation.
+I0823 10:12:44.227910 22114 net.cpp:195] Ixg22 does not need backward computation.
+I0823 10:12:44.227917 22114 net.cpp:195] Dpy does not need backward computation.
+I0823 10:12:44.227924 22114 net.cpp:195] Iyg11_sub_Ixg12.001 does not need backward computation.
+I0823 10:12:44.227931 22114 net.cpp:195] gm05_rep3_gm05__0_split does not need backward computation.
+I0823 10:12:44.227938 22114 net.cpp:195] gm05_ does not need backward computation.
+I0823 10:12:44.227946 22114 net.cpp:195] gm05 does not need backward computation.
+I0823 10:12:44.227952 22114 net.cpp:195] detG does not need backward computation.
+I0823 10:12:44.227959 22114 net.cpp:195] g11g22 does not need backward computation.
+I0823 10:12:44.227967 22114 net.cpp:195] g22_ does not need backward computation.
+I0823 10:12:44.227973 22114 net.cpp:195] g22_g22_0_split does not need backward computation.
+I0823 10:12:44.227982 22114 net.cpp:195] g22 does not need backward computation.
+I0823 10:12:44.227988 22114 net.cpp:195] Iy2 does not need backward computation.
+I0823 10:12:44.227995 22114 net.cpp:195] Iyg12 does not need backward computation.
+I0823 10:12:44.228003 22114 net.cpp:195] Iyg11_sub_Ixg12.002 does not need backward computation.
+I0823 10:12:44.228009 22114 net.cpp:195] Ixg12 does not need backward computation.
+I0823 10:12:44.228018 22114 net.cpp:195] Iyg11 does not need backward computation.
+I0823 10:12:44.228024 22114 net.cpp:195] g11_ does not need backward computation.
+I0823 10:12:44.228031 22114 net.cpp:195] g11_g11_0_split does not need backward computation.
+I0823 10:12:44.228039 22114 net.cpp:195] g11 does not need backward computation.
+I0823 10:12:44.228045 22114 net.cpp:195] Ix2 does not need backward computation.
+I0823 10:12:44.228052 22114 net.cpp:195] g12_sqrd does not need backward computation.
+I0823 10:12:44.228060 22114 net.cpp:195] g12_rep3_g12__0_split does not need backward computation.
+I0823 10:12:44.228066 22114 net.cpp:195] g12_ does not need backward computation.
+I0823 10:12:44.228073 22114 net.cpp:195] g12_g12_0_split does not need backward computation.
+I0823 10:12:44.228080 22114 net.cpp:195] g12 does not need backward computation.
+I0823 10:12:44.228086 22114 net.cpp:195] IxIy does not need backward computation.
+I0823 10:12:44.228094 22114 net.cpp:195] Ix_Ix_0_split does not need backward computation.
+I0823 10:12:44.228101 22114 net.cpp:195] Ix does not need backward computation.
+I0823 10:12:44.228109 22114 net.cpp:195] Iy_Iy_0_split does not need backward computation.
+I0823 10:12:44.228116 22114 net.cpp:195] Iy does not need backward computation.
+I0823 10:12:44.228123 22114 net.cpp:195] data_data_0_split does not need backward computation.
+I0823 10:12:44.228130 22114 net.cpp:195] data does not need backward computation.
+I0823 10:12:44.228158 22114 net.cpp:483] Collecting Learning Rate and Weight Decay.
+I0823 10:12:44.228168 22114 net.cpp:248] Network initialization done.
+I0823 10:12:44.228174 22114 net.cpp:249] Memory required for data: 136314880
+I0823 10:12:44.228842 22114 solver.cpp:154] Creating test net (#0) specified by net file: /home/gipadmin/forks/caffe-gui-tool/patch_beltrami/quick_solve_train_test.prototxt
+I0823 10:12:44.228883 22114 net.cpp:288] The NetState phase (1) differed from the phase (0) specified by a rule in layer data
+I0823 10:12:44.229099 22114 net.cpp:42] Initializing net from parameters: 
+state {
+  phase: TEST
+}
+layer {
+  name: "data"
+  type: "HDF5Data"
+  top: "data"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/home/gipadmin/forks/caffe-gui-tool/patch_beltrami/data.txt"
+    batch_size: 1
+    shuffle: false
+  }
+}
+layer {
+  name: "Iy"
+  type: "Convolution"
+  bottom: "data"
+  top: "Iy"
+  param {
+    name: "Iy_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    shape {
+      dim: 3
+      dim: 1
+      dim: 3
+      dim: 1
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+  }
+}
+layer {
+  name: "Ix"
+  type: "Convolution"
+  bottom: "data"
+  top: "Ix"
+  param {
+    name: "Ix_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    shape {
+      dim: 3
+      dim: 1
+      dim: 1
+      dim: 3
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 0
+    pad_w: 1
+    kernel_h: 1
+    kernel_w: 3
+  }
+}
+layer {
+  name: "IxIy"
+  type: "Eltwise"
+  bottom: "Ix"
+  bottom: "Iy"
+  top: "IxIy"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "g12"
+  type: "Convolution"
+  bottom: "IxIy"
+  top: "g12"
+  param {
+    name: "g12_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1
+    bias_term: false
+    pad: 3
+    kernel_size: 7
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "g12_"
+  type: "Convolution"
+  bottom: "g12"
+  top: "g12_rep3"
+  param {
+    name: "g12__shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "g12_sqrd"
+  type: "Power"
+  bottom: "g12"
+  top: "g12_sqrd"
+  power_param {
+    power: 2
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "Ix2"
+  type: "Power"
+  bottom: "Ix"
+  top: "Ix2"
+  power_param {
+    power: 2
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "g11"
+  type: "Convolution"
+  bottom: "Ix2"
+  top: "g11"
+  param {
+    name: "g11_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1
+    bias_term: true
+    pad: 3
+    kernel_size: 7
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 5571.375
+    }
+  }
+}
+layer {
+  name: "g11_"
+  type: "Convolution"
+  bottom: "g11"
+  top: "g11_rep3"
+  param {
+    name: "g11__shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "Iyg11"
+  type: "Eltwise"
+  bottom: "g11_rep3"
+  bottom: "Iy"
+  top: "Iyg11"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Ixg12"
+  type: "Eltwise"
+  bottom: "Ix"
+  bottom: "g12_rep3"
+  top: "Ixg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Iyg11_sub_Ixg12.002"
+  type: "Eltwise"
+  bottom: "Ixg12"
+  bottom: "Iyg11"
+  top: "Iyg11_sub_Ixg12"
+  eltwise_param {
+    operation: SUM
+    coeff: -1
+    coeff: 1
+  }
+}
+layer {
+  name: "Iyg12"
+  type: "Eltwise"
+  bottom: "g12_rep3"
+  bottom: "Iy"
+  top: "Iyg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Iy2"
+  type: "Power"
+  bottom: "Iy"
+  top: "Iy2"
+  power_param {
+    power: 2
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "g22"
+  type: "Convolution"
+  bottom: "Iy2"
+  top: "g22"
+  param {
+    name: "g22_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1
+    bias_term: true
+    pad: 3
+    kernel_size: 7
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 5571.375
+    }
+  }
+}
+layer {
+  name: "g22_"
+  type: "Convolution"
+  bottom: "g22"
+  top: "g22_rep3"
+  param {
+    name: "g22__shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "g11g22"
+  type: "Eltwise"
+  bottom: "g11"
+  bottom: "g22"
+  top: "g11g22"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "detG"
+  type: "Eltwise"
+  bottom: "g11g22"
+  bottom: "g12_sqrd"
+  top: "detG"
+  eltwise_param {
+    operation: SUM
+    coeff: 1
+    coeff: -1
+  }
+}
+layer {
+  name: "gm05"
+  type: "Power"
+  bottom: "detG"
+  top: "gm05"
+  power_param {
+    power: -0.5
+    scale: 1
+    shift: 0
+  }
+}
+layer {
+  name: "gm05_"
+  type: "Convolution"
+  bottom: "gm05"
+  top: "gm05_rep3"
+  param {
+    name: "gm05_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "xavier"
+      variance_norm: FAN_IN
+    }
+  }
+}
+layer {
+  name: "Iyg11_sub_Ixg12.001"
+  type: "Eltwise"
+  bottom: "gm05_rep3"
+  bottom: "Iyg11_sub_Ixg12"
+  top: "gm05_mul_Iyg11_sub_Ixg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Dpy"
+  type: "Convolution"
+  bottom: "gm05_mul_Iyg11_sub_Ixg12"
+  top: "Dpy"
+  param {
+    name: "Dpy_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    shape {
+      dim: 3
+      dim: 1
+      dim: 3
+      dim: 1
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 1
+    pad_w: 0
+    kernel_h: 3
+    kernel_w: 1
+  }
+}
+layer {
+  name: "Ixg22"
+  type: "Eltwise"
+  bottom: "Ix"
+  bottom: "g22_rep3"
+  top: "Ixg22"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Ixg22_sub_Iyg12.001"
+  type: "Eltwise"
+  bottom: "Ixg22"
+  bottom: "Iyg12"
+  top: "Ixg22_sub_Iyg12"
+  eltwise_param {
+    operation: SUM
+    coeff: 1
+    coeff: -1
+  }
+}
+layer {
+  name: "gm05_mul_Ixg22_sub_Iyg12"
+  type: "Eltwise"
+  bottom: "Ixg22_sub_Iyg12"
+  bottom: "gm05_rep3"
+  top: "gm05_mul_Ixg22_sub_Iyg12"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "Dpx"
+  type: "Convolution"
+  bottom: "gm05_mul_Ixg22_sub_Iyg12"
+  top: "Dpx"
+  param {
+    name: "Dpx_shr"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  blobs {
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    data: 0
+    data: -1
+    data: 1
+    shape {
+      dim: 3
+      dim: 1
+      dim: 1
+      dim: 3
+    }
+  }
+  convolution_param {
+    num_output: 3
+    bias_term: false
+    group: 3
+    stride: 1
+    pad_h: 0
+    pad_w: 1
+    kernel_h: 1
+    kernel_w: 3
+  }
+}
+layer {
+  name: "div_invG_gradI.001"
+  type: "Eltwise"
+  bottom: "Dpx"
+  bottom: "Dpy"
+  top: "div_invG_gradI"
+  eltwise_param {
+    operation: SUM
+    coeff: 1
+    coeff: 1
+  }
+}
+layer {
+  name: "output_flow"
+  type: "Eltwise"
+  bottom: "div_invG_gradI"
+  bottom: "gm05_rep3"
+  top: "output_flow"
+  eltwise_param {
+    operation: PROD
+    stable_prod_grad: true
+  }
+}
+layer {
+  name: "update.002"
+  type: "Eltwise"
+  bottom: "output_flow"
+  bottom: "data"
+  top: "finalOutput"
+  eltwise_param {
+    operation: SUM
+    coeff: 2548.3198
+    coeff: 1
+  }
+}
+layer {
+  name: "Silence Node"
+  type: "Silence"
+  bottom: "finalOutput"
+}
+I0823 10:12:44.229259 22114 layer_factory.hpp:74] Creating layer data
+I0823 10:12:44.229277 22114 net.cpp:91] Creating Layer data
+I0823 10:12:44.229286 22114 net.cpp:369] data -> data
+I0823 10:12:44.229297 22114 net.cpp:121] Setting up data
+I0823 10:12:44.229305 22114 hdf5_data_layer.cpp:80] Loading list of HDF5 filenames from: /home/gipadmin/forks/caffe-gui-tool/patch_beltrami/data.txt
+I0823 10:12:44.229327 22114 hdf5_data_layer.cpp:94] Number of HDF5 files: 1
+I0823 10:12:44.233932 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.233983 22114 layer_factory.hpp:74] Creating layer data_data_0_split
+I0823 10:12:44.234000 22114 net.cpp:91] Creating Layer data_data_0_split
+I0823 10:12:44.234009 22114 net.cpp:411] data_data_0_split <- data
+I0823 10:12:44.234020 22114 net.cpp:369] data_data_0_split -> data_data_0_split_0
+I0823 10:12:44.234036 22114 net.cpp:369] data_data_0_split -> data_data_0_split_1
+I0823 10:12:44.234046 22114 net.cpp:369] data_data_0_split -> data_data_0_split_2
+I0823 10:12:44.234055 22114 net.cpp:121] Setting up data_data_0_split
+I0823 10:12:44.234067 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234076 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234083 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234091 22114 layer_factory.hpp:74] Creating layer Iy
+I0823 10:12:44.234107 22114 net.cpp:91] Creating Layer Iy
+I0823 10:12:44.234114 22114 net.cpp:411] Iy <- data_data_0_split_0
+I0823 10:12:44.234125 22114 net.cpp:369] Iy -> Iy
+I0823 10:12:44.234136 22114 net.cpp:121] Setting up Iy
+I0823 10:12:44.234145 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.234158 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234166 22114 layer_factory.hpp:74] Creating layer Iy_Iy_0_split
+I0823 10:12:44.234175 22114 net.cpp:91] Creating Layer Iy_Iy_0_split
+I0823 10:12:44.234184 22114 net.cpp:411] Iy_Iy_0_split <- Iy
+I0823 10:12:44.234191 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_0
+I0823 10:12:44.234202 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_1
+I0823 10:12:44.234212 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_2
+I0823 10:12:44.234222 22114 net.cpp:369] Iy_Iy_0_split -> Iy_Iy_0_split_3
+I0823 10:12:44.234231 22114 net.cpp:121] Setting up Iy_Iy_0_split
+I0823 10:12:44.234241 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234249 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234257 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234266 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234272 22114 layer_factory.hpp:74] Creating layer Ix
+I0823 10:12:44.234283 22114 net.cpp:91] Creating Layer Ix
+I0823 10:12:44.234292 22114 net.cpp:411] Ix <- data_data_0_split_1
+I0823 10:12:44.234300 22114 net.cpp:369] Ix -> Ix
+I0823 10:12:44.234310 22114 net.cpp:121] Setting up Ix
+I0823 10:12:44.234318 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.234328 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234336 22114 layer_factory.hpp:74] Creating layer Ix_Ix_0_split
+I0823 10:12:44.234344 22114 net.cpp:91] Creating Layer Ix_Ix_0_split
+I0823 10:12:44.234351 22114 net.cpp:411] Ix_Ix_0_split <- Ix
+I0823 10:12:44.234360 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_0
+I0823 10:12:44.234370 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_1
+I0823 10:12:44.234380 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_2
+I0823 10:12:44.234390 22114 net.cpp:369] Ix_Ix_0_split -> Ix_Ix_0_split_3
+I0823 10:12:44.234398 22114 net.cpp:121] Setting up Ix_Ix_0_split
+I0823 10:12:44.234407 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234416 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234423 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234431 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234437 22114 layer_factory.hpp:74] Creating layer IxIy
+I0823 10:12:44.234447 22114 net.cpp:91] Creating Layer IxIy
+I0823 10:12:44.234454 22114 net.cpp:411] IxIy <- Ix_Ix_0_split_0
+I0823 10:12:44.234474 22114 net.cpp:411] IxIy <- Iy_Iy_0_split_0
+I0823 10:12:44.234491 22114 net.cpp:369] IxIy -> IxIy
+I0823 10:12:44.234501 22114 net.cpp:121] Setting up IxIy
+I0823 10:12:44.234511 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234519 22114 layer_factory.hpp:74] Creating layer g12
+I0823 10:12:44.234529 22114 net.cpp:91] Creating Layer g12
+I0823 10:12:44.234536 22114 net.cpp:411] g12 <- IxIy
+I0823 10:12:44.234545 22114 net.cpp:369] g12 -> g12
+I0823 10:12:44.234555 22114 net.cpp:121] Setting up g12
+I0823 10:12:44.234570 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.234578 22114 layer_factory.hpp:74] Creating layer g12_g12_0_split
+I0823 10:12:44.234587 22114 net.cpp:91] Creating Layer g12_g12_0_split
+I0823 10:12:44.234594 22114 net.cpp:411] g12_g12_0_split <- g12
+I0823 10:12:44.234603 22114 net.cpp:369] g12_g12_0_split -> g12_g12_0_split_0
+I0823 10:12:44.234613 22114 net.cpp:369] g12_g12_0_split -> g12_g12_0_split_1
+I0823 10:12:44.234622 22114 net.cpp:121] Setting up g12_g12_0_split
+I0823 10:12:44.234632 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.234640 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.234647 22114 layer_factory.hpp:74] Creating layer g12_
+I0823 10:12:44.234657 22114 net.cpp:91] Creating Layer g12_
+I0823 10:12:44.234663 22114 net.cpp:411] g12_ <- g12_g12_0_split_0
+I0823 10:12:44.234673 22114 net.cpp:369] g12_ -> g12_rep3
+I0823 10:12:44.234683 22114 net.cpp:121] Setting up g12_
+I0823 10:12:44.234694 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234702 22114 layer_factory.hpp:74] Creating layer g12_rep3_g12__0_split
+I0823 10:12:44.234710 22114 net.cpp:91] Creating Layer g12_rep3_g12__0_split
+I0823 10:12:44.234717 22114 net.cpp:411] g12_rep3_g12__0_split <- g12_rep3
+I0823 10:12:44.234726 22114 net.cpp:369] g12_rep3_g12__0_split -> g12_rep3_g12__0_split_0
+I0823 10:12:44.234736 22114 net.cpp:369] g12_rep3_g12__0_split -> g12_rep3_g12__0_split_1
+I0823 10:12:44.234745 22114 net.cpp:121] Setting up g12_rep3_g12__0_split
+I0823 10:12:44.234755 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234762 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234769 22114 layer_factory.hpp:74] Creating layer g12_sqrd
+I0823 10:12:44.234779 22114 net.cpp:91] Creating Layer g12_sqrd
+I0823 10:12:44.234786 22114 net.cpp:411] g12_sqrd <- g12_g12_0_split_1
+I0823 10:12:44.234796 22114 net.cpp:369] g12_sqrd -> g12_sqrd
+I0823 10:12:44.234803 22114 net.cpp:121] Setting up g12_sqrd
+I0823 10:12:44.234812 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.234819 22114 layer_factory.hpp:74] Creating layer Ix2
+I0823 10:12:44.234827 22114 net.cpp:91] Creating Layer Ix2
+I0823 10:12:44.234834 22114 net.cpp:411] Ix2 <- Ix_Ix_0_split_1
+I0823 10:12:44.234843 22114 net.cpp:369] Ix2 -> Ix2
+I0823 10:12:44.234853 22114 net.cpp:121] Setting up Ix2
+I0823 10:12:44.234861 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.234869 22114 layer_factory.hpp:74] Creating layer g11
+I0823 10:12:44.234877 22114 net.cpp:91] Creating Layer g11
+I0823 10:12:44.234884 22114 net.cpp:411] g11 <- Ix2
+I0823 10:12:44.234894 22114 net.cpp:369] g11 -> g11
+I0823 10:12:44.234904 22114 net.cpp:121] Setting up g11
+I0823 10:12:44.235167 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.235180 22114 layer_factory.hpp:74] Creating layer g11_g11_0_split
+I0823 10:12:44.235189 22114 net.cpp:91] Creating Layer g11_g11_0_split
+I0823 10:12:44.235196 22114 net.cpp:411] g11_g11_0_split <- g11
+I0823 10:12:44.235205 22114 net.cpp:369] g11_g11_0_split -> g11_g11_0_split_0
+I0823 10:12:44.235215 22114 net.cpp:369] g11_g11_0_split -> g11_g11_0_split_1
+I0823 10:12:44.235224 22114 net.cpp:121] Setting up g11_g11_0_split
+I0823 10:12:44.235234 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.235241 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.235249 22114 layer_factory.hpp:74] Creating layer g11_
+I0823 10:12:44.235258 22114 net.cpp:91] Creating Layer g11_
+I0823 10:12:44.235270 22114 net.cpp:411] g11_ <- g11_g11_0_split_0
+I0823 10:12:44.235285 22114 net.cpp:369] g11_ -> g11_rep3
+I0823 10:12:44.235294 22114 net.cpp:121] Setting up g11_
+I0823 10:12:44.235306 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.235316 22114 layer_factory.hpp:74] Creating layer Iyg11
+I0823 10:12:44.235326 22114 net.cpp:91] Creating Layer Iyg11
+I0823 10:12:44.235332 22114 net.cpp:411] Iyg11 <- g11_rep3
+I0823 10:12:44.235340 22114 net.cpp:411] Iyg11 <- Iy_Iy_0_split_1
+I0823 10:12:44.235349 22114 net.cpp:369] Iyg11 -> Iyg11
+I0823 10:12:44.235358 22114 net.cpp:121] Setting up Iyg11
+I0823 10:12:44.235368 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.235375 22114 layer_factory.hpp:74] Creating layer Ixg12
+I0823 10:12:44.235383 22114 net.cpp:91] Creating Layer Ixg12
+I0823 10:12:44.235390 22114 net.cpp:411] Ixg12 <- Ix_Ix_0_split_2
+I0823 10:12:44.235399 22114 net.cpp:411] Ixg12 <- g12_rep3_g12__0_split_0
+I0823 10:12:44.235407 22114 net.cpp:369] Ixg12 -> Ixg12
+I0823 10:12:44.235416 22114 net.cpp:121] Setting up Ixg12
+I0823 10:12:44.235425 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.235432 22114 layer_factory.hpp:74] Creating layer Iyg11_sub_Ixg12.002
+I0823 10:12:44.235440 22114 net.cpp:91] Creating Layer Iyg11_sub_Ixg12.002
+I0823 10:12:44.235447 22114 net.cpp:411] Iyg11_sub_Ixg12.002 <- Ixg12
+I0823 10:12:44.235455 22114 net.cpp:411] Iyg11_sub_Ixg12.002 <- Iyg11
+I0823 10:12:44.235465 22114 net.cpp:369] Iyg11_sub_Ixg12.002 -> Iyg11_sub_Ixg12
+I0823 10:12:44.235473 22114 net.cpp:121] Setting up Iyg11_sub_Ixg12.002
+I0823 10:12:44.235482 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.235489 22114 layer_factory.hpp:74] Creating layer Iyg12
+I0823 10:12:44.235497 22114 net.cpp:91] Creating Layer Iyg12
+I0823 10:12:44.235504 22114 net.cpp:411] Iyg12 <- g12_rep3_g12__0_split_1
+I0823 10:12:44.235512 22114 net.cpp:411] Iyg12 <- Iy_Iy_0_split_2
+I0823 10:12:44.235522 22114 net.cpp:369] Iyg12 -> Iyg12
+I0823 10:12:44.235530 22114 net.cpp:121] Setting up Iyg12
+I0823 10:12:44.235539 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.235546 22114 layer_factory.hpp:74] Creating layer Iy2
+I0823 10:12:44.235554 22114 net.cpp:91] Creating Layer Iy2
+I0823 10:12:44.235561 22114 net.cpp:411] Iy2 <- Iy_Iy_0_split_3
+I0823 10:12:44.235570 22114 net.cpp:369] Iy2 -> Iy2
+I0823 10:12:44.235579 22114 net.cpp:121] Setting up Iy2
+I0823 10:12:44.235589 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.235595 22114 layer_factory.hpp:74] Creating layer g22
+I0823 10:12:44.235605 22114 net.cpp:91] Creating Layer g22
+I0823 10:12:44.235611 22114 net.cpp:411] g22 <- Iy2
+I0823 10:12:44.235620 22114 net.cpp:369] g22 -> g22
+I0823 10:12:44.235631 22114 net.cpp:121] Setting up g22
+I0823 10:12:44.235999 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.236013 22114 layer_factory.hpp:74] Creating layer g22_g22_0_split
+I0823 10:12:44.236022 22114 net.cpp:91] Creating Layer g22_g22_0_split
+I0823 10:12:44.236029 22114 net.cpp:411] g22_g22_0_split <- g22
+I0823 10:12:44.236038 22114 net.cpp:369] g22_g22_0_split -> g22_g22_0_split_0
+I0823 10:12:44.236048 22114 net.cpp:369] g22_g22_0_split -> g22_g22_0_split_1
+I0823 10:12:44.236057 22114 net.cpp:121] Setting up g22_g22_0_split
+I0823 10:12:44.236068 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.236075 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.236083 22114 layer_factory.hpp:74] Creating layer g22_
+I0823 10:12:44.236091 22114 net.cpp:91] Creating Layer g22_
+I0823 10:12:44.236099 22114 net.cpp:411] g22_ <- g22_g22_0_split_0
+I0823 10:12:44.236107 22114 net.cpp:369] g22_ -> g22_rep3
+I0823 10:12:44.236117 22114 net.cpp:121] Setting up g22_
+I0823 10:12:44.236129 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236137 22114 layer_factory.hpp:74] Creating layer g11g22
+I0823 10:12:44.236146 22114 net.cpp:91] Creating Layer g11g22
+I0823 10:12:44.236153 22114 net.cpp:411] g11g22 <- g11_g11_0_split_1
+I0823 10:12:44.236161 22114 net.cpp:411] g11g22 <- g22_g22_0_split_1
+I0823 10:12:44.236174 22114 net.cpp:369] g11g22 -> g11g22
+I0823 10:12:44.236189 22114 net.cpp:121] Setting up g11g22
+I0823 10:12:44.236199 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.236207 22114 layer_factory.hpp:74] Creating layer detG
+I0823 10:12:44.236215 22114 net.cpp:91] Creating Layer detG
+I0823 10:12:44.236222 22114 net.cpp:411] detG <- g11g22
+I0823 10:12:44.236230 22114 net.cpp:411] detG <- g12_sqrd
+I0823 10:12:44.236238 22114 net.cpp:369] detG -> detG
+I0823 10:12:44.236248 22114 net.cpp:121] Setting up detG
+I0823 10:12:44.236258 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.236264 22114 layer_factory.hpp:74] Creating layer gm05
+I0823 10:12:44.236273 22114 net.cpp:91] Creating Layer gm05
+I0823 10:12:44.236279 22114 net.cpp:411] gm05 <- detG
+I0823 10:12:44.236287 22114 net.cpp:369] gm05 -> gm05
+I0823 10:12:44.236296 22114 net.cpp:121] Setting up gm05
+I0823 10:12:44.236305 22114 net.cpp:128] Top shape: 1 1 512 512 (262144)
+I0823 10:12:44.236312 22114 layer_factory.hpp:74] Creating layer gm05_
+I0823 10:12:44.236321 22114 net.cpp:91] Creating Layer gm05_
+I0823 10:12:44.236328 22114 net.cpp:411] gm05_ <- gm05
+I0823 10:12:44.236337 22114 net.cpp:369] gm05_ -> gm05_rep3
+I0823 10:12:44.236347 22114 net.cpp:121] Setting up gm05_
+I0823 10:12:44.236359 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236367 22114 layer_factory.hpp:74] Creating layer gm05_rep3_gm05__0_split
+I0823 10:12:44.236377 22114 net.cpp:91] Creating Layer gm05_rep3_gm05__0_split
+I0823 10:12:44.236383 22114 net.cpp:411] gm05_rep3_gm05__0_split <- gm05_rep3
+I0823 10:12:44.236392 22114 net.cpp:369] gm05_rep3_gm05__0_split -> gm05_rep3_gm05__0_split_0
+I0823 10:12:44.236402 22114 net.cpp:369] gm05_rep3_gm05__0_split -> gm05_rep3_gm05__0_split_1
+I0823 10:12:44.236412 22114 net.cpp:369] gm05_rep3_gm05__0_split -> gm05_rep3_gm05__0_split_2
+I0823 10:12:44.236420 22114 net.cpp:121] Setting up gm05_rep3_gm05__0_split
+I0823 10:12:44.236429 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236438 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236445 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236451 22114 layer_factory.hpp:74] Creating layer Iyg11_sub_Ixg12.001
+I0823 10:12:44.236460 22114 net.cpp:91] Creating Layer Iyg11_sub_Ixg12.001
+I0823 10:12:44.236467 22114 net.cpp:411] Iyg11_sub_Ixg12.001 <- gm05_rep3_gm05__0_split_0
+I0823 10:12:44.236475 22114 net.cpp:411] Iyg11_sub_Ixg12.001 <- Iyg11_sub_Ixg12
+I0823 10:12:44.236484 22114 net.cpp:369] Iyg11_sub_Ixg12.001 -> gm05_mul_Iyg11_sub_Ixg12
+I0823 10:12:44.236492 22114 net.cpp:121] Setting up Iyg11_sub_Ixg12.001
+I0823 10:12:44.236501 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236508 22114 layer_factory.hpp:74] Creating layer Dpy
+I0823 10:12:44.236520 22114 net.cpp:91] Creating Layer Dpy
+I0823 10:12:44.236527 22114 net.cpp:411] Dpy <- gm05_mul_Iyg11_sub_Ixg12
+I0823 10:12:44.236536 22114 net.cpp:369] Dpy -> Dpy
+I0823 10:12:44.236546 22114 net.cpp:121] Setting up Dpy
+I0823 10:12:44.236553 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.236563 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236570 22114 layer_factory.hpp:74] Creating layer Ixg22
+I0823 10:12:44.236579 22114 net.cpp:91] Creating Layer Ixg22
+I0823 10:12:44.236587 22114 net.cpp:411] Ixg22 <- Ix_Ix_0_split_3
+I0823 10:12:44.236594 22114 net.cpp:411] Ixg22 <- g22_rep3
+I0823 10:12:44.236603 22114 net.cpp:369] Ixg22 -> Ixg22
+I0823 10:12:44.236613 22114 net.cpp:121] Setting up Ixg22
+I0823 10:12:44.236621 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236629 22114 layer_factory.hpp:74] Creating layer Ixg22_sub_Iyg12.001
+I0823 10:12:44.236639 22114 net.cpp:91] Creating Layer Ixg22_sub_Iyg12.001
+I0823 10:12:44.236645 22114 net.cpp:411] Ixg22_sub_Iyg12.001 <- Ixg22
+I0823 10:12:44.236654 22114 net.cpp:411] Ixg22_sub_Iyg12.001 <- Iyg12
+I0823 10:12:44.236662 22114 net.cpp:369] Ixg22_sub_Iyg12.001 -> Ixg22_sub_Iyg12
+I0823 10:12:44.236671 22114 net.cpp:121] Setting up Ixg22_sub_Iyg12.001
+I0823 10:12:44.236690 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236697 22114 layer_factory.hpp:74] Creating layer gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.236706 22114 net.cpp:91] Creating Layer gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.236712 22114 net.cpp:411] gm05_mul_Ixg22_sub_Iyg12 <- Ixg22_sub_Iyg12
+I0823 10:12:44.236721 22114 net.cpp:411] gm05_mul_Ixg22_sub_Iyg12 <- gm05_rep3_gm05__0_split_1
+I0823 10:12:44.236729 22114 net.cpp:369] gm05_mul_Ixg22_sub_Iyg12 -> gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.236738 22114 net.cpp:121] Setting up gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.236747 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236754 22114 layer_factory.hpp:74] Creating layer Dpx
+I0823 10:12:44.236764 22114 net.cpp:91] Creating Layer Dpx
+I0823 10:12:44.236773 22114 net.cpp:411] Dpx <- gm05_mul_Ixg22_sub_Iyg12
+I0823 10:12:44.236781 22114 net.cpp:369] Dpx -> Dpx
+I0823 10:12:44.236791 22114 net.cpp:121] Setting up Dpx
+I0823 10:12:44.236799 22114 base_conv_layer.cpp:76] Skipping parameter initialization
+I0823 10:12:44.236809 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236816 22114 layer_factory.hpp:74] Creating layer div_invG_gradI.001
+I0823 10:12:44.236824 22114 net.cpp:91] Creating Layer div_invG_gradI.001
+I0823 10:12:44.236831 22114 net.cpp:411] div_invG_gradI.001 <- Dpx
+I0823 10:12:44.236840 22114 net.cpp:411] div_invG_gradI.001 <- Dpy
+I0823 10:12:44.236848 22114 net.cpp:369] div_invG_gradI.001 -> div_invG_gradI
+I0823 10:12:44.236857 22114 net.cpp:121] Setting up div_invG_gradI.001
+I0823 10:12:44.236866 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236873 22114 layer_factory.hpp:74] Creating layer output_flow
+I0823 10:12:44.236882 22114 net.cpp:91] Creating Layer output_flow
+I0823 10:12:44.236889 22114 net.cpp:411] output_flow <- div_invG_gradI
+I0823 10:12:44.236897 22114 net.cpp:411] output_flow <- gm05_rep3_gm05__0_split_2
+I0823 10:12:44.236906 22114 net.cpp:369] output_flow -> output_flow
+I0823 10:12:44.236914 22114 net.cpp:121] Setting up output_flow
+I0823 10:12:44.236923 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236930 22114 layer_factory.hpp:74] Creating layer update.002
+I0823 10:12:44.236938 22114 net.cpp:91] Creating Layer update.002
+I0823 10:12:44.236945 22114 net.cpp:411] update.002 <- output_flow
+I0823 10:12:44.236953 22114 net.cpp:411] update.002 <- data_data_0_split_2
+I0823 10:12:44.236961 22114 net.cpp:369] update.002 -> finalOutput
+I0823 10:12:44.236970 22114 net.cpp:121] Setting up update.002
+I0823 10:12:44.236979 22114 net.cpp:128] Top shape: 1 3 512 512 (786432)
+I0823 10:12:44.236986 22114 layer_factory.hpp:74] Creating layer Silence Node
+I0823 10:12:44.236995 22114 net.cpp:91] Creating Layer Silence Node
+I0823 10:12:44.237002 22114 net.cpp:411] Silence Node <- finalOutput
+I0823 10:12:44.237010 22114 net.cpp:121] Setting up Silence Node
+I0823 10:12:44.237017 22114 net.cpp:195] Silence Node does not need backward computation.
+I0823 10:12:44.237025 22114 net.cpp:195] update.002 does not need backward computation.
+I0823 10:12:44.237031 22114 net.cpp:195] output_flow does not need backward computation.
+I0823 10:12:44.237038 22114 net.cpp:195] div_invG_gradI.001 does not need backward computation.
+I0823 10:12:44.237046 22114 net.cpp:195] Dpx does not need backward computation.
+I0823 10:12:44.237052 22114 net.cpp:195] gm05_mul_Ixg22_sub_Iyg12 does not need backward computation.
+I0823 10:12:44.237059 22114 net.cpp:195] Ixg22_sub_Iyg12.001 does not need backward computation.
+I0823 10:12:44.237067 22114 net.cpp:195] Ixg22 does not need backward computation.
+I0823 10:12:44.237074 22114 net.cpp:195] Dpy does not need backward computation.
+I0823 10:12:44.237082 22114 net.cpp:195] Iyg11_sub_Ixg12.001 does not need backward computation.
+I0823 10:12:44.237088 22114 net.cpp:195] gm05_rep3_gm05__0_split does not need backward computation.
+I0823 10:12:44.237095 22114 net.cpp:195] gm05_ does not need backward computation.
+I0823 10:12:44.237102 22114 net.cpp:195] gm05 does not need backward computation.
+I0823 10:12:44.237118 22114 net.cpp:195] detG does not need backward computation.
+I0823 10:12:44.237126 22114 net.cpp:195] g11g22 does not need backward computation.
+I0823 10:12:44.237133 22114 net.cpp:195] g22_ does not need backward computation.
+I0823 10:12:44.237140 22114 net.cpp:195] g22_g22_0_split does not need backward computation.
+I0823 10:12:44.237148 22114 net.cpp:195] g22 does not need backward computation.
+I0823 10:12:44.237154 22114 net.cpp:195] Iy2 does not need backward computation.
+I0823 10:12:44.237161 22114 net.cpp:195] Iyg12 does not need backward computation.
+I0823 10:12:44.237169 22114 net.cpp:195] Iyg11_sub_Ixg12.002 does not need backward computation.
+I0823 10:12:44.237176 22114 net.cpp:195] Ixg12 does not need backward computation.
+I0823 10:12:44.237185 22114 net.cpp:195] Iyg11 does not need backward computation.
+I0823 10:12:44.237191 22114 net.cpp:195] g11_ does not need backward computation.
+I0823 10:12:44.237198 22114 net.cpp:195] g11_g11_0_split does not need backward computation.
+I0823 10:12:44.237205 22114 net.cpp:195] g11 does not need backward computation.
+I0823 10:12:44.237212 22114 net.cpp:195] Ix2 does not need backward computation.
+I0823 10:12:44.237218 22114 net.cpp:195] g12_sqrd does not need backward computation.
+I0823 10:12:44.237226 22114 net.cpp:195] g12_rep3_g12__0_split does not need backward computation.
+I0823 10:12:44.237233 22114 net.cpp:195] g12_ does not need backward computation.
+I0823 10:12:44.237239 22114 net.cpp:195] g12_g12_0_split does not need backward computation.
+I0823 10:12:44.237246 22114 net.cpp:195] g12 does not need backward computation.
+I0823 10:12:44.237253 22114 net.cpp:195] IxIy does not need backward computation.
+I0823 10:12:44.237262 22114 net.cpp:195] Ix_Ix_0_split does not need backward computation.
+I0823 10:12:44.237268 22114 net.cpp:195] Ix does not need backward computation.
+I0823 10:12:44.237275 22114 net.cpp:195] Iy_Iy_0_split does not need backward computation.
+I0823 10:12:44.237282 22114 net.cpp:195] Iy does not need backward computation.
+I0823 10:12:44.237289 22114 net.cpp:195] data_data_0_split does not need backward computation.
+I0823 10:12:44.237298 22114 net.cpp:195] data does not need backward computation.
+I0823 10:12:44.237324 22114 net.cpp:483] Collecting Learning Rate and Weight Decay.
+I0823 10:12:44.237334 22114 net.cpp:248] Network initialization done.
+I0823 10:12:44.237339 22114 net.cpp:249] Memory required for data: 136314880
+I0823 10:12:44.237432 22114 solver.cpp:42] Solver scaffolding done.
+I0823 10:12:44.237464 22114 solver.cpp:250] Solving 
+I0823 10:12:44.237473 22114 solver.cpp:251] Learning Rate Policy: step
+I0823 10:12:44.918843 22114 solver.cpp:214] Iteration 0, loss = 0
+I0823 10:12:44.918931 22114 solver.cpp:486] Iteration 0, lr = 0.01
+I0823 10:12:44.919098 22114 solver.cpp:361] Snapshotting to /home/gipadmin/forks/caffe-gui-tool/patch_beltrami/aaron__iter_1.caffemodel
+I0823 10:12:44.919337 22114 solver.cpp:369] Snapshotting solver state to /home/gipadmin/forks/caffe-gui-tool/patch_beltrami/aaron__iter_1.solverstate
+I0823 10:12:44.919450 22114 solver.cpp:281] Optimization Done.
+I0823 10:12:44.919464 22114 caffe.cpp:134] Optimization Done.

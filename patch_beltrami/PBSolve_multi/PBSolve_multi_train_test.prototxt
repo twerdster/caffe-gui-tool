@@ -1,0 +1,4586 @@
+layer {
+    name: "data"
+    type: "HDF5Data"
+    top: "data"
+    top: "label"
+    hdf5_data_param {
+        source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTrain.txt"
+        batch_size: 16
+        shuffle: 0
+    }
+    include {
+        phase: TRAIN
+    }
+}
+layer {
+    name: "data"
+    type: "HDF5Data"
+    top: "data"
+    top: "label"
+    hdf5_data_param {
+        source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTest.txt"
+        batch_size: 16
+        shuffle: 0
+    }
+    include {
+        phase: TEST
+    }
+}
+layer {
+    name: "Ix"
+    type: "Convolution"
+    top: "Ix"
+    bottom: "data"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy"
+    type: "Convolution"
+    top: "Iy"
+    bottom: "data"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2"
+    type: "Power"
+    top: "Iy2"
+    bottom: "Iy"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22"
+    type: "Convolution"
+    top: "g22"
+    bottom: "Iy2"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22"
+    type: "Eltwise"
+    top: "Ixg22"
+    bottom: "Ix"
+    bottom: "g22"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy"
+    type: "Eltwise"
+    top: "IxIy"
+    bottom: "Ix"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12"
+    type: "Convolution"
+    top: "g12"
+    bottom: "IxIy"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "Ixg12"
+    type: "Eltwise"
+    top: "Ixg12"
+    bottom: "Ix"
+    bottom: "g12"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12_sqrd"
+    type: "Power"
+    top: "g12_sqrd"
+    bottom: "g12"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12"
+    type: "Eltwise"
+    top: "Iyg12"
+    bottom: "g12"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.001"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12"
+    bottom: "Ixg22"
+    bottom: "Iyg12"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2"
+    type: "Power"
+    top: "Ix2"
+    bottom: "Ix"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11"
+    type: "Convolution"
+    top: "g11"
+    bottom: "Ix2"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22"
+    type: "Eltwise"
+    top: "g11g22"
+    bottom: "g11"
+    bottom: "g22"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG"
+    type: "Eltwise"
+    top: "detG"
+    bottom: "g11g22"
+    bottom: "g12_sqrd"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval"
+    type: "AbsVal"
+    top: "absDetG"
+    bottom: "detG"
+}
+layer {
+    name: "gm05"
+    type: "Power"
+    top: "gm05"
+    bottom: "absDetG"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12"
+    bottom: "Ixg22_sub_Iyg12"
+    bottom: "gm05"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpx"
+    type: "Convolution"
+    top: "Dpx"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Iyg11"
+    type: "Eltwise"
+    top: "Iyg11"
+    bottom: "g11"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.002"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg12"
+    bottom: "Ixg12"
+    bottom: "Iyg11"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.001"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg12"
+    bottom: "gm05"
+    bottom: "Iyg11_sub_Ixg12"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy"
+    type: "Convolution"
+    top: "Dpy"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.001"
+    type: "Eltwise"
+    top: "div_invG_gradI"
+    bottom: "Dpx"
+    bottom: "Dpy"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient"
+    type: "Eltwise"
+    top: "output_flow"
+    bottom: "div_invG_gradI"
+    bottom: "gm05"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad"
+    type: "Convolution"
+    top: "dt_mul_grad"
+    bottom: "output_flow"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.002"
+    type: "Eltwise"
+    top: "finalOutput"
+    bottom: "dt_mul_grad"
+    bottom: "data"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.001"
+    type: "Convolution"
+    top: "Ix0"
+    bottom: "finalOutput"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.001"
+    type: "Convolution"
+    top: "Iy0"
+    bottom: "finalOutput"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.001"
+    type: "Power"
+    top: "Iy20"
+    bottom: "Iy0"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.001"
+    type: "Convolution"
+    top: "g220"
+    bottom: "Iy20"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.001"
+    type: "Eltwise"
+    top: "Ixg220"
+    bottom: "Ix0"
+    bottom: "g220"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.001"
+    type: "Eltwise"
+    top: "IxIy0"
+    bottom: "Ix0"
+    bottom: "Iy0"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.001"
+    type: "Convolution"
+    top: "g120"
+    bottom: "IxIy0"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.001"
+    type: "Power"
+    top: "g12_sqrd0"
+    bottom: "g120"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.001"
+    type: "Eltwise"
+    top: "Iyg120"
+    bottom: "g120"
+    bottom: "Iy0"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.001"
+    type: "Eltwise"
+    top: "Ixg120"
+    bottom: "Ix0"
+    bottom: "g120"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.002"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg120"
+    bottom: "Ixg220"
+    bottom: "Iyg120"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.001"
+    type: "Power"
+    top: "Ix20"
+    bottom: "Ix0"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.001"
+    type: "Convolution"
+    top: "g110"
+    bottom: "Ix20"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.001"
+    type: "Eltwise"
+    top: "g11g220"
+    bottom: "g110"
+    bottom: "g220"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.001"
+    type: "Eltwise"
+    top: "detG0"
+    bottom: "g11g220"
+    bottom: "g12_sqrd0"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.001"
+    type: "AbsVal"
+    top: "absDetG0"
+    bottom: "detG0"
+}
+layer {
+    name: "gm05.001"
+    type: "Power"
+    top: "gm050"
+    bottom: "absDetG0"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.001"
+    type: "Eltwise"
+    top: "Iyg110"
+    bottom: "g110"
+    bottom: "Iy0"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.004"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg120"
+    bottom: "Ixg120"
+    bottom: "Iyg110"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.003"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg120"
+    bottom: "gm050"
+    bottom: "Iyg11_sub_Ixg120"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.001"
+    type: "Convolution"
+    top: "Dpy0"
+    bottom: "gm05_mul_Iyg11_sub_Ixg120"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.001"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120"
+    bottom: "Ixg22_sub_Iyg120"
+    bottom: "gm050"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpx.001"
+    type: "Convolution"
+    top: "Dpx0"
+    bottom: "gm05_mul_Ixg22_sub_Iyg120"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.002"
+    type: "Eltwise"
+    top: "div_invG_gradI0"
+    bottom: "Dpx0"
+    bottom: "Dpy0"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.001"
+    type: "Eltwise"
+    top: "output_flow0"
+    bottom: "div_invG_gradI0"
+    bottom: "gm050"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.001"
+    type: "Convolution"
+    top: "dt_mul_grad0"
+    bottom: "output_flow0"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.003"
+    type: "Eltwise"
+    top: "finalOutput0"
+    bottom: "dt_mul_grad0"
+    bottom: "finalOutput"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.002"
+    type: "Convolution"
+    top: "Ix00"
+    bottom: "finalOutput0"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.002"
+    type: "Convolution"
+    top: "Iy00"
+    bottom: "finalOutput0"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.002"
+    type: "Power"
+    top: "Iy200"
+    bottom: "Iy00"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.002"
+    type: "Convolution"
+    top: "g2200"
+    bottom: "Iy200"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.002"
+    type: "Eltwise"
+    top: "Ixg2200"
+    bottom: "Ix00"
+    bottom: "g2200"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.002"
+    type: "Eltwise"
+    top: "IxIy00"
+    bottom: "Ix00"
+    bottom: "Iy00"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.002"
+    type: "Convolution"
+    top: "g1200"
+    bottom: "IxIy00"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.002"
+    type: "Power"
+    top: "g12_sqrd00"
+    bottom: "g1200"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.002"
+    type: "Eltwise"
+    top: "Iyg1200"
+    bottom: "g1200"
+    bottom: "Iy00"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.002"
+    type: "Eltwise"
+    top: "Ixg1200"
+    bottom: "Ix00"
+    bottom: "g1200"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.003"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg1200"
+    bottom: "Ixg2200"
+    bottom: "Iyg1200"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.002"
+    type: "Power"
+    top: "Ix200"
+    bottom: "Ix00"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.002"
+    type: "Convolution"
+    top: "g1100"
+    bottom: "Ix200"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.002"
+    type: "Eltwise"
+    top: "g11g2200"
+    bottom: "g1100"
+    bottom: "g2200"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.002"
+    type: "Eltwise"
+    top: "detG00"
+    bottom: "g11g2200"
+    bottom: "g12_sqrd00"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.002"
+    type: "AbsVal"
+    top: "absDetG00"
+    bottom: "detG00"
+}
+layer {
+    name: "gm05.002"
+    type: "Power"
+    top: "gm0500"
+    bottom: "absDetG00"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.002"
+    type: "Eltwise"
+    top: "Iyg1100"
+    bottom: "g1100"
+    bottom: "Iy00"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.006"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg1200"
+    bottom: "Ixg1200"
+    bottom: "Iyg1100"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.005"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg1200"
+    bottom: "gm0500"
+    bottom: "Iyg11_sub_Ixg1200"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.002"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200"
+    bottom: "Ixg22_sub_Iyg1200"
+    bottom: "gm0500"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.002"
+    type: "Convolution"
+    top: "Dpy00"
+    bottom: "gm05_mul_Iyg11_sub_Ixg1200"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.002"
+    type: "Convolution"
+    top: "Dpx00"
+    bottom: "gm05_mul_Ixg22_sub_Iyg1200"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.003"
+    type: "Eltwise"
+    top: "div_invG_gradI00"
+    bottom: "Dpx00"
+    bottom: "Dpy00"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.002"
+    type: "Eltwise"
+    top: "output_flow00"
+    bottom: "div_invG_gradI00"
+    bottom: "gm0500"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.002"
+    type: "Convolution"
+    top: "dt_mul_grad00"
+    bottom: "output_flow00"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.004"
+    type: "Eltwise"
+    top: "finalOutput00"
+    bottom: "dt_mul_grad00"
+    bottom: "finalOutput0"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.003"
+    type: "Convolution"
+    top: "Ix000"
+    bottom: "finalOutput00"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.003"
+    type: "Convolution"
+    top: "Iy000"
+    bottom: "finalOutput00"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.003"
+    type: "Power"
+    top: "Iy2000"
+    bottom: "Iy000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.003"
+    type: "Convolution"
+    top: "g22000"
+    bottom: "Iy2000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.003"
+    type: "Eltwise"
+    top: "Ixg22000"
+    bottom: "Ix000"
+    bottom: "g22000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.003"
+    type: "Eltwise"
+    top: "IxIy000"
+    bottom: "Ix000"
+    bottom: "Iy000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.003"
+    type: "Convolution"
+    top: "g12000"
+    bottom: "IxIy000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.003"
+    type: "Power"
+    top: "g12_sqrd000"
+    bottom: "g12000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.003"
+    type: "Eltwise"
+    top: "Iyg12000"
+    bottom: "g12000"
+    bottom: "Iy000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.003"
+    type: "Eltwise"
+    top: "Ixg12000"
+    bottom: "Ix000"
+    bottom: "g12000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.004"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12000"
+    bottom: "Ixg22000"
+    bottom: "Iyg12000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.003"
+    type: "Power"
+    top: "Ix2000"
+    bottom: "Ix000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.003"
+    type: "Convolution"
+    top: "g11000"
+    bottom: "Ix2000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.003"
+    type: "Eltwise"
+    top: "g11g22000"
+    bottom: "g11000"
+    bottom: "g22000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.003"
+    type: "Eltwise"
+    top: "detG000"
+    bottom: "g11g22000"
+    bottom: "g12_sqrd000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.003"
+    type: "AbsVal"
+    top: "absDetG000"
+    bottom: "detG000"
+}
+layer {
+    name: "gm05.003"
+    type: "Power"
+    top: "gm05000"
+    bottom: "absDetG000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.003"
+    type: "Eltwise"
+    top: "Iyg11000"
+    bottom: "g11000"
+    bottom: "Iy000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.008"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg12000"
+    bottom: "Ixg12000"
+    bottom: "Iyg11000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.007"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg12000"
+    bottom: "gm05000"
+    bottom: "Iyg11_sub_Ixg12000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.003"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000"
+    bottom: "Ixg22_sub_Iyg12000"
+    bottom: "gm05000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.003"
+    type: "Convolution"
+    top: "Dpy000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.003"
+    type: "Convolution"
+    top: "Dpx000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.004"
+    type: "Eltwise"
+    top: "div_invG_gradI000"
+    bottom: "Dpx000"
+    bottom: "Dpy000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.003"
+    type: "Eltwise"
+    top: "output_flow000"
+    bottom: "div_invG_gradI000"
+    bottom: "gm05000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.003"
+    type: "Convolution"
+    top: "dt_mul_grad000"
+    bottom: "output_flow000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.005"
+    type: "Eltwise"
+    top: "finalOutput000"
+    bottom: "dt_mul_grad000"
+    bottom: "finalOutput00"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.004"
+    type: "Convolution"
+    top: "Ix0000"
+    bottom: "finalOutput000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.004"
+    type: "Convolution"
+    top: "Iy0000"
+    bottom: "finalOutput000"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.004"
+    type: "Power"
+    top: "Iy20000"
+    bottom: "Iy0000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.004"
+    type: "Convolution"
+    top: "g220000"
+    bottom: "Iy20000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.004"
+    type: "Eltwise"
+    top: "Ixg220000"
+    bottom: "Ix0000"
+    bottom: "g220000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.004"
+    type: "Eltwise"
+    top: "IxIy0000"
+    bottom: "Ix0000"
+    bottom: "Iy0000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.004"
+    type: "Convolution"
+    top: "g120000"
+    bottom: "IxIy0000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.004"
+    type: "Power"
+    top: "g12_sqrd0000"
+    bottom: "g120000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.004"
+    type: "Eltwise"
+    top: "Iyg120000"
+    bottom: "g120000"
+    bottom: "Iy0000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.004"
+    type: "Eltwise"
+    top: "Ixg120000"
+    bottom: "Ix0000"
+    bottom: "g120000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.005"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg120000"
+    bottom: "Ixg220000"
+    bottom: "Iyg120000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.004"
+    type: "Power"
+    top: "Ix20000"
+    bottom: "Ix0000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.004"
+    type: "Convolution"
+    top: "g110000"
+    bottom: "Ix20000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.004"
+    type: "Eltwise"
+    top: "g11g220000"
+    bottom: "g110000"
+    bottom: "g220000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.004"
+    type: "Eltwise"
+    top: "detG0000"
+    bottom: "g11g220000"
+    bottom: "g12_sqrd0000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.004"
+    type: "AbsVal"
+    top: "absDetG0000"
+    bottom: "detG0000"
+}
+layer {
+    name: "gm05.004"
+    type: "Power"
+    top: "gm050000"
+    bottom: "absDetG0000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.004"
+    type: "Eltwise"
+    top: "Iyg110000"
+    bottom: "g110000"
+    bottom: "Iy0000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.010"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg120000"
+    bottom: "Ixg120000"
+    bottom: "Iyg110000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.009"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg120000"
+    bottom: "gm050000"
+    bottom: "Iyg11_sub_Ixg120000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.004"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120000"
+    bottom: "Ixg22_sub_Iyg120000"
+    bottom: "gm050000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.004"
+    type: "Convolution"
+    top: "Dpy0000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg120000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.004"
+    type: "Convolution"
+    top: "Dpx0000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg120000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.005"
+    type: "Eltwise"
+    top: "div_invG_gradI0000"
+    bottom: "Dpx0000"
+    bottom: "Dpy0000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.004"
+    type: "Eltwise"
+    top: "output_flow0000"
+    bottom: "div_invG_gradI0000"
+    bottom: "gm050000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.004"
+    type: "Convolution"
+    top: "dt_mul_grad0000"
+    bottom: "output_flow0000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.006"
+    type: "Eltwise"
+    top: "finalOutput0000"
+    bottom: "dt_mul_grad0000"
+    bottom: "finalOutput000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.005"
+    type: "Convolution"
+    top: "Ix00000"
+    bottom: "finalOutput0000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.005"
+    type: "Convolution"
+    top: "Iy00000"
+    bottom: "finalOutput0000"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.005"
+    type: "Power"
+    top: "Iy200000"
+    bottom: "Iy00000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.005"
+    type: "Convolution"
+    top: "g2200000"
+    bottom: "Iy200000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.005"
+    type: "Eltwise"
+    top: "Ixg2200000"
+    bottom: "Ix00000"
+    bottom: "g2200000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.005"
+    type: "Eltwise"
+    top: "IxIy00000"
+    bottom: "Ix00000"
+    bottom: "Iy00000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.005"
+    type: "Convolution"
+    top: "g1200000"
+    bottom: "IxIy00000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.005"
+    type: "Power"
+    top: "g12_sqrd00000"
+    bottom: "g1200000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.005"
+    type: "Eltwise"
+    top: "Iyg1200000"
+    bottom: "g1200000"
+    bottom: "Iy00000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.005"
+    type: "Eltwise"
+    top: "Ixg1200000"
+    bottom: "Ix00000"
+    bottom: "g1200000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.006"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg1200000"
+    bottom: "Ixg2200000"
+    bottom: "Iyg1200000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.005"
+    type: "Power"
+    top: "Ix200000"
+    bottom: "Ix00000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.005"
+    type: "Convolution"
+    top: "g1100000"
+    bottom: "Ix200000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.005"
+    type: "Eltwise"
+    top: "g11g2200000"
+    bottom: "g1100000"
+    bottom: "g2200000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.005"
+    type: "Eltwise"
+    top: "detG00000"
+    bottom: "g11g2200000"
+    bottom: "g12_sqrd00000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.005"
+    type: "AbsVal"
+    top: "absDetG00000"
+    bottom: "detG00000"
+}
+layer {
+    name: "gm05.005"
+    type: "Power"
+    top: "gm0500000"
+    bottom: "absDetG00000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.005"
+    type: "Eltwise"
+    top: "Iyg1100000"
+    bottom: "g1100000"
+    bottom: "Iy00000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.012"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg1200000"
+    bottom: "Ixg1200000"
+    bottom: "Iyg1100000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.011"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg1200000"
+    bottom: "gm0500000"
+    bottom: "Iyg11_sub_Ixg1200000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.005"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200000"
+    bottom: "Ixg22_sub_Iyg1200000"
+    bottom: "gm0500000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.005"
+    type: "Convolution"
+    top: "Dpy00000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg1200000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.005"
+    type: "Convolution"
+    top: "Dpx00000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg1200000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.006"
+    type: "Eltwise"
+    top: "div_invG_gradI00000"
+    bottom: "Dpx00000"
+    bottom: "Dpy00000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.005"
+    type: "Eltwise"
+    top: "output_flow00000"
+    bottom: "div_invG_gradI00000"
+    bottom: "gm0500000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.005"
+    type: "Convolution"
+    top: "dt_mul_grad00000"
+    bottom: "output_flow00000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.007"
+    type: "Eltwise"
+    top: "finalOutput00000"
+    bottom: "dt_mul_grad00000"
+    bottom: "finalOutput0000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.006"
+    type: "Convolution"
+    top: "Ix000000"
+    bottom: "finalOutput00000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.006"
+    type: "Convolution"
+    top: "Iy000000"
+    bottom: "finalOutput00000"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.006"
+    type: "Power"
+    top: "Iy2000000"
+    bottom: "Iy000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.006"
+    type: "Convolution"
+    top: "g22000000"
+    bottom: "Iy2000000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.006"
+    type: "Eltwise"
+    top: "Ixg22000000"
+    bottom: "Ix000000"
+    bottom: "g22000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.006"
+    type: "Eltwise"
+    top: "IxIy000000"
+    bottom: "Ix000000"
+    bottom: "Iy000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.006"
+    type: "Convolution"
+    top: "g12000000"
+    bottom: "IxIy000000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.006"
+    type: "Power"
+    top: "g12_sqrd000000"
+    bottom: "g12000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.006"
+    type: "Eltwise"
+    top: "Iyg12000000"
+    bottom: "g12000000"
+    bottom: "Iy000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.006"
+    type: "Eltwise"
+    top: "Ixg12000000"
+    bottom: "Ix000000"
+    bottom: "g12000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.007"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12000000"
+    bottom: "Ixg22000000"
+    bottom: "Iyg12000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.006"
+    type: "Power"
+    top: "Ix2000000"
+    bottom: "Ix000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.006"
+    type: "Convolution"
+    top: "g11000000"
+    bottom: "Ix2000000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.006"
+    type: "Eltwise"
+    top: "g11g22000000"
+    bottom: "g11000000"
+    bottom: "g22000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.006"
+    type: "Eltwise"
+    top: "detG000000"
+    bottom: "g11g22000000"
+    bottom: "g12_sqrd000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.006"
+    type: "AbsVal"
+    top: "absDetG000000"
+    bottom: "detG000000"
+}
+layer {
+    name: "gm05.006"
+    type: "Power"
+    top: "gm05000000"
+    bottom: "absDetG000000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.006"
+    type: "Eltwise"
+    top: "Iyg11000000"
+    bottom: "g11000000"
+    bottom: "Iy000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.014"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg12000000"
+    bottom: "Ixg12000000"
+    bottom: "Iyg11000000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.013"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg12000000"
+    bottom: "gm05000000"
+    bottom: "Iyg11_sub_Ixg12000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.006"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000000"
+    bottom: "Ixg22_sub_Iyg12000000"
+    bottom: "gm05000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.006"
+    type: "Convolution"
+    top: "Dpy000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12000000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.006"
+    type: "Convolution"
+    top: "Dpx000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.007"
+    type: "Eltwise"
+    top: "div_invG_gradI000000"
+    bottom: "Dpx000000"
+    bottom: "Dpy000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.006"
+    type: "Eltwise"
+    top: "output_flow000000"
+    bottom: "div_invG_gradI000000"
+    bottom: "gm05000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.006"
+    type: "Convolution"
+    top: "dt_mul_grad000000"
+    bottom: "output_flow000000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.008"
+    type: "Eltwise"
+    top: "finalOutput000000"
+    bottom: "dt_mul_grad000000"
+    bottom: "finalOutput00000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.007"
+    type: "Convolution"
+    top: "Ix0000000"
+    bottom: "finalOutput000000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.007"
+    type: "Convolution"
+    top: "Iy0000000"
+    bottom: "finalOutput000000"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.007"
+    type: "Power"
+    top: "Iy20000000"
+    bottom: "Iy0000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.007"
+    type: "Convolution"
+    top: "g220000000"
+    bottom: "Iy20000000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.007"
+    type: "Eltwise"
+    top: "Ixg220000000"
+    bottom: "Ix0000000"
+    bottom: "g220000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.007"
+    type: "Eltwise"
+    top: "IxIy0000000"
+    bottom: "Ix0000000"
+    bottom: "Iy0000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.007"
+    type: "Convolution"
+    top: "g120000000"
+    bottom: "IxIy0000000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.007"
+    type: "Power"
+    top: "g12_sqrd0000000"
+    bottom: "g120000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.007"
+    type: "Eltwise"
+    top: "Iyg120000000"
+    bottom: "g120000000"
+    bottom: "Iy0000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg12.007"
+    type: "Eltwise"
+    top: "Ixg120000000"
+    bottom: "Ix0000000"
+    bottom: "g120000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.008"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg120000000"
+    bottom: "Ixg220000000"
+    bottom: "Iyg120000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ix2.007"
+    type: "Power"
+    top: "Ix20000000"
+    bottom: "Ix0000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.007"
+    type: "Convolution"
+    top: "g110000000"
+    bottom: "Ix20000000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.007"
+    type: "Eltwise"
+    top: "g11g220000000"
+    bottom: "g110000000"
+    bottom: "g220000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.007"
+    type: "Eltwise"
+    top: "detG0000000"
+    bottom: "g11g220000000"
+    bottom: "g12_sqrd0000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.007"
+    type: "AbsVal"
+    top: "absDetG0000000"
+    bottom: "detG0000000"
+}
+layer {
+    name: "gm05.007"
+    type: "Power"
+    top: "gm050000000"
+    bottom: "absDetG0000000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.007"
+    type: "Eltwise"
+    top: "Iyg110000000"
+    bottom: "g110000000"
+    bottom: "Iy0000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.016"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg120000000"
+    bottom: "Ixg120000000"
+    bottom: "Iyg110000000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.015"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg120000000"
+    bottom: "gm050000000"
+    bottom: "Iyg11_sub_Ixg120000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.007"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120000000"
+    bottom: "Ixg22_sub_Iyg120000000"
+    bottom: "gm050000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.007"
+    type: "Convolution"
+    top: "Dpy0000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg120000000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.007"
+    type: "Convolution"
+    top: "Dpx0000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg120000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.008"
+    type: "Eltwise"
+    top: "div_invG_gradI0000000"
+    bottom: "Dpx0000000"
+    bottom: "Dpy0000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.007"
+    type: "Eltwise"
+    top: "output_flow0000000"
+    bottom: "div_invG_gradI0000000"
+    bottom: "gm050000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.007"
+    type: "Convolution"
+    top: "dt_mul_grad0000000"
+    bottom: "output_flow0000000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.009"
+    type: "Eltwise"
+    top: "finalOutput0000000"
+    bottom: "dt_mul_grad0000000"
+    bottom: "finalOutput000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.008"
+    type: "Convolution"
+    top: "Ix00000000"
+    bottom: "finalOutput0000000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.008"
+    type: "Convolution"
+    top: "Iy00000000"
+    bottom: "finalOutput0000000"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.008"
+    type: "Power"
+    top: "Iy200000000"
+    bottom: "Iy00000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.008"
+    type: "Convolution"
+    top: "g2200000000"
+    bottom: "Iy200000000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.008"
+    type: "Eltwise"
+    top: "Ixg2200000000"
+    bottom: "Ix00000000"
+    bottom: "g2200000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.008"
+    type: "Eltwise"
+    top: "IxIy00000000"
+    bottom: "Ix00000000"
+    bottom: "Iy00000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.008"
+    type: "Convolution"
+    top: "g1200000000"
+    bottom: "IxIy00000000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.008"
+    type: "Power"
+    top: "g12_sqrd00000000"
+    bottom: "g1200000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.008"
+    type: "Eltwise"
+    top: "Iyg1200000000"
+    bottom: "g1200000000"
+    bottom: "Iy00000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.009"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg1200000000"
+    bottom: "Ixg2200000000"
+    bottom: "Iyg1200000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ixg12.008"
+    type: "Eltwise"
+    top: "Ixg1200000000"
+    bottom: "Ix00000000"
+    bottom: "g1200000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ix2.008"
+    type: "Power"
+    top: "Ix200000000"
+    bottom: "Ix00000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.008"
+    type: "Convolution"
+    top: "g1100000000"
+    bottom: "Ix200000000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.008"
+    type: "Eltwise"
+    top: "g11g2200000000"
+    bottom: "g1100000000"
+    bottom: "g2200000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.008"
+    type: "Eltwise"
+    top: "detG00000000"
+    bottom: "g11g2200000000"
+    bottom: "g12_sqrd00000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.008"
+    type: "AbsVal"
+    top: "absDetG00000000"
+    bottom: "detG00000000"
+}
+layer {
+    name: "gm05.008"
+    type: "Power"
+    top: "gm0500000000"
+    bottom: "absDetG00000000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.008"
+    type: "Eltwise"
+    top: "Iyg1100000000"
+    bottom: "g1100000000"
+    bottom: "Iy00000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.018"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg1200000000"
+    bottom: "Ixg1200000000"
+    bottom: "Iyg1100000000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.017"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg1200000000"
+    bottom: "gm0500000000"
+    bottom: "Iyg11_sub_Ixg1200000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.008"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200000000"
+    bottom: "Ixg22_sub_Iyg1200000000"
+    bottom: "gm0500000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.008"
+    type: "Convolution"
+    top: "Dpy00000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg1200000000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "Dpx.008"
+    type: "Convolution"
+    top: "Dpx00000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg1200000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.009"
+    type: "Eltwise"
+    top: "div_invG_gradI00000000"
+    bottom: "Dpx00000000"
+    bottom: "Dpy00000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.008"
+    type: "Eltwise"
+    top: "output_flow00000000"
+    bottom: "div_invG_gradI00000000"
+    bottom: "gm0500000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.008"
+    type: "Convolution"
+    top: "dt_mul_grad00000000"
+    bottom: "output_flow00000000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.010"
+    type: "Eltwise"
+    top: "finalOutput00000000"
+    bottom: "dt_mul_grad00000000"
+    bottom: "finalOutput0000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Ix.009"
+    type: "Convolution"
+    top: "Ix000000000"
+    bottom: "finalOutput00000000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy.009"
+    type: "Convolution"
+    top: "Iy000000000"
+    bottom: "finalOutput00000000"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "Iy2.009"
+    type: "Power"
+    top: "Iy2000000000"
+    bottom: "Iy000000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g22.009"
+    type: "Convolution"
+    top: "g22000000000"
+    bottom: "Iy2000000000"
+    param {
+        name: "g22_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g22_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "Ixg22.009"
+    type: "Eltwise"
+    top: "Ixg22000000000"
+    bottom: "Ix000000000"
+    bottom: "g22000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy.009"
+    type: "Eltwise"
+    top: "IxIy000000000"
+    bottom: "Ix000000000"
+    bottom: "Iy000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12.009"
+    type: "Convolution"
+    top: "g12000000000"
+    bottom: "IxIy000000000"
+    param {
+        name: "g12_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd.009"
+    type: "Power"
+    top: "g12_sqrd000000000"
+    bottom: "g12000000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg12.009"
+    type: "Eltwise"
+    top: "Iyg12000000000"
+    bottom: "g12000000000"
+    bottom: "Iy000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.010"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12000000000"
+    bottom: "Ixg22000000000"
+    bottom: "Iyg12000000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "Ixg12.009"
+    type: "Eltwise"
+    top: "Ixg12000000000"
+    bottom: "Ix000000000"
+    bottom: "g12000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ix2.009"
+    type: "Power"
+    top: "Ix2000000000"
+    bottom: "Ix000000000"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11.009"
+    type: "Convolution"
+    top: "g11000000000"
+    bottom: "Ix2000000000"
+    param {
+        name: "g11_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "g11_shrB"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
+    name: "g11g22.009"
+    type: "Eltwise"
+    top: "g11g22000000000"
+    bottom: "g11000000000"
+    bottom: "g22000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "detG.009"
+    type: "Eltwise"
+    top: "detG000000000"
+    bottom: "g11g22000000000"
+    bottom: "g12_sqrd000000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "absval.009"
+    type: "AbsVal"
+    top: "absDetG000000000"
+    bottom: "detG000000000"
+}
+layer {
+    name: "gm05.009"
+    type: "Power"
+    top: "gm05000000000"
+    bottom: "absDetG000000000"
+    power_param {
+        power: -0.500000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "Iyg11.009"
+    type: "Eltwise"
+    top: "Iyg11000000000"
+    bottom: "g11000000000"
+    bottom: "Iy000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.020"
+    type: "Eltwise"
+    top: "Iyg11_sub_Ixg12000000000"
+    bottom: "Ixg12000000000"
+    bottom: "Iyg11000000000"
+    eltwise_param {
+        operation: SUM
+        coeff: -1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "Iyg11_sub_Ixg12.019"
+    type: "Eltwise"
+    top: "gm05_mul_Iyg11_sub_Ixg12000000000"
+    bottom: "gm05000000000"
+    bottom: "Iyg11_sub_Ixg12000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpy.009"
+    type: "Convolution"
+    top: "Dpy000000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12000000000"
+    param {
+        name: "Dpy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 1
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.009"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000000000"
+    bottom: "Ixg22_sub_Iyg12000000000"
+    bottom: "gm05000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpx.009"
+    type: "Convolution"
+    top: "Dpx000000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12000000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
+    name: "div_invG_gradI.010"
+    type: "Eltwise"
+    top: "div_invG_gradI000000000"
+    bottom: "Dpx000000000"
+    bottom: "Dpy000000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "gradient.009"
+    type: "Eltwise"
+    top: "output_flow000000000"
+    bottom: "div_invG_gradI000000000"
+    bottom: "gm05000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "dt_mul_grad.009"
+    type: "Convolution"
+    top: "dt_mul_grad000000000"
+    bottom: "output_flow000000000"
+    param {
+        name: "dt_mul_grad_shrW"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 0
+        kernel_size: 1
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.422400
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "update.011"
+    type: "Eltwise"
+    top: "finalOutput000000000"
+    bottom: "dt_mul_grad000000000"
+    bottom: "finalOutput00000000"
+    eltwise_param {
+        operation: SUM
+        coeff: 1000.000000
+        coeff: 1.000000
+    }
+}
+layer {
+    name: "MRE"
+    type: "EuclideanLoss"
+    top: "g"
+    bottom: "finalOutput000000000"
+    bottom: "label"
+    loss_weight: 1.000000
+}
