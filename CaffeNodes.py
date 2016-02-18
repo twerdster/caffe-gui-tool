@@ -911,6 +911,30 @@ class FlattenNode(Node, CaffeTreeNode):
     def draw_buttons(self, context, layout):
         layout.label("Flatten")
         self.draw_extra_params(context, layout)
+
+class AbsValNode(Node, CaffeTreeNode):
+    # === Basics ===
+    # Description string
+    '''AbsVal layer node'''
+    # Optional identifier string. If not explicitly defined, the python class name is used.
+    bl_idname = 'AbsValNodeType'
+    # Label for nice name display
+    bl_label = 'AbsVal Node'
+    # Icon identifier
+    bl_icon = 'SOUND'
+    
+    n_type = 'AbsVal'
+    
+    # === Custom Properties ===
+    # === Optional Functions ===
+    def init(self, context):
+        self.inputs.new('ImageSocketType', "Input image")
+        self.outputs.new('OutputSocketType', "AbsVal output")
+
+    # Additional buttons displayed on the node.
+    def draw_buttons(self, context, layout):
+        layout.label("AbsVal")
+        # self.draw_extra_params(context, layout)
         
 class SilenceNode(Node, CaffeTreeNode):
     # === Basics ===
@@ -1255,6 +1279,7 @@ class ArgMaxNode(Node, CaffeTreeNode):
         layout.prop(self, "TopK")
         self.draw_extra_params(context, layout)
         
+
 class HDF5OutputNode(Node, CaffeTreeNode):
     # === Basics ===
     # Description string
@@ -1723,6 +1748,7 @@ node_categories = [
         NodeItem("ArgMaxNodeType"),
         NodeItem("FCNodeType"),
         NodeItem("FlattenNodeType"),
+        NodeItem("AbsValNodeType"),
         NodeItem("AcNodeType"),
         NodeItem("ReluNodeType"),
         NodeItem("PReluNodeType"),
@@ -1768,6 +1794,7 @@ def register():
     bpy.utils.register_class(DeConvNode)
     bpy.utils.register_class(FCNode)
     bpy.utils.register_class(FlattenNode)
+    bpy.utils.register_class(AbsValNode)
     bpy.utils.register_class(LRNNode)
     bpy.utils.register_class(ActivationNode)
     bpy.utils.register_class(ReLuNode)
@@ -1812,6 +1839,7 @@ def unregister():
     bpy.utils.unregister_class(DeConvNode)
     bpy.utils.unregister_class(FCNode)
     bpy.utils.unregister_class(FlattenNode)
+    bpy.utils.unregister_class(AbsValNode)
     bpy.utils.unregister_class(LRNNode)
     bpy.utils.unregister_class(ActivationNode)
     bpy.utils.unregister_class(ReLuNode)
