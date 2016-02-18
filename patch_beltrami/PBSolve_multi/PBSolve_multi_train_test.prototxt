@@ -59,6 +59,49 @@ layer {
     }
 }
 layer {
+    name: "Ix2"
+    type: "Power"
+    top: "Ix2"
+    bottom: "Ix"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
+    name: "g11"
+    type: "Convolution"
+    top: "g11"
+    bottom: "Ix2"
+    param {
+        name: "gshrw0"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    param {
+        name: "gshrb0"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 1
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "constant"
+            value: 4145.100098
+        }
+    }
+}
+layer {
     name: "Iy"
     type: "Convolution"
     top: "Iy"
@@ -91,6 +134,17 @@ layer {
     }
 }
 layer {
+    name: "Iyg11"
+    type: "Eltwise"
+    top: "Iyg11"
+    bottom: "g11"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
     name: "Iy2"
     type: "Power"
     top: "Iy2"
@@ -107,149 +161,12 @@ layer {
     top: "g22"
     bottom: "Iy2"
     param {
-        name: "g22_shrW"
+        name: "gshrw0"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 1
-        group: 1
-        pad: 3
-        kernel_size: 7
-        stride: 1
-        weight_filler {
-            type: "constant"
-            value: 1.000000
-        }
-        bias_filler {
-            type: "constant"
-            value: 4145.100098
-        }
-    }
-}
-layer {
-    name: "Ixg22"
-    type: "Eltwise"
-    top: "Ixg22"
-    bottom: "Ix"
-    bottom: "g22"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "IxIy"
-    type: "Eltwise"
-    top: "IxIy"
-    bottom: "Ix"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "g12"
-    type: "Convolution"
-    top: "g12"
-    bottom: "IxIy"
-    param {
-        name: "g12_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad: 3
-        kernel_size: 7
-        stride: 1
-        weight_filler {
-            type: "constant"
-            value: 1.000000
-        }
-        bias_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
-        }
-    }
-}
-layer {
-    name: "Ixg12"
-    type: "Eltwise"
-    top: "Ixg12"
-    bottom: "Ix"
-    bottom: "g12"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "g12_sqrd"
-    type: "Power"
-    top: "g12_sqrd"
-    bottom: "g12"
-    power_param {
-        power: 2.000000
-        scale: 1.000000
-        shift: 0.000000
-    }
-}
-layer {
-    name: "Iyg12"
-    type: "Eltwise"
-    top: "Iyg12"
-    bottom: "g12"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Ixg22_sub_Iyg12.001"
-    type: "Eltwise"
-    top: "Ixg22_sub_Iyg12"
-    bottom: "Ixg22"
-    bottom: "Iyg12"
-    eltwise_param {
-        operation: SUM
-        coeff: 1.000000
-        coeff: -1.000000
-    }
-}
-layer {
-    name: "Ix2"
-    type: "Power"
-    top: "Ix2"
-    bottom: "Ix"
-    power_param {
-        power: 2.000000
-        scale: 1.000000
-        shift: 0.000000
-    }
-}
-layer {
-    name: "g11"
-    type: "Convolution"
-    top: "g11"
-    bottom: "Ix2"
-    param {
-        name: "g11_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    param {
-        name: "g11_shrB"
+        name: "gshrb0"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -282,6 +199,66 @@ layer {
     }
 }
 layer {
+    name: "Ixg22"
+    type: "Eltwise"
+    top: "Ixg22"
+    bottom: "Ix"
+    bottom: "g22"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "IxIy"
+    type: "Eltwise"
+    top: "IxIy"
+    bottom: "Ix"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "g12"
+    type: "Convolution"
+    top: "g12"
+    bottom: "IxIy"
+    param {
+        name: "gshrw0"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad: 3
+        kernel_size: 7
+        stride: 1
+        weight_filler {
+            type: "constant"
+            value: 1.000000
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "g12_sqrd"
+    type: "Power"
+    top: "g12_sqrd"
+    bottom: "g12"
+    power_param {
+        power: 2.000000
+        scale: 1.000000
+        shift: 0.000000
+    }
+}
+layer {
     name: "detG"
     type: "Eltwise"
     top: "detG"
@@ -294,16 +271,10 @@ layer {
     }
 }
 layer {
-    name: "absval"
-    type: "AbsVal"
-    top: "absDetG"
-    bottom: "detG"
-}
-layer {
     name: "gm05"
     type: "Power"
     top: "gm05"
-    bottom: "absDetG"
+    bottom: "detG"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -311,54 +282,11 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12"
+    name: "Ixg12"
     type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12"
-    bottom: "Ixg22_sub_Iyg12"
-    bottom: "gm05"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx"
-    type: "Convolution"
-    top: "Dpx"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "Iyg11"
-    type: "Eltwise"
-    top: "Iyg11"
-    bottom: "g11"
-    bottom: "Iy"
+    top: "Ixg12"
+    bottom: "Ix"
+    bottom: "g12"
     eltwise_param {
         operation: PROD
         stable_prod_grad: 1
@@ -420,6 +348,72 @@ layer {
     }
 }
 layer {
+    name: "Iyg12"
+    type: "Eltwise"
+    top: "Iyg12"
+    bottom: "g12"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12.001"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12"
+    bottom: "Ixg22"
+    bottom: "Iyg12"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12"
+    bottom: "Ixg22_sub_Iyg12"
+    bottom: "gm05"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Dpx"
+    type: "Convolution"
+    top: "Dpx"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "div_invG_gradI.001"
     type: "Eltwise"
     top: "div_invG_gradI"
@@ -449,8 +443,8 @@ layer {
     bottom: "output_flow"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -479,38 +473,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.001"
-    type: "Convolution"
-    top: "Ix0"
-    bottom: "finalOutput"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -546,6 +508,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.001"
+    type: "Convolution"
+    top: "Ix0"
+    bottom: "finalOutput"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.001"
     type: "Power"
     top: "Iy20"
@@ -562,12 +556,12 @@ layer {
     top: "g220"
     bottom: "Iy20"
     param {
-        name: "g22_shrW"
+        name: "gshrw1"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb1"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -616,7 +610,7 @@ layer {
     top: "g120"
     bottom: "IxIy0"
     param {
-        name: "g12_shrW"
+        name: "gshrw1"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -699,12 +693,12 @@ layer {
     top: "g110"
     bottom: "Ix20"
     param {
-        name: "g11_shrW"
+        name: "gshrw1"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb1"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -749,16 +743,10 @@ layer {
     }
 }
 layer {
-    name: "absval.001"
-    type: "AbsVal"
-    top: "absDetG0"
-    bottom: "detG0"
-}
-layer {
     name: "gm05.001"
     type: "Power"
     top: "gm050"
-    bottom: "absDetG0"
+    bottom: "detG0"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -904,8 +892,8 @@ layer {
     bottom: "output_flow0"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -934,38 +922,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.002"
-    type: "Convolution"
-    top: "Ix00"
-    bottom: "finalOutput0"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -1001,6 +957,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.002"
+    type: "Convolution"
+    top: "Ix00"
+    bottom: "finalOutput0"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.002"
     type: "Power"
     top: "Iy200"
@@ -1017,12 +1005,12 @@ layer {
     top: "g2200"
     bottom: "Iy200"
     param {
-        name: "g22_shrW"
+        name: "gshrw2"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb2"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -1071,7 +1059,7 @@ layer {
     top: "g1200"
     bottom: "IxIy00"
     param {
-        name: "g12_shrW"
+        name: "gshrw2"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -1154,12 +1142,12 @@ layer {
     top: "g1100"
     bottom: "Ix200"
     param {
-        name: "g11_shrW"
+        name: "gshrw2"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb2"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -1204,16 +1192,10 @@ layer {
     }
 }
 layer {
-    name: "absval.002"
-    type: "AbsVal"
-    top: "absDetG00"
-    bottom: "detG00"
-}
-layer {
     name: "gm05.002"
     type: "Power"
     top: "gm0500"
-    bottom: "absDetG00"
+    bottom: "detG00"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -1255,17 +1237,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.002"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg1200"
-    bottom: "Ixg22_sub_Iyg1200"
-    bottom: "gm0500"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.002"
     type: "Convolution"
     top: "Dpy00"
@@ -1295,6 +1266,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.002"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200"
+    bottom: "Ixg22_sub_Iyg1200"
+    bottom: "gm0500"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -1359,8 +1341,8 @@ layer {
     bottom: "output_flow00"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -1389,38 +1371,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.003"
-    type: "Convolution"
-    top: "Ix000"
-    bottom: "finalOutput00"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -1456,6 +1406,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.003"
+    type: "Convolution"
+    top: "Ix000"
+    bottom: "finalOutput00"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.003"
     type: "Power"
     top: "Iy2000"
@@ -1472,12 +1454,12 @@ layer {
     top: "g22000"
     bottom: "Iy2000"
     param {
-        name: "g22_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
+        name: "gshrw3"
+        lr_mult: 0.000000
+        decay_mult: 0.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb3"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -1526,7 +1508,7 @@ layer {
     top: "g12000"
     bottom: "IxIy000"
     param {
-        name: "g12_shrW"
+        name: "gshrw3"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -1609,12 +1591,12 @@ layer {
     top: "g11000"
     bottom: "Ix2000"
     param {
-        name: "g11_shrW"
+        name: "gshrw3"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb3"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -1659,16 +1641,10 @@ layer {
     }
 }
 layer {
-    name: "absval.003"
-    type: "AbsVal"
-    top: "absDetG000"
-    bottom: "detG000"
-}
-layer {
     name: "gm05.003"
     type: "Power"
     top: "gm05000"
-    bottom: "absDetG000"
+    bottom: "detG000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -1710,17 +1686,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.003"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12000"
-    bottom: "Ixg22_sub_Iyg12000"
-    bottom: "gm05000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.003"
     type: "Convolution"
     top: "Dpy000"
@@ -1750,6 +1715,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.003"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000"
+    bottom: "Ixg22_sub_Iyg12000"
+    bottom: "gm05000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -1814,8 +1790,8 @@ layer {
     bottom: "output_flow000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -1844,38 +1820,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.004"
-    type: "Convolution"
-    top: "Ix0000"
-    bottom: "finalOutput000"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -1911,6 +1855,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.004"
+    type: "Convolution"
+    top: "Ix0000"
+    bottom: "finalOutput000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.004"
     type: "Power"
     top: "Iy20000"
@@ -1927,12 +1903,12 @@ layer {
     top: "g220000"
     bottom: "Iy20000"
     param {
-        name: "g22_shrW"
+        name: "gshrw4"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb4"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -1981,7 +1957,7 @@ layer {
     top: "g120000"
     bottom: "IxIy0000"
     param {
-        name: "g12_shrW"
+        name: "gshrw4"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -2064,12 +2040,12 @@ layer {
     top: "g110000"
     bottom: "Ix20000"
     param {
-        name: "g11_shrW"
+        name: "gshrw4"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb4"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -2114,16 +2090,10 @@ layer {
     }
 }
 layer {
-    name: "absval.004"
-    type: "AbsVal"
-    top: "absDetG0000"
-    bottom: "detG0000"
-}
-layer {
     name: "gm05.004"
     type: "Power"
     top: "gm050000"
-    bottom: "absDetG0000"
+    bottom: "detG0000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -2165,17 +2135,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.004"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg120000"
-    bottom: "Ixg22_sub_Iyg120000"
-    bottom: "gm050000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.004"
     type: "Convolution"
     top: "Dpy0000"
@@ -2205,6 +2164,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.004"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120000"
+    bottom: "Ixg22_sub_Iyg120000"
+    bottom: "gm050000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -2269,8 +2239,8 @@ layer {
     bottom: "output_flow0000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -2299,38 +2269,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.005"
-    type: "Convolution"
-    top: "Ix00000"
-    bottom: "finalOutput0000"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -2366,6 +2304,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.005"
+    type: "Convolution"
+    top: "Ix00000"
+    bottom: "finalOutput0000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.005"
     type: "Power"
     top: "Iy200000"
@@ -2382,12 +2352,12 @@ layer {
     top: "g2200000"
     bottom: "Iy200000"
     param {
-        name: "g22_shrW"
+        name: "gshrw5"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb5"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -2436,7 +2406,7 @@ layer {
     top: "g1200000"
     bottom: "IxIy00000"
     param {
-        name: "g12_shrW"
+        name: "gshrw5"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -2519,12 +2489,12 @@ layer {
     top: "g1100000"
     bottom: "Ix200000"
     param {
-        name: "g11_shrW"
+        name: "gshrw5"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb5"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -2569,16 +2539,10 @@ layer {
     }
 }
 layer {
-    name: "absval.005"
-    type: "AbsVal"
-    top: "absDetG00000"
-    bottom: "detG00000"
-}
-layer {
     name: "gm05.005"
     type: "Power"
     top: "gm0500000"
-    bottom: "absDetG00000"
+    bottom: "detG00000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -2620,17 +2584,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.005"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg1200000"
-    bottom: "Ixg22_sub_Iyg1200000"
-    bottom: "gm0500000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.005"
     type: "Convolution"
     top: "Dpy00000"
@@ -2660,6 +2613,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.005"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200000"
+    bottom: "Ixg22_sub_Iyg1200000"
+    bottom: "gm0500000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -2724,8 +2688,8 @@ layer {
     bottom: "output_flow00000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -2754,38 +2718,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.006"
-    type: "Convolution"
-    top: "Ix000000"
-    bottom: "finalOutput00000"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -2821,6 +2753,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.006"
+    type: "Convolution"
+    top: "Ix000000"
+    bottom: "finalOutput00000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.006"
     type: "Power"
     top: "Iy2000000"
@@ -2837,12 +2801,12 @@ layer {
     top: "g22000000"
     bottom: "Iy2000000"
     param {
-        name: "g22_shrW"
+        name: "gshrw6"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb6"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -2891,7 +2855,7 @@ layer {
     top: "g12000000"
     bottom: "IxIy000000"
     param {
-        name: "g12_shrW"
+        name: "gshrw6"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -2974,14 +2938,14 @@ layer {
     top: "g11000000"
     bottom: "Ix2000000"
     param {
-        name: "g11_shrW"
+        name: "gshrw6"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb6"
         lr_mult: 0.000000
-        decay_mult: 0.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -3024,16 +2988,10 @@ layer {
     }
 }
 layer {
-    name: "absval.006"
-    type: "AbsVal"
-    top: "absDetG000000"
-    bottom: "detG000000"
-}
-layer {
     name: "gm05.006"
     type: "Power"
     top: "gm05000000"
-    bottom: "absDetG000000"
+    bottom: "detG000000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -3075,17 +3033,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.006"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12000000"
-    bottom: "Ixg22_sub_Iyg12000000"
-    bottom: "gm05000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.006"
     type: "Convolution"
     top: "Dpy000000"
@@ -3115,6 +3062,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.006"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000000"
+    bottom: "Ixg22_sub_Iyg12000000"
+    bottom: "gm05000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -3179,8 +3137,8 @@ layer {
     bottom: "output_flow000000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -3209,38 +3167,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.007"
-    type: "Convolution"
-    top: "Ix0000000"
-    bottom: "finalOutput000000"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -3276,6 +3202,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.007"
+    type: "Convolution"
+    top: "Ix0000000"
+    bottom: "finalOutput000000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.007"
     type: "Power"
     top: "Iy20000000"
@@ -3292,12 +3250,12 @@ layer {
     top: "g220000000"
     bottom: "Iy20000000"
     param {
-        name: "g22_shrW"
+        name: "gshrw7"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb7"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -3346,7 +3304,7 @@ layer {
     top: "g120000000"
     bottom: "IxIy0000000"
     param {
-        name: "g12_shrW"
+        name: "gshrw7"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -3429,12 +3387,12 @@ layer {
     top: "g110000000"
     bottom: "Ix20000000"
     param {
-        name: "g11_shrW"
+        name: "gshrw7"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb7"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -3479,16 +3437,10 @@ layer {
     }
 }
 layer {
-    name: "absval.007"
-    type: "AbsVal"
-    top: "absDetG0000000"
-    bottom: "detG0000000"
-}
-layer {
     name: "gm05.007"
     type: "Power"
     top: "gm050000000"
-    bottom: "absDetG0000000"
+    bottom: "detG0000000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -3530,17 +3482,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.007"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg120000000"
-    bottom: "Ixg22_sub_Iyg120000000"
-    bottom: "gm050000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.007"
     type: "Convolution"
     top: "Dpy0000000"
@@ -3570,6 +3511,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.007"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120000000"
+    bottom: "Ixg22_sub_Iyg120000000"
+    bottom: "gm050000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -3634,8 +3586,8 @@ layer {
     bottom: "output_flow0000000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -3664,38 +3616,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.008"
-    type: "Convolution"
-    top: "Ix00000000"
-    bottom: "finalOutput0000000"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -3731,6 +3651,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.008"
+    type: "Convolution"
+    top: "Ix00000000"
+    bottom: "finalOutput0000000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.008"
     type: "Power"
     top: "Iy200000000"
@@ -3747,12 +3699,12 @@ layer {
     top: "g2200000000"
     bottom: "Iy200000000"
     param {
-        name: "g22_shrW"
+        name: "gshrw8"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb8"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -3801,7 +3753,7 @@ layer {
     top: "g1200000000"
     bottom: "IxIy00000000"
     param {
-        name: "g12_shrW"
+        name: "gshrw8"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -3884,12 +3836,12 @@ layer {
     top: "g1100000000"
     bottom: "Ix200000000"
     param {
-        name: "g11_shrW"
+        name: "gshrw8"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb8"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -3934,16 +3886,10 @@ layer {
     }
 }
 layer {
-    name: "absval.008"
-    type: "AbsVal"
-    top: "absDetG00000000"
-    bottom: "detG00000000"
-}
-layer {
     name: "gm05.008"
     type: "Power"
     top: "gm0500000000"
-    bottom: "absDetG00000000"
+    bottom: "detG00000000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -3985,17 +3931,6 @@ layer {
     }
 }
 layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.008"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg1200000000"
-    bottom: "Ixg22_sub_Iyg1200000000"
-    bottom: "gm0500000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
     name: "Dpy.008"
     type: "Convolution"
     top: "Dpy00000000"
@@ -4025,6 +3960,17 @@ layer {
         data:  0.0
         data: -1.0
         data:  1.0
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.008"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200000000"
+    bottom: "Ixg22_sub_Iyg1200000000"
+    bottom: "gm0500000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -4089,8 +4035,8 @@ layer {
     bottom: "output_flow00000000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1
@@ -4119,38 +4065,6 @@ layer {
         operation: SUM
         coeff: 1000.000000
         coeff: 1.000000
-    }
-}
-layer {
-    name: "Ix.009"
-    type: "Convolution"
-    top: "Ix000000000"
-    bottom: "finalOutput00000000"
-    param {
-        name: "Ix_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -4186,6 +4100,38 @@ layer {
     }
 }
 layer {
+    name: "Ix.009"
+    type: "Convolution"
+    top: "Ix000000000"
+    bottom: "finalOutput00000000"
+    param {
+        name: "Ix_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 1
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
     name: "Iy2.009"
     type: "Power"
     top: "Iy2000000000"
@@ -4202,12 +4148,12 @@ layer {
     top: "g22000000000"
     bottom: "Iy2000000000"
     param {
-        name: "g22_shrW"
+        name: "gshrw9"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g22_shrB"
+        name: "gshrb9"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -4256,7 +4202,7 @@ layer {
     top: "g12000000000"
     bottom: "IxIy000000000"
     param {
-        name: "g12_shrW"
+        name: "gshrw9"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -4339,12 +4285,12 @@ layer {
     top: "g11000000000"
     bottom: "Ix2000000000"
     param {
-        name: "g11_shrW"
+        name: "gshrw9"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
     param {
-        name: "g11_shrB"
+        name: "gshrb9"
         lr_mult: 0.000000
         decay_mult: 0.000000
     }
@@ -4389,16 +4335,10 @@ layer {
     }
 }
 layer {
-    name: "absval.009"
-    type: "AbsVal"
-    top: "absDetG000000000"
-    bottom: "detG000000000"
-}
-layer {
     name: "gm05.009"
     type: "Power"
     top: "gm05000000000"
-    bottom: "absDetG000000000"
+    bottom: "detG000000000"
     power_param {
         power: -0.500000
         scale: 1.000000
@@ -4544,8 +4484,8 @@ layer {
     bottom: "output_flow000000000"
     param {
         name: "dt_mul_grad_shrW"
-        lr_mult: 0.000000
-        decay_mult: 0.000000
+        lr_mult: 1.000000
+        decay_mult: 1.000000
     }
     convolution_param {
         num_output: 1

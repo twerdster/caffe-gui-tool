@@ -15,6 +15,7 @@ belt=@(Dt,Im,Imx,Imy,Gm05,G11,G12,G22) ...
 
 dt=alpha*beta;
 h=ones(ws*2+1);
+
 S=[];
 for p=1:iterations
     
