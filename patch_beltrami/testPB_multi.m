@@ -14,7 +14,7 @@ caffe.reset_all()
 %modelName = 'aaron__iter_1.caffemodel';
 
 deployName = 'PBSolve_multi/PBSolve_multi_deploy.prototxt';
-modelName = 'PBSolve_multi/aaron__iter_400.caffemodel';
+modelName = 'PBSolve_multi/aaron__iter_500.caffemodel';
 
 trainORtest = 'test';
 
@@ -55,9 +55,11 @@ take average of neighbours?
 Run median over image?
 What does it mean?
 %}
-
+figure(1)
 warning off;
-for i=5 %size(I_data,4)
+n=68
+tic;
+for i=1:n
     y = I_label(:,:,:,i);
     z = I_data(:,:,:,i);
     
@@ -67,22 +69,22 @@ for i=5 %size(I_data,4)
     
     % delta = net.blobs('output_flow00').get_data();
     % y_est = y_est + delta*d.dt;
-            for j=1:0
-                y_est = net.blobs('finalOutput').get_data();
-                net.blobs('data').set_data(y_est);
-                net.forward_prefilled();
-            end
+    for j=1:0
+        y_est = net.blobs('finalOutput').get_data();
+        net.blobs('data').set_data(y_est);
+        net.forward_prefilled();
+    end
     %
-        B.Ix=net.blobs('Ix').get_data();
-        B.Iy=net.blobs('Iy').get_data();
-        B.IxIy=net.blobs('IxIy').get_data();
-        B.Ix2=net.blobs('Ix2').get_data();
-        B.Iy2=net.blobs('Iy2').get_data();
-        B.g11=net.blobs('g11').get_data();
-        B.g12=net.blobs('g12').get_data();
-        B.g22=net.blobs('g22').get_data();
-        B.gm05=net.blobs('gm05').get_data();
-        B.I=net.blobs('finalOutput').get_data();
+    %         B.Ix=net.blobs('Ix').get_data();
+    %         B.Iy=net.blobs('Iy').get_data();
+    %         B.IxIy=net.blobs('IxIy').get_data();
+    %         B.Ix2=net.blobs('Ix2').get_data();
+    %         B.Iy2=net.blobs('Iy2').get_data();
+    %         B.g11=net.blobs('g11').get_data();
+    %         B.g12=net.blobs('g12').get_data();
+    %         B.g22=net.blobs('g22').get_data();
+    %         B.gm05=net.blobs('gm05').get_data();
+    %         B.I=net.blobs('finalOutput').get_data();
     %
     
     
@@ -91,9 +93,7 @@ for i=5 %size(I_data,4)
     psnr(i) = PSNR;
     pn(i) = PN;
     fprintf('#:%i Sigma:%2.0f\nNoise:%3.2fdb\nFiltered PSNR:%fdb\n',i,sigma,PN,PSNR);
-    if isnan(PSNR)
-        ssss
-    end
+    
     imshow(uint8(abs(y_est)));xlabel(num2str(PSNR));
     
     drawnow
@@ -101,7 +101,16 @@ end
 warning on
 t2=toc;
 
-fprintf('Total time: %f\n',(t2)/n);
+fprintf('Average time: %f\n',(t2)/n);
+
+A = load('NLD_results');
+
+% Compare to Non-Linear Diffusion
+a = sort(A.A{5}.psnr-psnr);
+fprintf('Median: %f\n',median(a));
+figure(2);
+plot(a); hold on;
+
 
 %% Look at other elements of the data
 

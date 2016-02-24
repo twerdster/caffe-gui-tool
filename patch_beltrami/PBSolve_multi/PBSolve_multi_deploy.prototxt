@@ -1,8 +1,22 @@
 layer {
+    name: "padIx"
+    type: "Padding"
+    top: "padIx"
+    bottom: "data"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix"
     type: "Convolution"
     top: "Ix"
-    bottom: "data"
+    bottom: "padIx"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -13,7 +27,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -24,6 +38,52 @@ layer {
             dim: 1
             dim: 1
             dim: 3
+        }
+        data: -1.0
+        data:  1.0
+        data:  0.0
+    }
+}
+layer {
+    name: "padIy"
+    type: "Padding"
+    top: "padIy"
+    bottom: "data"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Iy"
+    type: "Convolution"
+    top: "Iy"
+    bottom: "padIy"
+    param {
+        name: "Iy_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 3
+        kernel_w: 1
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 3
+            dim: 1
         }
         data: -1.0
         data:  1.0
@@ -60,8 +120,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -71,38 +131,6 @@ layer {
             type: "constant"
             value: 4145.100098
         }
-    }
-}
-layer {
-    name: "Iy"
-    type: "Convolution"
-    top: "Iy"
-    bottom: "data"
-    param {
-        name: "Iy_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 1
-        pad_w: 0
-        kernel_h: 3
-        kernel_w: 1
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 3
-            dim: 1
-        }
-        data: -1.0
-        data:  1.0
-        data:  0.0
     }
 }
 layer {
@@ -146,8 +174,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -206,8 +234,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -288,10 +316,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy"
+    type: "Padding"
+    top: "padDpy"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy"
     type: "Convolution"
     top: "Dpy"
-    bottom: "gm05_mul_Iyg11_sub_Ixg12"
+    bottom: "padDpy"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -301,7 +343,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -354,10 +396,24 @@ layer {
     }
 }
 layer {
+    name: "padDpx"
+    type: "Padding"
+    top: "padDpx"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpx"
     type: "Convolution"
     top: "Dpx"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12"
+    bottom: "padDpx"
     param {
         name: "Dpx_shrW"
         lr_mult: 1.000000
@@ -368,7 +424,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -448,10 +504,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.001"
+    type: "Padding"
+    top: "padIy0"
+    bottom: "finalOutput"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.001"
     type: "Convolution"
     top: "Iy0"
-    bottom: "finalOutput"
+    bottom: "padIy0"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -461,7 +531,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -480,10 +550,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.001"
+    type: "Padding"
+    top: "padIx0"
+    bottom: "finalOutput"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.001"
     type: "Convolution"
     top: "Ix0"
-    bottom: "finalOutput"
+    bottom: "padIx0"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -494,7 +578,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -541,8 +625,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -590,8 +674,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -678,8 +762,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -726,6 +810,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.001"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120"
+    bottom: "Ixg22_sub_Iyg120"
+    bottom: "gm050"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.001"
+    type: "Padding"
+    top: "padDpx0"
+    bottom: "gm05_mul_Ixg22_sub_Iyg120"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.001"
+    type: "Convolution"
+    top: "Dpx0"
+    bottom: "padDpx0"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.001"
     type: "Eltwise"
     top: "Iyg110"
@@ -760,10 +901,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.001"
+    type: "Padding"
+    top: "padDpy0"
+    bottom: "gm05_mul_Iyg11_sub_Ixg120"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.001"
     type: "Convolution"
     top: "Dpy0"
-    bottom: "gm05_mul_Iyg11_sub_Ixg120"
+    bottom: "padDpy0"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -773,7 +928,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -785,49 +940,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.001"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg120"
-    bottom: "Ixg22_sub_Iyg120"
-    bottom: "gm050"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.001"
-    type: "Convolution"
-    top: "Dpx0"
-    bottom: "gm05_mul_Ixg22_sub_Iyg120"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -897,10 +1009,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.002"
+    type: "Padding"
+    top: "padIy00"
+    bottom: "finalOutput0"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.002"
     type: "Convolution"
     top: "Iy00"
-    bottom: "finalOutput0"
+    bottom: "padIy00"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -910,7 +1036,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -929,10 +1055,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.002"
+    type: "Padding"
+    top: "padIx00"
+    bottom: "finalOutput0"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.002"
     type: "Convolution"
     top: "Ix00"
-    bottom: "finalOutput0"
+    bottom: "padIx00"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -943,7 +1083,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -990,8 +1130,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1039,8 +1179,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1127,8 +1267,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1175,6 +1315,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.002"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200"
+    bottom: "Ixg22_sub_Iyg1200"
+    bottom: "gm0500"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.002"
+    type: "Padding"
+    top: "padDpx00"
+    bottom: "gm05_mul_Ixg22_sub_Iyg1200"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.002"
+    type: "Convolution"
+    top: "Dpx00"
+    bottom: "padDpx00"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.002"
     type: "Eltwise"
     top: "Iyg1100"
@@ -1209,10 +1406,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.002"
+    type: "Padding"
+    top: "padDpy00"
+    bottom: "gm05_mul_Iyg11_sub_Ixg1200"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.002"
     type: "Convolution"
     top: "Dpy00"
-    bottom: "gm05_mul_Iyg11_sub_Ixg1200"
+    bottom: "padDpy00"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -1222,7 +1433,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -1234,49 +1445,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.002"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg1200"
-    bottom: "Ixg22_sub_Iyg1200"
-    bottom: "gm0500"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.002"
-    type: "Convolution"
-    top: "Dpx00"
-    bottom: "gm05_mul_Ixg22_sub_Iyg1200"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -1346,10 +1514,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.003"
+    type: "Padding"
+    top: "padIy000"
+    bottom: "finalOutput00"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.003"
     type: "Convolution"
     top: "Iy000"
-    bottom: "finalOutput00"
+    bottom: "padIy000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -1359,7 +1541,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -1378,10 +1560,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.003"
+    type: "Padding"
+    top: "padIx000"
+    bottom: "finalOutput00"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.003"
     type: "Convolution"
     top: "Ix000"
-    bottom: "finalOutput00"
+    bottom: "padIx000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -1392,7 +1588,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -1439,8 +1635,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1488,8 +1684,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1576,8 +1772,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1624,6 +1820,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.003"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000"
+    bottom: "Ixg22_sub_Iyg12000"
+    bottom: "gm05000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.003"
+    type: "Padding"
+    top: "padDpx000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.003"
+    type: "Convolution"
+    top: "Dpx000"
+    bottom: "padDpx000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.003"
     type: "Eltwise"
     top: "Iyg11000"
@@ -1658,10 +1911,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.003"
+    type: "Padding"
+    top: "padDpy000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.003"
     type: "Convolution"
     top: "Dpy000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg12000"
+    bottom: "padDpy000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -1671,7 +1938,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -1683,49 +1950,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.003"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12000"
-    bottom: "Ixg22_sub_Iyg12000"
-    bottom: "gm05000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.003"
-    type: "Convolution"
-    top: "Dpx000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -1795,10 +2019,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.004"
+    type: "Padding"
+    top: "padIy0000"
+    bottom: "finalOutput000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.004"
     type: "Convolution"
     top: "Iy0000"
-    bottom: "finalOutput000"
+    bottom: "padIy0000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -1808,7 +2046,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -1827,10 +2065,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.004"
+    type: "Padding"
+    top: "padIx0000"
+    bottom: "finalOutput000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.004"
     type: "Convolution"
     top: "Ix0000"
-    bottom: "finalOutput000"
+    bottom: "padIx0000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -1841,7 +2093,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -1888,8 +2140,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -1937,8 +2189,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2025,8 +2277,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2073,6 +2325,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.004"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120000"
+    bottom: "Ixg22_sub_Iyg120000"
+    bottom: "gm050000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.004"
+    type: "Padding"
+    top: "padDpx0000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg120000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.004"
+    type: "Convolution"
+    top: "Dpx0000"
+    bottom: "padDpx0000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.004"
     type: "Eltwise"
     top: "Iyg110000"
@@ -2107,10 +2416,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.004"
+    type: "Padding"
+    top: "padDpy0000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg120000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.004"
     type: "Convolution"
     top: "Dpy0000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg120000"
+    bottom: "padDpy0000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -2120,7 +2443,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -2132,49 +2455,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.004"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg120000"
-    bottom: "Ixg22_sub_Iyg120000"
-    bottom: "gm050000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.004"
-    type: "Convolution"
-    top: "Dpx0000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg120000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -2244,10 +2524,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.005"
+    type: "Padding"
+    top: "padIy00000"
+    bottom: "finalOutput0000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.005"
     type: "Convolution"
     top: "Iy00000"
-    bottom: "finalOutput0000"
+    bottom: "padIy00000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -2257,7 +2551,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -2276,10 +2570,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.005"
+    type: "Padding"
+    top: "padIx00000"
+    bottom: "finalOutput0000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.005"
     type: "Convolution"
     top: "Ix00000"
-    bottom: "finalOutput0000"
+    bottom: "padIx00000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -2290,7 +2598,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -2337,8 +2645,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2386,8 +2694,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2474,8 +2782,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2522,6 +2830,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.005"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200000"
+    bottom: "Ixg22_sub_Iyg1200000"
+    bottom: "gm0500000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.005"
+    type: "Padding"
+    top: "padDpx00000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg1200000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.005"
+    type: "Convolution"
+    top: "Dpx00000"
+    bottom: "padDpx00000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.005"
     type: "Eltwise"
     top: "Iyg1100000"
@@ -2556,10 +2921,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.005"
+    type: "Padding"
+    top: "padDpy00000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg1200000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.005"
     type: "Convolution"
     top: "Dpy00000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg1200000"
+    bottom: "padDpy00000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -2569,7 +2948,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -2581,49 +2960,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.005"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg1200000"
-    bottom: "Ixg22_sub_Iyg1200000"
-    bottom: "gm0500000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.005"
-    type: "Convolution"
-    top: "Dpx00000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg1200000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -2693,10 +3029,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.006"
+    type: "Padding"
+    top: "padIy000000"
+    bottom: "finalOutput00000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.006"
     type: "Convolution"
     top: "Iy000000"
-    bottom: "finalOutput00000"
+    bottom: "padIy000000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -2706,7 +3056,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -2725,10 +3075,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.006"
+    type: "Padding"
+    top: "padIx000000"
+    bottom: "finalOutput00000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.006"
     type: "Convolution"
     top: "Ix000000"
-    bottom: "finalOutput00000"
+    bottom: "padIx000000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -2739,7 +3103,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -2786,8 +3150,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2835,8 +3199,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2923,8 +3287,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -2971,6 +3335,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.006"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000000"
+    bottom: "Ixg22_sub_Iyg12000000"
+    bottom: "gm05000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.006"
+    type: "Padding"
+    top: "padDpx000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.006"
+    type: "Convolution"
+    top: "Dpx000000"
+    bottom: "padDpx000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.006"
     type: "Eltwise"
     top: "Iyg11000000"
@@ -3005,10 +3426,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.006"
+    type: "Padding"
+    top: "padDpy000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.006"
     type: "Convolution"
     top: "Dpy000000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg12000000"
+    bottom: "padDpy000000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -3018,7 +3453,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -3030,49 +3465,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.006"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12000000"
-    bottom: "Ixg22_sub_Iyg12000000"
-    bottom: "gm05000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.006"
-    type: "Convolution"
-    top: "Dpx000000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12000000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -3142,10 +3534,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.007"
+    type: "Padding"
+    top: "padIy0000000"
+    bottom: "finalOutput000000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.007"
     type: "Convolution"
     top: "Iy0000000"
-    bottom: "finalOutput000000"
+    bottom: "padIy0000000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -3155,7 +3561,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -3174,10 +3580,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.007"
+    type: "Padding"
+    top: "padIx0000000"
+    bottom: "finalOutput000000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.007"
     type: "Convolution"
     top: "Ix0000000"
-    bottom: "finalOutput000000"
+    bottom: "padIx0000000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -3188,7 +3608,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -3235,8 +3655,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -3284,8 +3704,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -3372,8 +3792,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -3420,6 +3840,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.007"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg120000000"
+    bottom: "Ixg22_sub_Iyg120000000"
+    bottom: "gm050000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.007"
+    type: "Padding"
+    top: "padDpx0000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg120000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.007"
+    type: "Convolution"
+    top: "Dpx0000000"
+    bottom: "padDpx0000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.007"
     type: "Eltwise"
     top: "Iyg110000000"
@@ -3454,10 +3931,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.007"
+    type: "Padding"
+    top: "padDpy0000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg120000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.007"
     type: "Convolution"
     top: "Dpy0000000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg120000000"
+    bottom: "padDpy0000000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -3467,7 +3958,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -3479,49 +3970,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.007"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg120000000"
-    bottom: "Ixg22_sub_Iyg120000000"
-    bottom: "gm050000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.007"
-    type: "Convolution"
-    top: "Dpx0000000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg120000000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -3591,10 +4039,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.008"
+    type: "Padding"
+    top: "padIy00000000"
+    bottom: "finalOutput0000000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.008"
     type: "Convolution"
     top: "Iy00000000"
-    bottom: "finalOutput0000000"
+    bottom: "padIy00000000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -3604,7 +4066,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -3623,10 +4085,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.008"
+    type: "Padding"
+    top: "padIx00000000"
+    bottom: "finalOutput0000000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.008"
     type: "Convolution"
     top: "Ix00000000"
-    bottom: "finalOutput0000000"
+    bottom: "padIx00000000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -3637,7 +4113,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -3684,8 +4160,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -3733,8 +4209,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -3821,8 +4297,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -3869,6 +4345,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.008"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg1200000000"
+    bottom: "Ixg22_sub_Iyg1200000000"
+    bottom: "gm0500000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.008"
+    type: "Padding"
+    top: "padDpx00000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg1200000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.008"
+    type: "Convolution"
+    top: "Dpx00000000"
+    bottom: "padDpx00000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.008"
     type: "Eltwise"
     top: "Iyg1100000000"
@@ -3903,10 +4436,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.008"
+    type: "Padding"
+    top: "padDpy00000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg1200000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.008"
     type: "Convolution"
     top: "Dpy00000000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg1200000000"
+    bottom: "padDpy00000000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -3916,7 +4463,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -3928,49 +4475,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.008"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg1200000000"
-    bottom: "Ixg22_sub_Iyg1200000000"
-    bottom: "gm0500000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.008"
-    type: "Convolution"
-    top: "Dpx00000000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg1200000000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
@@ -4040,10 +4544,24 @@ layer {
     }
 }
 layer {
+    name: "padIy.009"
+    type: "Padding"
+    top: "padIy000000000"
+    bottom: "finalOutput00000000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Iy.009"
     type: "Convolution"
     top: "Iy000000000"
-    bottom: "finalOutput00000000"
+    bottom: "padIy000000000"
     param {
         name: "Iy_shrW"
         lr_mult: 1.000000
@@ -4053,7 +4571,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -4072,10 +4590,24 @@ layer {
     }
 }
 layer {
+    name: "padIx.009"
+    type: "Padding"
+    top: "padIx000000000"
+    bottom: "finalOutput00000000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Ix.009"
     type: "Convolution"
     top: "Ix000000000"
-    bottom: "finalOutput00000000"
+    bottom: "padIx000000000"
     param {
         name: "Ix_shrW"
         lr_mult: 1.000000
@@ -4086,7 +4618,7 @@ layer {
         bias_term: 0
         group: 1
         pad_h: 0
-        pad_w: 1
+        pad_w: 0
         kernel_h: 1
         kernel_w: 3
         stride: 1
@@ -4133,8 +4665,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -4182,8 +4714,8 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -4270,8 +4802,8 @@ layer {
         num_output: 1
         bias_term: 1
         group: 1
-        pad: 3
-        kernel_size: 7
+        pad: 5
+        kernel_size: 11
         stride: 1
         weight_filler {
             type: "constant"
@@ -4318,6 +4850,63 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12.009"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12000000000"
+    bottom: "Ixg22_sub_Iyg12000000000"
+    bottom: "gm05000000000"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "padDpx.009"
+    type: "Padding"
+    top: "padDpx000000000"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12000000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 1
+        pad_r: 1
+        pad_t: 0
+        pad_b: 0
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx.009"
+    type: "Convolution"
+    top: "Dpx000000000"
+    bottom: "padDpx000000000"
+    param {
+        name: "Dpx_shrW"
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 1
+        kernel_w: 3
+        stride: 1
+    }
+    blobs {
+        shape {
+            dim: 1
+            dim: 1
+            dim: 1
+            dim: 3
+        }
+        data:  0.0
+        data: -1.0
+        data:  1.0
+    }
+}
+layer {
     name: "Iyg11.009"
     type: "Eltwise"
     top: "Iyg11000000000"
@@ -4352,10 +4941,24 @@ layer {
     }
 }
 layer {
+    name: "padDpy.009"
+    type: "Padding"
+    top: "padDpy000000000"
+    bottom: "gm05_mul_Iyg11_sub_Ixg12000000000"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 0
+        pad_r: 0
+        pad_t: 1
+        pad_b: 1
+        pad_value: 0.000000
+    }
+}
+layer {
     name: "Dpy.009"
     type: "Convolution"
     top: "Dpy000000000"
-    bottom: "gm05_mul_Iyg11_sub_Ixg12000000000"
+    bottom: "padDpy000000000"
     param {
         name: "Dpy_shrW"
         lr_mult: 1.000000
@@ -4365,7 +4968,7 @@ layer {
         num_output: 1
         bias_term: 0
         group: 1
-        pad_h: 1
+        pad_h: 0
         pad_w: 0
         kernel_h: 3
         kernel_w: 1
@@ -4377,49 +4980,6 @@ layer {
             dim: 1
             dim: 3
             dim: 1
-        }
-        data:  0.0
-        data: -1.0
-        data:  1.0
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12.009"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12000000000"
-    bottom: "Ixg22_sub_Iyg12000000000"
-    bottom: "gm05000000000"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Dpx.009"
-    type: "Convolution"
-    top: "Dpx000000000"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12000000000"
-    param {
-        name: "Dpx_shrW"
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 1
-        kernel_h: 1
-        kernel_w: 3
-        stride: 1
-    }
-    blobs {
-        shape {
-            dim: 1
-            dim: 1
-            dim: 1
-            dim: 3
         }
         data:  0.0
         data: -1.0
