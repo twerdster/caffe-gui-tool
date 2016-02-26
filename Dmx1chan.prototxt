@@ -3,11 +3,14 @@ blobs {
         dim: 1
         dim: 1
         dim: 1
-        dim: 3
+        dim: 7
     }
 
+    data:  0.0
+    data:  0.0
     data: -1.0
     data:  1.0
     data:  0.0
-	
+    data:  0.0
+	data:  0.0
 }
