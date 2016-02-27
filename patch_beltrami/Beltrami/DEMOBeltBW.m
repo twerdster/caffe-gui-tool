@@ -22,7 +22,7 @@ F=[];
 I_data = h5read('DataTest256.h5','/data');
 I_label = h5read('DataTest256.h5','/label');
 
-for i=1:1%size(I_data,4)
+for i=1:1:68
     y = I_label(:,:,:,i);
     
     idx = 1;
