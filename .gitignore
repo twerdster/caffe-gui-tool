@@ -13,3 +13,6 @@ PatchBeltrami.h5
 DataTrain.h5
 DataTest.h5
 DataTest256.h5
+
+# Temp files
+*.*~
