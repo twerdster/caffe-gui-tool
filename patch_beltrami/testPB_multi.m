@@ -1,20 +1,14 @@
 
-
 %% Add paths
 addpath(genpath('/home/gipadmin/forks/caffe/matlab'))
-
 
 %% Reset caffe
 caffe.set_mode_cpu()
 caffe.reset_all()
 
-
 %% Setup network
-%deployName = 'quick_solve_deploy.prototxt';
-%modelName = 'aaron__iter_1.caffemodel';
-
 deployName = 'PBSolve_multi/PBSolve_multi_deploy.prototxt';
-modelName = 'PBSolve_multi/aaron__iter_2000.caffemodel';
+modelName = 'PBSolve_multi/aaron__iter_3200.caffemodel';
 
 trainORtest = 'test';
 
@@ -29,67 +23,54 @@ net = caffe.Net(...
 getData = @(net,name,ind) net.layer_vec(net.name2layer_index(name)).params(ind).get_data()
 getBlob = @(net,name) net.blob_vec(net.name2blob_index(name)).get_data()
 
-%% Run data through network
-
-
-% Useful calls:
-% net.layer_names
-% a=net.layers('Ix').params.get_data();
-% net.blob_names
-% a=net.blobs('output_flow').params.get_data();
-
-%I_data = h5read('/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/Beltrami/DataTest.h5','/data');
-%I_label = h5read('/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/Beltrami/DataTest.h5','/label');
+%% Run data through network and get PSNR
 
 I_data = h5read('data/DataTest256.h5','/data');
 I_label = h5read('data/DataTest256.h5','/label');
-
 
 sigma = 25;
 
 figure(1)
 warning off;
-n=68
-load('indmaps');
-A = load('NLD_results');
-B = load('BM3D_results');
-C = load('PB_25','psnr');
+n=68;
+
+load('OtherMethods'); % Loads A -> NLD, B -> BM3D, C->PatchBeltrami
+
 tic;
 for i=1:n
-    y = I_label(:,:,:,indMap(i));
-    z = I_data(:,:,:,indMap(i));
+    y = I_label(:,:,:,(i));
+    z = I_data(:,:,:,(i));
     
     net.blobs('data').set_data(z);
     net.forward_prefilled();
     y_est = net.blobs('finalOutput0000').get_data();
     
-    % delta = net.blobs('output_flow00').get_data();
-    % y_est = y_est + delta*d.dt;
-    %     for j=1:0 %2
-    %         y_est = net.blobs('finalOutput').get_data();
-    %         net.blobs('data').set_data(y_est);
-    %         net.forward_prefilled();
-    %     end
-    %     %
-    %             B.Ix=net.blobs('Ix').get_data();
-    %             B.Iy=net.blobs('Iy').get_data();
-    %             B.IxIy=net.blobs('IxIy').get_data();
-    %             B.Ix2=net.blobs('Ix2').get_data();
-    %             B.Iy2=net.blobs('Iy2').get_data();
-    %             B.g11=net.blobs('g11').get_data();
-    %             B.g12=net.blobs('g12').get_data();
-    %             B.g22=net.blobs('g22').get_data();
-    %             B.gm05=net.blobs('gm05000').get_data();
-    %             B.I=net.blobs('finalOutput').get_data();
+    delta = net.blobs('output_flow00').get_data();
+    y_est = y_est + delta*d.dt;
+    for j=1:0 %2
+        y_est = net.blobs('finalOutput').get_data();
+        net.blobs('data').set_data(y_est);
+        net.forward_prefilled();
+    end
+    % Get debug info from inside the network
+    %     res.Ix=net.blobs('Ix').get_data();
+    %     res.Iy=net.blobs('Iy').get_data();
+    %     res.IxIy=net.blobs('IxIy').get_data();
+    %     res.Ix2=net.blobs('Ix2').get_data();
+    %     res.Iy2=net.blobs('Iy2').get_data();
+    %     res.g11=net.blobs('g11').get_data();
+    %     res.g12=net.blobs('g12').get_data();
+    %     res.g22=net.blobs('g22').get_data();
+    %     res.gm05=net.blobs('gm05000').get_data();
+    %     res.I=net.blobs('finalOutput').get_data();
     %
-    
     
     PSNR = 10*log10(255^2/mean((y(:)-y_est(:)).^2));
     PN=  10*log10(255^2/mean((y(:)-z(:)).^2));
     psnr(i) = PSNR;
     pn(i) = PN;
     
-    fprintf('#:%i RPB:%fdb  TRD:%fdb  BM3D:%f  PB:%f\n',i,psnr(i),A.A{5}.psnr(i),B.B.psnr(i),C.psnr(i));
+    fprintf('#:%i RPB:%fdb  TRD:%fdb  BM3D:%f  PB:%f\n',i,psnr(i),A.A{5}.psnr((i)),B.B.psnr((i)),C.psnr((i)));
     
     imshow(uint8(abs(y_est)));xlabel(num2str(PSNR));
     
