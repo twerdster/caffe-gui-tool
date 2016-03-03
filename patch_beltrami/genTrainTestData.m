@@ -1,85 +1,95 @@
-%we are creating patches here
-%as well as original image
-%each pair consists of the clean and corrupted patch
-%each dataset has its sigma, patch size,
-%can also do shotnoise
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Setup   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+cid = 0;
 
-%Initialize data params
-splitPoint = 4; % Before this the images are train and after which the images are used for test
-names= [ ...
-    {'image_Baboon512rgb'} ...
-    {'image_F16_512rgb'} ...
-    {'image_House256rgb'} ...
-    {'image_Lena512rgb'} ...
-    {'image_Peppers512rgb'} ...
-    ];
-patchSize = 64;
-sigma = 20;
-numPatches = 5*(512^2)/(patchSize^2);
-patchesD_train = zeros(patchSize, patchSize, 3, numPatches, 'single');
-patchesL_train = zeros(patchSize, patchSize, 3, numPatches, 'single');
+cid = cid+1;
+% Test 256
+config{cid}.path = 'data/68_IMGS/';
+config{cid}.fname = 'data/DataTest256.h5';
+config{cid}.sigma = 25;
+config{cid}.patchSize = 256;
+config{cid}.chans = 1;
+config{cid}.onePatch = true;
+config{cid}.shuffle = false;
+
+cid = cid+1;
+% Train
+config{cid}.path = 'data/400_IMGS/';
+config{cid}.fname = 'data/DataTrain.h5';
+config{cid}.sigma = 25;
+config{cid}.patchSize = 64;
+config{cid}.chans = 1;
+config{cid}.onePatch = false;
+config{cid}.shuffle = true;
+
+cid = cid+1;
+% Test
+config{cid}.path = 'data/68_IMGS/';
+config{cid}.fname = 'data/DataTest.h5';
+config{cid}.sigma = 25;
+config{cid}.patchSize = 64;
+config{cid}.chans = 1;
+config{cid}.onePatch = false;
+config{cid}.shuffle = true;
 
 
-% Setup files
-delete DataTrain.h5
-delete DataTest.h5
-h5create('DataTrain.h5', '/data',  [patchSize,patchSize,3,inf], 'Chunksize',[patchSize patchSize 3 1], 'Datatype', 'single');
-h5create('DataTrain.h5', '/label', [patchSize,patchSize,3,inf], 'Chunksize',[patchSize patchSize 3 1], 'Datatype', 'single');
-h5create('DataTest.h5',  '/data',  [patchSize,patchSize,3,inf], 'Chunksize',[patchSize patchSize 3 1], 'Datatype', 'single');
-h5create('DataTest.h5',  '/label', [patchSize,patchSize,3,inf], 'Chunksize',[patchSize patchSize 3 1], 'Datatype', 'single');
 
-% Start data creation
-randn('seed', 0);
-
-cntTrain = 0; % train patch number
-cntTest = 0; %  test patch number
-cnt_ = 0;
-for i=1:length(names)
-    % get file name and image
-    fprintf('Processing: %s\n',['BM3D_images/' names{i} '.png']);
-    eval(['y = 255*double(im2double(imread(''BM3D_images/' names{i} '.png'')));']);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for cfg = 1:length(config)
+    path = config{cfg}.path;
+    fname = config{cfg}.fname;
+    sigma = config{cfg}.sigma;
+    patchSize = config{cfg}.patchSize;
+    chans = config{cfg}.chans;
+    onePatch = config{cfg}.onePatch;
+    shuffle = config{cfg}.shuffle;
     
-    % Add noise
-    z = y + (sigma)*randn(size(y));
-    z=max(min(z,255),0);
-    bet=f2(sigma,1);%ignore 
-    alpha=f2(sigma,2);%ignore
+    fprintf('Creating data for config: \n');
+    config{cfg}
+    %% Get images
+    clean = [];
     
-    % Steps through images and extracts patches non overlapping
-    for u=1:patchSize:size(y,1)
-        for v = 1:patchSize:size(y,2)
-            fprintf('%i %i %i\n',i,u,v);
-            d  = single(z(u:u+patchSize-1,  v:v+patchSize-1, :));
-            gt = single(y(u:u+patchSize-1,  v:v+patchSize-1, :));
-            
-            cnt_ = cnt_ + 1;
-            patchesD(:,:,:,cnt_) = d;
-            patchesL(:,:,:,cnt_) = gt;
-            
-            % Send to train or test. We dont want same images to be used
-            % for both
-            if i<5 
-                fname = 'DataTrain.h5';
-                cntTrain = cntTrain + 1;
-                cnt = cntTrain;
-            else
-                fname = 'DataTest.h5';
-                cntTest = cntTest + 1;
-                cnt = cntTest;
-            end
-            
-            h5write(fname, '/data',   d ,[1 1 1 cnt],[patchSize patchSize 3 1]);
-            h5write(fname, '/label', gt ,[1 1 1 cnt],[patchSize patchSize 3 1]);
-                        
-        end
+    d = dir([path '*.png']);
+    warning off;
+    h = waitbar(0,'Getting image patches');
+    for i=1:length(d)
+        file = [path d(i).name];
+        img = double(imread(file));
+        patches = createPatches(img,[patchSize patchSize], true, onePatch);
+        clean = cat(4,clean,patches);
+        imshow(img/255);
+        waitbar(i/length(d));
+        drawnow
     end
+    close(h)
+    warning on;
+    clean = single(clean);
+    numPatches = size(clean,4);
+    
+    %% Noisify
+    randn('seed', 0);
+    noisy = clean + sigma*randn(size(clean));
+    % noisy = double(uint8(noisy));
+    
+    %% Shuffle data
+    if shuffle
+        randn('seed', 0);
+        shuffle_idx = randperm(numPatches);
+        clean = clean(:,:,:,shuffle_idx);
+        noisy = noisy(:,:,:,shuffle_idx);
+    end
+    
+    %% Setup files
+    delete(fname)
+    h5create(fname, '/data',  [patchSize,patchSize,chans,inf], 'Chunksize',[patchSize patchSize chans 1], 'Datatype', 'single');
+    h5create(fname, '/label', [patchSize,patchSize,chans,inf], 'Chunksize',[patchSize patchSize chans 1], 'Datatype', 'single');
+    
+    h = waitbar(0,'Writing HDF5 files');
+    for i=1:numPatches
+        h5write(fname, '/data',  noisy(:,:,:,i) ,[1 1 1 i],[patchSize patchSize chans 1]);
+        h5write(fname, '/label', clean(:,:,:,i) ,[1 1 1 i],[patchSize patchSize chans 1]);
+        waitbar(i/numPatches);
+    end
+    close(h);
 end
-
-fprintf('train: %i, test: %i\n',cntTrain, cntTest);
-
-
-
-
-
 
 

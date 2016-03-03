@@ -14,7 +14,7 @@ caffe.reset_all()
 %modelName = 'aaron__iter_1.caffemodel';
 
 deployName = 'PBSolve_multi/PBSolve_multi_deploy.prototxt';
-modelName = 'PBSolve_multi/aaron__iter_2350.caffemodel';
+modelName = 'PBSolve_multi/aaron__iter_2000.caffemodel';
 
 trainORtest = 'test';
 
@@ -41,8 +41,8 @@ getBlob = @(net,name) net.blob_vec(net.name2blob_index(name)).get_data()
 %I_data = h5read('/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/Beltrami/DataTest.h5','/data');
 %I_label = h5read('/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/Beltrami/DataTest.h5','/label');
 
-I_data = h5read('DataTest256.h5','/data');
-I_label = h5read('DataTest256.h5','/label');
+I_data = h5read('data/DataTest256.h5','/data');
+I_label = h5read('data/DataTest256.h5','/label');
 
 
 sigma = 25;
@@ -50,13 +50,14 @@ sigma = 25;
 figure(1)
 warning off;
 n=68
+load('indmaps');
 A = load('NLD_results');
 B = load('BM3D_results');
 C = load('PB_25','psnr');
 tic;
 for i=1:n
-    y = I_label(:,:,:,i);
-    z = I_data(:,:,:,i);
+    y = I_label(:,:,:,indMap(i));
+    z = I_data(:,:,:,indMap(i));
     
     net.blobs('data').set_data(z);
     net.forward_prefilled();

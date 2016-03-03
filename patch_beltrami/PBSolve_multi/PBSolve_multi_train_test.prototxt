@@ -5,7 +5,7 @@ layer {
     top: "label"
     hdf5_data_param {
         source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTrain.txt"
-        batch_size: 16
+        batch_size: 8
         shuffle: 0
     }
     include {
