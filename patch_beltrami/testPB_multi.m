@@ -1,6 +1,6 @@
 
 %% Add paths
-addpath(genpath('/home/gipadmin/forks/caffe/matlab'))
+addpath(genpath('~/forks/twerdster/caffe/matlab'))
 
 %% Reset caffe
 caffe.set_mode_cpu()
@@ -8,7 +8,7 @@ caffe.reset_all()
 
 %% Setup network
 deployName = 'PBSolve_multi/PBSolve_multi_deploy.prototxt';
-modelName = 'PBSolve_multi/aaron__iter_10000.caffemodel';
+modelName = 'PBSolve_multi/aaron__iter_200.caffemodel';
 
 trainORtest = 'test';
 

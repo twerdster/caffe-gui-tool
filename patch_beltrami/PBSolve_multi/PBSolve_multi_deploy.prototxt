@@ -251,6 +251,29 @@ layer {
     }
 }
 layer {
+    name: "Iyg12"
+    type: "Eltwise"
+    top: "Iyg12"
+    bottom: "g12"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12"
+    bottom: "Ixg22"
+    bottom: "Iyg12"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
     name: "detG"
     type: "Eltwise"
     top: "detG"
@@ -274,6 +297,17 @@ layer {
     }
 }
 layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12"
+    bottom: "Ixg22_sub_Iyg12"
+    bottom: "gm05"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
     name: "Collector"
     type: "Convolution"
     top: "collector"
@@ -290,6 +324,48 @@ layer {
         pad_w: 0
         kernel_h: 1
         kernel_w: 1
+        stride: 1
+        weight_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+    }
+}
+layer {
+    name: "padDpx"
+    type: "Padding"
+    top: "padDpx"
+    bottom: "gm05_mul_Ixg22_sub_Iyg12"
+    padding_param {
+        pad_method: CONSTANT
+        pad_l: 3
+        pad_r: 3
+        pad_t: 3
+        pad_b: 3
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Dpx"
+    type: "Convolution"
+    top: "Dpx"
+    bottom: "padDpx"
+    param {
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 1
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 7
+        kernel_w: 7
         stride: 1
         weight_filler {
             type: "xavier"
@@ -354,82 +430,6 @@ layer {
     type: "Convolution"
     top: "Dpy"
     bottom: "padDpy"
-    param {
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 1
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 0
-        kernel_h: 7
-        kernel_w: 7
-        stride: 1
-        weight_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
-        }
-        bias_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
-        }
-    }
-}
-layer {
-    name: "Iyg12"
-    type: "Eltwise"
-    top: "Iyg12"
-    bottom: "g12"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Ixg22_sub_Iyg12"
-    type: "Eltwise"
-    top: "Ixg22_sub_Iyg12"
-    bottom: "Ixg22"
-    bottom: "Iyg12"
-    eltwise_param {
-        operation: SUM
-        coeff: 1.000000
-        coeff: -1.000000
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12"
-    bottom: "Ixg22_sub_Iyg12"
-    bottom: "gm05"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "padDpx"
-    type: "Padding"
-    top: "padDpx"
-    bottom: "gm05_mul_Ixg22_sub_Iyg12"
-    padding_param {
-        pad_method: CONSTANT
-        pad_l: 3
-        pad_r: 3
-        pad_t: 3
-        pad_b: 3
-        pad_value: 0.000000
-    }
-}
-layer {
-    name: "Dpx"
-    type: "Convolution"
-    top: "Dpx"
-    bottom: "padDpx"
     param {
         lr_mult: 1.000000
         decay_mult: 1.000000
@@ -2063,9 +2063,9 @@ layer {
     }
 }
 layer {
-    name: "padIy.004"
+    name: "padIx.004"
     type: "Padding"
-    top: "padIy0000"
+    top: "padIx0000"
     bottom: "finalOutput000"
     padding_param {
         pad_method: REPEAT
@@ -2077,9 +2077,9 @@ layer {
     }
 }
 layer {
-    name: "padIx.004"
+    name: "padIy.004"
     type: "Padding"
-    top: "padIx0000"
+    top: "padIy0000"
     bottom: "finalOutput000"
     padding_param {
         pad_method: REPEAT

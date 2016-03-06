@@ -300,7 +300,7 @@ def solver_template(node):
 
 
 
-    string = ''' \
+    string = '''\
 net: "%s"
 test_iter: %i
 test_interval: %i
@@ -325,8 +325,8 @@ solver_type: %s
 %s
 debug_info: %i
 snapshot_after_train: %i
-''' % (net_path, node.test_iter, node.test_interval, node.test_compute_loss, node.test_initialization, node.base_lr, node.display, node.average_loss, node.max_iter,
-       node.iter_size, node.lr_policy, lr_string, node.momentum, node.weight_decay, node.regularization_type, node.snapshot, node.snapshot_prefix, node.snapshot_diff,
+''' % (bpy.path.abspath(net_path), node.test_iter, node.test_interval, node.test_compute_loss, node.test_initialization, node.base_lr, node.display, node.average_loss, node.max_iter,
+       node.iter_size, node.lr_policy, lr_string, node.momentum, node.weight_decay, node.regularization_type, node.snapshot, bpy.path.abspath(node.snapshot_prefix), node.snapshot_diff,
        node.solver_mode, random_seed_string, node.solver_type, delta_string, node.debug_info, node.snapshot_after_train)
     return "\n".join(filter(lambda x: x.strip(), string.splitlines())) + "\n"
 
@@ -521,19 +521,19 @@ class Solve(bpy.types.Operator):
                 node.n_type = node.db_type
 
                 if node.db_type in ('LMDB', 'LEVELDB'):
-                    train_params = [data_param_template(node, node.train_path, node.train_batch_size)]
-                    test_params = [data_param_template(node, node.test_path, node.test_batch_size)]
+                    train_params = [data_param_template(node, bpy.path.abspath(node.train_path), node.train_batch_size)]
+                    test_params = [data_param_template(node, bpy.path.abspath(node.test_path), node.test_batch_size)]
                     node.n_type = 'Data'
                     train_params.append(transform_param)
                     test_params.append(transform_param)
                 elif node.db_type == 'ImageData':
-                    train_params = [image_data_param_template(node, node.train_data, node.train_batch_size)]
-                    test_params = [image_data_param_template(node, node.test_data, node.test_batch_size)]
+                    train_params = [image_data_param_template(node, bpy.path.abspath(node.train_data), node.train_batch_size)]
+                    test_params = [image_data_param_template(node, bpy.path.abspath(node.test_data), node.test_batch_size)]
                     train_params.append(transform_param)
                     test_params.append(transform_param)
                 elif node.db_type == 'HDF5Data':
-                    train_params = [hdf5_data_template(node, node.train_data, node.train_batch_size)]
-                    test_params = [hdf5_data_template(node, node.test_data, node.test_batch_size)]
+                    train_params = [hdf5_data_template(node, bpy.path.abspath(node.train_data), node.train_batch_size)]
+                    test_params = [hdf5_data_template(node, bpy.path.abspath(node.test_data), node.test_batch_size)]
                 
                 node.include_in = "TRAIN"
                 train_string = layer_template(node, tops, bottoms, train_params)
@@ -615,7 +615,7 @@ class Solve(bpy.types.Operator):
                 is_deploy = False
             elif node.bl_idname == 'SolverNodeType':
                 solverstring = solver_template(node)
-                scriptstring = scripttemplate(node.caffe_exec, node.config_path, node.solvername, node.gpus,
+                scriptstring = scripttemplate(bpy.path.abspath(node.caffe_exec), bpy.path.abspath(node.config_path), node.solvername, node.gpus,
                                             solver=node.solver_mode)
                 configpath = node.config_path
                 solvername = node.solvername
@@ -638,7 +638,7 @@ class Solve(bpy.types.Operator):
         solution = ''.join(strings)
         dsolution = ''.join(dstrings)
     
-        os.chdir(configpath)
+        os.chdir(bpy.path.abspath(configpath))
         ttfile = open('%s_train_test.prototxt' % solvername, mode='w')
         ttfile.write(solution)
         ttfile.close()

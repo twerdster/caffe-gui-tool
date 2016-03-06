@@ -1,4 +1,4 @@
- net: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/PBSolve_multi_train_test.prototxt"
+net: "/home/gipuser/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/PBSolve_multi_train_test.prototxt"
 test_iter: 900
 test_interval: 200
 test_compute_loss: 1
@@ -6,16 +6,16 @@ test_initialization: 0
 base_lr: 0.0000000100
 display: 5
 average_loss: 1
-max_iter: 10000
+max_iter: 16000
 iter_size: 1
 lr_policy: "step"
 gamma: 0.10000
-stepsize: 2000
+stepsize: 4000
 momentum: 0.8999999762
 weight_decay: 0.0000500000
 regularization_type: "L2"
-snapshot: 50
-snapshot_prefix: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/aaron_"
+snapshot: 100
+snapshot_prefix: "/home/gipuser/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/aaron_"
 snapshot_diff: 0
 solver_mode: GPU
 solver_type: SGD
