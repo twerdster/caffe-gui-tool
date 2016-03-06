@@ -638,7 +638,7 @@ class Solve(bpy.types.Operator):
         solution = ''.join(strings)
         dsolution = ''.join(dstrings)
     
-        os.chdir(configpath)
+        os.chdir(bpy.path.abspath(configpath))
         ttfile = open('%s_train_test.prototxt' % solvername, mode='w')
         ttfile.write(solution)
         ttfile.close()
