@@ -4,7 +4,7 @@ layer {
     top: "data"
     top: "label"
     hdf5_data_param {
-        source: "/home/gipuser/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTrain.txt"
+        source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTrain.txt"
         batch_size: 8
         shuffle: 0
     }
@@ -18,7 +18,7 @@ layer {
     top: "data"
     top: "label"
     hdf5_data_param {
-        source: "/home/gipuser/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTest.txt"
+        source: "/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/DataTest.txt"
         batch_size: 4
         shuffle: 0
     }
@@ -38,6 +38,34 @@ layer {
         pad_t: 3
         pad_b: 3
         pad_value: 0.000000
+    }
+}
+layer {
+    name: "Iy"
+    type: "Convolution"
+    top: "Iy"
+    bottom: "padIy"
+    param {
+        lr_mult: 1.000000
+        decay_mult: 1.000000
+    }
+    convolution_param {
+        num_output: 24
+        bias_term: 0
+        group: 1
+        pad_h: 0
+        pad_w: 0
+        kernel_h: 7
+        kernel_w: 7
+        stride: 1
+        weight_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
+        bias_filler {
+            type: "xavier"
+            variance_norm: FAN_IN
+        }
     }
 }
 layer {
@@ -104,7 +132,7 @@ layer {
         decay_mult: 1.000000
     }
     param {
-        name: "shrb"
+        name: "gshrb"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -122,34 +150,6 @@ layer {
         bias_filler {
             type: "constant"
             value: 1.000000
-        }
-    }
-}
-layer {
-    name: "Iy"
-    type: "Convolution"
-    top: "Iy"
-    bottom: "padIy"
-    param {
-        lr_mult: 1.000000
-        decay_mult: 1.000000
-    }
-    convolution_param {
-        num_output: 24
-        bias_term: 0
-        group: 1
-        pad_h: 0
-        pad_w: 0
-        kernel_h: 7
-        kernel_w: 7
-        stride: 1
-        weight_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
-        }
-        bias_filler {
-            type: "xavier"
-            variance_norm: FAN_IN
         }
     }
 }
@@ -279,29 +279,6 @@ layer {
     }
 }
 layer {
-    name: "Iyg12"
-    type: "Eltwise"
-    top: "Iyg12"
-    bottom: "g12"
-    bottom: "Iy"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
-    }
-}
-layer {
-    name: "Ixg22_sub_Iyg12"
-    type: "Eltwise"
-    top: "Ixg22_sub_Iyg12"
-    bottom: "Ixg22"
-    bottom: "Iyg12"
-    eltwise_param {
-        operation: SUM
-        coeff: 1.000000
-        coeff: -1.000000
-    }
-}
-layer {
     name: "detG"
     type: "Eltwise"
     top: "detG"
@@ -322,17 +299,6 @@ layer {
         power: -0.500000
         scale: 1.000000
         shift: 0.000000
-    }
-}
-layer {
-    name: "gm05_mul_Ixg22_sub_Iyg12"
-    type: "Eltwise"
-    top: "gm05_mul_Ixg22_sub_Iyg12"
-    bottom: "Ixg22_sub_Iyg12"
-    bottom: "gm05"
-    eltwise_param {
-        operation: PROD
-        stable_prod_grad: 1
     }
 }
 layer {
@@ -361,6 +327,40 @@ layer {
             type: "xavier"
             variance_norm: FAN_IN
         }
+    }
+}
+layer {
+    name: "Iyg12"
+    type: "Eltwise"
+    top: "Iyg12"
+    bottom: "g12"
+    bottom: "Iy"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
+    }
+}
+layer {
+    name: "Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "Ixg22_sub_Iyg12"
+    bottom: "Ixg22"
+    bottom: "Iyg12"
+    eltwise_param {
+        operation: SUM
+        coeff: 1.000000
+        coeff: -1.000000
+    }
+}
+layer {
+    name: "gm05_mul_Ixg22_sub_Iyg12"
+    type: "Eltwise"
+    top: "gm05_mul_Ixg22_sub_Iyg12"
+    bottom: "Ixg22_sub_Iyg12"
+    bottom: "gm05"
+    eltwise_param {
+        operation: PROD
+        stable_prod_grad: 1
     }
 }
 layer {
@@ -445,7 +445,7 @@ layer {
     top: "padDpy"
     bottom: "gm05_mul_Iyg11_sub_Ixg12"
     padding_param {
-        pad_method: REPEAT
+        pad_method: CONSTANT
         pad_l: 3
         pad_r: 3
         pad_t: 3
@@ -541,6 +541,14 @@ layer {
         coeff: 1000.000000
         coeff: 1.000000
     }
+}
+layer {
+    name: "MRE"
+    type: "EuclideanLoss"
+    top: "MRE"
+    bottom: "finalOutput"
+    bottom: "label"
+    loss_weight: 1.000000
 }
 layer {
     name: "padIy.001"
@@ -785,7 +793,7 @@ layer {
         decay_mult: 1.000000
     }
     param {
-        name: "shrb0"
+        name: "gshrb0"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -880,7 +888,7 @@ layer {
     top: "padDpy0"
     bottom: "gm05_mul_Iyg11_sub_Ixg120"
     padding_param {
-        pad_method: REPEAT
+        pad_method: CONSTANT
         pad_l: 3
         pad_r: 3
         pad_t: 3
@@ -1057,6 +1065,14 @@ layer {
         coeff: 1000.000000
         coeff: 1.000000
     }
+}
+layer {
+    name: "MRE.001"
+    type: "EuclideanLoss"
+    top: "MRE0"
+    bottom: "finalOutput0"
+    bottom: "label"
+    loss_weight: 2.000000
 }
 layer {
     name: "padIx.002"
@@ -1301,7 +1317,7 @@ layer {
         decay_mult: 1.000000
     }
     param {
-        name: "shrb00"
+        name: "gshrb00"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -1396,7 +1412,7 @@ layer {
     top: "padDpy00"
     bottom: "gm05_mul_Iyg11_sub_Ixg1200"
     padding_param {
-        pad_method: REPEAT
+        pad_method: CONSTANT
         pad_l: 3
         pad_r: 3
         pad_t: 3
@@ -1575,6 +1591,14 @@ layer {
     }
 }
 layer {
+    name: "MRE.002"
+    type: "EuclideanLoss"
+    top: "MRE00"
+    bottom: "finalOutput00"
+    bottom: "label"
+    loss_weight: 4.000000
+}
+layer {
     name: "padIy.003"
     type: "Padding"
     top: "padIy000"
@@ -1589,24 +1613,10 @@ layer {
     }
 }
 layer {
-    name: "padIx.003"
-    type: "Padding"
-    top: "padIx000"
-    bottom: "finalOutput00"
-    padding_param {
-        pad_method: REPEAT
-        pad_l: 3
-        pad_r: 3
-        pad_t: 3
-        pad_b: 3
-        pad_value: 0.000000
-    }
-}
-layer {
-    name: "Ix.003"
+    name: "Iy.003"
     type: "Convolution"
-    top: "Ix000"
-    bottom: "padIx000"
+    top: "Iy000"
+    bottom: "padIy000"
     param {
         lr_mult: 1.000000
         decay_mult: 1.000000
@@ -1631,10 +1641,24 @@ layer {
     }
 }
 layer {
-    name: "Iy.003"
+    name: "padIx.003"
+    type: "Padding"
+    top: "padIx000"
+    bottom: "finalOutput00"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 3
+        pad_r: 3
+        pad_t: 3
+        pad_b: 3
+        pad_value: 0.000000
+    }
+}
+layer {
+    name: "Ix.003"
     type: "Convolution"
-    top: "Iy000"
-    bottom: "padIy000"
+    top: "Ix000"
+    bottom: "padIx000"
     param {
         lr_mult: 1.000000
         decay_mult: 1.000000
@@ -1817,7 +1841,7 @@ layer {
         decay_mult: 1.000000
     }
     param {
-        name: "shrb000"
+        name: "gshrb000"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -1912,7 +1936,7 @@ layer {
     top: "padDpy000"
     bottom: "gm05_mul_Iyg11_sub_Ixg12000"
     padding_param {
-        pad_method: REPEAT
+        pad_method: CONSTANT
         pad_l: 3
         pad_r: 3
         pad_t: 3
@@ -2091,23 +2115,17 @@ layer {
     }
 }
 layer {
+    name: "MRE.003"
+    type: "EuclideanLoss"
+    top: "MRE000"
+    bottom: "finalOutput000"
+    bottom: "label"
+    loss_weight: 8.000000
+}
+layer {
     name: "padIx.004"
     type: "Padding"
     top: "padIx0000"
-    bottom: "finalOutput000"
-    padding_param {
-        pad_method: REPEAT
-        pad_l: 3
-        pad_r: 3
-        pad_t: 3
-        pad_b: 3
-        pad_value: 0.000000
-    }
-}
-layer {
-    name: "padIy.004"
-    type: "Padding"
-    top: "padIy0000"
     bottom: "finalOutput000"
     padding_param {
         pad_method: REPEAT
@@ -2144,6 +2162,20 @@ layer {
             type: "xavier"
             variance_norm: FAN_IN
         }
+    }
+}
+layer {
+    name: "padIy.004"
+    type: "Padding"
+    top: "padIy0000"
+    bottom: "finalOutput000"
+    padding_param {
+        pad_method: REPEAT
+        pad_l: 3
+        pad_r: 3
+        pad_t: 3
+        pad_b: 3
+        pad_value: 0.000000
     }
 }
 layer {
@@ -2333,7 +2365,7 @@ layer {
         decay_mult: 1.000000
     }
     param {
-        name: "shrb0000"
+        name: "gshrb0000"
         lr_mult: 1.000000
         decay_mult: 1.000000
     }
@@ -2456,7 +2488,7 @@ layer {
     top: "padDpy0000"
     bottom: "gm05_mul_Iyg11_sub_Ixg120000"
     padding_param {
-        pad_method: REPEAT
+        pad_method: CONSTANT
         pad_l: 3
         pad_r: 3
         pad_t: 3
@@ -2607,10 +2639,10 @@ layer {
     }
 }
 layer {
-    name: "MRE"
+    name: "MRE.004"
     type: "EuclideanLoss"
-    top: "MRE"
+    top: "MRE0000"
     bottom: "finalOutput0000"
     bottom: "label"
-    loss_weight: 1.000000
+    loss_weight: 16.000000
 }

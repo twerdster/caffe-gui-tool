@@ -2,7 +2,7 @@
 #TODO: Update HDF5output to have test and train output
 
 
-__author__ = 'hugh'
+__author__ = 'gip'
 bl_info = {
     "name": "Create Caffe solution",
     "category": "Object",
@@ -560,7 +560,7 @@ class Solve(bpy.types.Operator):
             elif node.bl_idname == 'AbsValNodeType':
                 dstring = string
             elif node.bl_idname == 'SilenceNodeType':
-                dstring = stringdstring
+                dstring = string
             elif node.bl_idname == 'LRNNodeType':
                 special_params.append(LRNtemplate(node))
             elif node.bl_idname == 'AcNodeType':

@@ -1,2 +1,2 @@
 #!/usr/bin/env sh 
- '/home/gipuser/forks/twerdster/caffe-gui-tool/patch_beltrami/../../caffe/build/tools/caffe' train --solver='/home/gipuser/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/PBSolve_multi_solver.prototxt' --gpu=0
+ '/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/../../caffe/build/tools/caffe' train --solver='/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/PBSolve_multi_solver.prototxt' --gpu=0 -weights '/home/gipadmin/forks/twerdster/caffe-gui-tool/patch_beltrami/PBSolve_multi/aaron__iter_10000.caffemodel'
