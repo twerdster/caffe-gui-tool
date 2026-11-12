@@ -1,0 +1,3 @@
+# Preserve byte-exact vendored schema/license, including upstream whitespace.
+tests/schema/caffe.proto -whitespace
+LICENSES/Caffe-BSD.txt -whitespace

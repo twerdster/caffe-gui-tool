@@ -1,0 +1,224 @@
+{
+  "status": "passed",
+  "schema_validation": true,
+  "suites": {
+    "blender_test": {
+      "exit_code": 0,
+      "seconds": 7.124,
+      "results": {
+        "blender": "5.1.2",
+        "checks": [
+          "editable typed RNA properties and inherited shared-weight settings",
+          "all recovered graphs roundtrip with exact properties, layouts, sockets and links",
+          "Caffe train/test/deploy/solver and quoted shell-script export; graph unchanged",
+          "cycle rejected",
+          "unconnected input rejected",
+          "unknown node import rejected without partial data",
+          "all 27 processing/loss nodes export independently; tiny learning rate preserved",
+          "every generated prototxt parsed by protoc against original Caffe fork schema",
+          "secondary deployment data outputs are declared; unsupported schedules fail without writes",
+          "quoted paths and shared names export with correct protobuf string values",
+          "duplicate links, invalid socket indices, missing node references and output-count mismatches rejected without partial imports",
+          "clean disable and re-enable"
+        ],
+        "examples": [
+          {
+            "caffe_exported": true,
+            "links": 16,
+            "name": "operator_demo.json",
+            "nodes": 13
+          },
+          {
+            "caffe_exported": true,
+            "links": 42,
+            "name": "patch_beltrami_base.json",
+            "nodes": 31
+          },
+          {
+            "caffe_exported": true,
+            "links": 442,
+            "name": "patch_beltrami_bw.json",
+            "nodes": 303
+          },
+          {
+            "caffe_exported": true,
+            "links": 235,
+            "name": "patch_beltrami_multifilter.json",
+            "nodes": 162
+          },
+          {
+            "caffe_exported": true,
+            "links": 137,
+            "name": "patch_beltrami_rgb.json",
+            "nodes": 96
+          },
+          {
+            "caffe_exported": true,
+            "links": 43,
+            "name": "patch_beltrami_single.json",
+            "nodes": 30
+          },
+          {
+            "caffe_exported": true,
+            "links": 51,
+            "name": "patch_beltrami_single_rgb.json",
+            "nodes": 38
+          }
+        ],
+        "node_types": 29
+      }
+    },
+    "blender_graph_regressions": {
+      "exit_code": 0,
+      "seconds": 1.452,
+      "results": {
+        "blender": "5.1.2",
+        "checks": [
+          "all six recovered research graphs and demo roundtrip exactly; validation does not mutate them",
+          "malformed documents, typed and bounded RNA properties, UTF-8/name limits and links fail transactionally",
+          "nested frame layouts roundtrip; missing/non-frame parents and parent cycles rejected",
+          "duplicate JSON keys, NaN/Infinity, invalid Unicode, excessive nesting and oversized files rejected; valid Unicode file paths roundtrip and interrupted saves preserve the prior graph",
+          "dynamic socket edits remain synchronized and bounded; RNA path fields support Blender relative paths",
+          "deterministic dependency ordering handles fan-out and 300-layer chain; cycles, live nonfinite values, multiple live input links and empty graphs rejected"
+        ],
+        "rejected_documents": 175,
+        "suite": "graph_regressions"
+      }
+    },
+    "blender_export_regressions": {
+      "exit_code": 0,
+      "seconds": 1.84,
+      "results": {
+        "blender": "5.1.2",
+        "checks": [
+          "four data backends render twice identically, with both phases, executable quoted scripts, and no graph/RNA mutation",
+          "TRAIN/TEST layers and deployment exclusions respect actual dependencies; failed re-exports preserve previous files",
+          "invalid dropout, exponential/log bases, convolution groups, fillers, slices, coefficients, parameter types, solver schedules/names fail before writing",
+          "shared PReLU exports exactly one learnable parameter",
+          "custom weights parse as finite numeric BlobProto data with matching shape/count, without layer-field injection",
+          "four hash-pinned bundled derivative repairs trim only symmetric zero borders, preserve coefficients/assets, and disclose changes in exported comments",
+          "staged write/replacement failures preserve complete prior exports; persistent rollback failures retain recovery evidence",
+          "export refuses symlink and non-regular targets without touching external files",
+          "all Blender-relative input, mean, output, snapshot, executable and export paths resolve against the saved project"
+        ]
+      }
+    },
+    "blender_integration": {
+      "exit_code": 0,
+      "seconds": 0.867,
+      "results": {
+        "blender": "5.1.2",
+        "checks": [
+          "legacy module registration and exporter shortcut",
+          "all five original blend files load with known node types and exact JSON roundtrip",
+          "imported graph survives blend save and reopen"
+        ],
+        "legacy_files": [
+          {
+            "links": 42,
+            "name": "PatchBeltrami-aaron-base.blend",
+            "nodes": 31
+          },
+          {
+            "links": 137,
+            "name": "PatchBeltrami-aaron.blend",
+            "nodes": 96
+          },
+          {
+            "links": 442,
+            "name": "PatchBeltrami-aaron_BW.blend",
+            "nodes": 303
+          },
+          {
+            "links": 43,
+            "name": "PatchBeltrami-aaron_BW_single.blend",
+            "nodes": 30
+          },
+          {
+            "links": 137,
+            "name": "PatchBeltrami-aaron_RGB.blend",
+            "nodes": 96
+          }
+        ]
+      }
+    },
+    "build_addon": {
+      "exit_code": 0,
+      "seconds": 0.044
+    },
+    "build_reproducibility": {
+      "exit_code": 0,
+      "seconds": 0.041
+    },
+    "blender_install": {
+      "exit_code": 0,
+      "seconds": 0.525,
+      "results": {
+        "blender": "5.1.2",
+        "checks": [
+          "actual ZIP installs, enables, loads example and disables"
+        ],
+        "graph": {
+          "nodes": 12,
+          "links": 16,
+          "blobs": 13
+        }
+      }
+    },
+    "blender_runtime_fixtures": {
+      "exit_code": 0,
+      "seconds": 0.517
+    },
+    "runtime": {
+      "exit_code": 0,
+      "seconds": 2.414
+    }
+  },
+  "package": {
+    "bytes": 83437,
+    "sha256": "04c4b50b81e294465462e244882f3df92f4840ac20af6fc832a58058e20743d0",
+    "reproducible": true
+  },
+  "runtime": {
+    "opencv": "4.14.0",
+    "numpy": "2.5.4",
+    "blender": "5.1.2",
+    "synthetic_cases": 23,
+    "public_image_cases": 487,
+    "layer_comparisons": 602,
+    "rejected_grouped_geometries": [
+      [
+        1,
+        3,
+        1,
+        9
+      ],
+      [
+        1,
+        3,
+        11,
+        1
+      ],
+      [
+        1,
+        3,
+        2,
+        13
+      ],
+      [
+        1,
+        3,
+        7,
+        2
+      ]
+    ],
+    "repeat_identical": 510,
+    "max_absolute_error": 7.152557373046875e-06,
+    "worst_case": "patch_beltrami/Beltrami/400_IMGS/test_194.png:product",
+    "trained": false,
+    "reference": "Independent NumPy grouped correlation and arithmetic"
+  },
+  "host_platform": "macOS Apple silicon",
+  "external_python": "3.13.11",
+  "runtime_pytest_passed": 527
+}

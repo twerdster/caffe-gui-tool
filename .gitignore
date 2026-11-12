@@ -16,3 +16,12 @@ DataTest256.h5
 
 # Temp files
 *.*~
+
+# Local environments, builds and verification artifacts
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+dist/
+artifacts/
+*.crash.txt

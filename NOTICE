@@ -1,0 +1,37 @@
+Blender Neural Composer
+
+Historical work: Caffe-GUI-Tool by H. Tomkins, extended by Aaron Wetzler and
+Rom Hershkovitz for neural differential operators and Patch-Beltrami research.
+Public source: https://github.com/twerdster/caffe-gui-tool
+Upstream: https://github.com/hctomkins/caffe-gui-tool
+Public source revision consulted: 2de937d9119d6d5ca467fa184c51fc56c5f8f400
+
+neural_operator_blender/caffe_nodes.py and caffe_export.py are modernized
+adaptations of the historical project. Historical graph examples and fixed
+operator coefficient files in neural_operator_blender/examples/ retain the
+original public-domain dedication (Unlicense), reproduced in LICENSES/Unlicense.txt.
+Four fixed derivative coefficient files absent from the recovered working tree
+(Dmx, Dmy, Dpx, Dpy.prototxt) were recovered from the public revision above.
+The six original graph filenames, SHA-256 checksums and recovered node/link
+counts are recorded in docs/recovery.json. Only sanitized graph data is
+redistributed; original thesis manuscripts and private backup metadata are
+not part of this repository.
+
+New interface, interchange, tests, packaging and documentation are available
+under the MIT license in LICENSE. The compact untrained operator_demo.json
+is also MIT licensed. Blender is a separate application and is not bundled.
+
+This repository incorporates Blender Neural Composer version 1.0.0, revision
+76154fe73e305cc6831b296dd071cdcd46fc867d, from
+https://github.com/twerdster/blender-neural-composer . Its modern interface,
+interchange, tests and tooling retain the MIT license in LICENSES/MIT.txt.
+The adaptation of the original Caffe code and recovered coefficient/graph
+assets retains the Unlicense, as above. Subsequent modern validation,
+compatibility, packaging and optional CPU runtime tooling is also MIT licensed.
+The root LICENSE remains the original Unlicense dedication.
+
+The unmodified historical research Caffe schema under tests/schema/ is from
+https://github.com/twerdster/caffe , revision
+a6083b3ab99a85fc3bf55a9ff84251861d7c6b63. Its third-party BSD license is retained
+in LICENSES/Caffe-BSD.txt. It is used only for export validation and is not
+bundled in the installable Blender ZIP.
