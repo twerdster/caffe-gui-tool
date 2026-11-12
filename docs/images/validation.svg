@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="357" viewBox="0 0 1200 357" role="img" aria-labelledby="title desc">
-<title id="title">Measured validation coverage</title><desc id="desc">Per supported-version run: 527 CPU tests; 487 public images and 23 synthetic cases; 510 exact repeat checks; 29 editable node types and five original Blender files. Blender 5.1.2 and 5.2.4 passed on macOS and Linux CI. This does not measure denoising quality.</desc>
+<title id="title">CPU inference test coverage</title><desc id="desc">Per recorded OpenCV 4 CPU run: 527 tests; 487 repository images and 23 synthetic inputs; 602 NumPy comparisons and 510 exact repeat checks. This does not measure denoising quality or training.</desc>
 <style>text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.mono{font-family:"SFMono-Regular",Consolas,monospace}</style>
 <rect x="0" y="0" width="1200" height="357" rx="24" fill="#101c2a" stroke="none"/>
-<text x="36" y="42" font-size="13" fill="#9bd6bc" font-weight="700" letter-spacing="2">TESTED BEYOND THE CANVAS</text>
-<text x="36" y="87" font-size="34" fill="#f0f6fa" font-weight="700" >Real exports. Independent checks.</text>
-<text x="36" y="117" font-size="17" fill="#aab9c9" font-weight="400" >Blender 5.1.2 + 5.2.4 LTS  ·  macOS + Linux CI</text>
+<text x="36" y="42" font-size="13" fill="#9bd6bc" font-weight="700" letter-spacing="2">VALIDATION</text>
+<text x="36" y="87" font-size="34" fill="#f0f6fa" font-weight="700" >CPU inference tests</text>
+<text x="36" y="117" font-size="17" fill="#aab9c9" font-weight="400" >OpenCV 4 CPU  ·  Blender-exported standard-layer chain  ·  deterministic weights</text>
 <rect x="36" y="146" width="270" height="139" rx="15" fill="#18283b" stroke="#2c3d50"/>
 <text x="54" y="201" font-size="47" fill="#c1f0d8" font-weight="700" >527</text>
 <text x="54" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >CPU tests per run</text>
-<text x="54" y="260" font-size="13" fill="#aab9c9" font-weight="400" >Mathematics + failure cases</text>
+<text x="54" y="260" font-size="13" fill="#aab9c9" font-weight="400" >510 inputs; 17 guard/CLI/failure</text>
 <rect x="322" y="146" width="270" height="139" rx="15" fill="#18283b" stroke="#2c3d50"/>
 <text x="340" y="201" font-size="43" fill="#c1f0d8" font-weight="700" >487 + 23</text>
-<text x="340" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >images + synthetic cases</text>
-<text x="340" y="260" font-size="13" fill="#aab9c9" font-weight="400" >Photographs, patterns and edge cases</text>
+<text x="340" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >images + synthetic inputs</text>
+<text x="340" y="260" font-size="13" fill="#aab9c9" font-weight="400" >Separate NumPy reference</text>
 <rect x="608" y="146" width="270" height="139" rx="15" fill="#18283b" stroke="#2c3d50"/>
-<text x="626" y="201" font-size="47" fill="#c1f0d8" font-weight="700" >510</text>
-<text x="626" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >identical repeat checks</text>
-<text x="626" y="260" font-size="13" fill="#aab9c9" font-weight="400" >Same input. Same prediction.</text>
+<text x="626" y="201" font-size="47" fill="#c1f0d8" font-weight="700" >602</text>
+<text x="626" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >NumPy comparisons</text>
+<text x="626" y="260" font-size="13" fill="#aab9c9" font-weight="400" >115 layer outputs + 487 final</text>
 <rect x="894" y="146" width="270" height="139" rx="15" fill="#18283b" stroke="#2c3d50"/>
-<text x="912" y="201" font-size="47" fill="#c1f0d8" font-weight="700" >29</text>
-<text x="912" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >editable node types</text>
-<text x="912" y="260" font-size="13" fill="#aab9c9" font-weight="400" >Plus all 5 original Blender files</text>
-<text x="36" y="324" font-size="16" fill="#aab9c9" font-weight="400" >Operator tests use chosen coefficients. These are not denoising-quality benchmarks.</text>
+<text x="912" y="201" font-size="47" fill="#c1f0d8" font-weight="700" >510</text>
+<text x="912" y="233" font-size="17" fill="#f0f6fa" font-weight="600" >exact repeat checks</text>
+<text x="912" y="260" font-size="13" fill="#aab9c9" font-weight="400" >Exact equality for all input cases</text>
+<text x="36" y="324" font-size="16" fill="#aab9c9" font-weight="400" >Standard-layer tests use deterministic weights; no training or denoising-quality evaluation.</text>
 </svg>

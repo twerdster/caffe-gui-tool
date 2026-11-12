@@ -24,11 +24,16 @@ tests. Read README.md, docs/report-analysis.md, docs/VALIDATION.md and NOTICE.
 - Generated logs, fixtures and results stay in ignored `artifacts/` and dist/.
   All original `.blend`, MATLAB, image, prototxt and checkpoint assets are
   preserved; no large new datasets or training runs were created.
-- The README is a visual introduction with a real Blender screenshot,
-  workflow diagram and measured-test cards. Detailed commands live in
+- The README is a technical overview with a real Blender screenshot,
+  graph/export schematic and CPU test summary. Detailed commands live in
   docs/USAGE.md. Regenerate the SVGs with tools/build_readme_visuals.py;
   image provenance is documented in docs/images/README.md. The add-on ZIP
   includes the supporting docs and these three explicitly allowed visuals.
+- The README and diagram copy use a plain maintainer voice. Claude Code
+  reviewed the wording: slogans and the feature-sales table were removed,
+  structural validation is distinguished from shape inference, and numerical
+  coverage names the tested operator chain and separates 510 inputs from
+  the 527-test total. Review artifacts stay under ignored artifacts/.
 
 ## Research boundaries
 
@@ -76,4 +81,4 @@ an old report from certifying skipped tests when reusing an output directory.
 
 Visual documentation package verification passes actual ZIP installation in
 Blender 5.1.2 and 5.2.4 LTS, including all README images. The current archive
-is 273049 bytes; SHA-256 be91b366e5726e61f9fe440e9bb92c931805d282462a88fd78f46e902f3876fb.
+is 273050 bytes; SHA-256 34e48b32b0b26a395996963cc71315229fd202a0d7a581b8ca5591b23fd61808.

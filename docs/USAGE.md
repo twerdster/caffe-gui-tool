@@ -86,7 +86,7 @@ uses private temporary Blender settings.
 The suite covers all 29 node types, all bundled JSON examples, original
 `.blend` files, persistence, malformed imports, phase handling, failed exports,
 repeatability and the actual ZIP. Numerical tests execute Blender-exported
-standard-layer networks in OpenCV against an independent NumPy reference,
+standard-layer networks in OpenCV against a separate NumPy reference,
 using procedural data and the public images already present in this repository.
 They do not establish training convergence or reproduce thesis denoising scores.
 

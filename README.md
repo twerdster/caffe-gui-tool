@@ -1,92 +1,95 @@
 # Caffe GUI Tool
 
-**See the network. Change the experiment. Keep the mathematics in view.**
+A Blender add-on for editing Caffe neural networks as node graphs. Set layer
+parameters, connect inputs and outputs, configure shared weights, and export
+Caffe network and solver definitions.
 
-A visual neural network editor inside Blender. Connect nodes, choose shared
-weights, and export Caffe networks.
+The tool was extended for Patch-Beltrami denoising research. Each network stage
+contains derivative filters, metric calculations, flux, divergence and an image
+update. The node editor made it easier to change this structure, repeat stages,
+and control which parameters were shared.
 
-![Editable operator graph with expanded filter settings in Blender 5.2.4 LTS](docs/images/composer-overview.png)
+![Compact operator graph with convolution settings expanded in Blender 5.2.4 LTS](docs/images/composer-overview.png)
 
-*The updated editor in Blender 5.2.4 LTS. Expand a node to edit its filters; follow the colored branches through the computation. This compact example is illustrative and untrained.*
+*The compact example in Blender 5.2.4 LTS. Its weights are untrained.*
 
-## An old research tool, ready to explore again
+## Current version
 
-Explore **Patch-Beltrami image denoising**: turn a geometric process into a
-trainable network, then experiment with its filters, connections and stages.
+Version 2.0.0 incorporates [Blender Neural Composer](https://github.com/twerdster/blender-neural-composer).
+It updates Blender property registration and the node editor interface while
+preserving the node identifiers used by the original `.blend` files.
 
-Version **2.0.0** brings that workflow to modern Blender, using
-[Blender Neural Composer](https://github.com/twerdster/blender-neural-composer)
-and preserving the original research files.
+- 29 node types, including convolution, pooling, elementwise operations, losses
+  and solver settings.
+- Graph storage in `.blend` files and portable JSON, including parameters,
+  connections and layout.
+- Structural validation for missing inputs, duplicate output names and cycles;
+  train/test phase dependencies are checked during export.
+- Caffe train/test, deployment and solver prototxt export, plus a training shell
+  script. Export writes are staged, with rollback on failure.
+- Five original `.blend` files, six recovered JSON graphs and a compact example.
 
-| You want to… | The updated tool helps you… |
-| --- | --- |
-| Understand a network | Follow its branches and edit any of 29 node types |
-| Try a different architecture | Reconnect stages and control shared weights |
-| Keep an experiment | Save it in a `.blend` file or portable graph JSON |
-| Export an experiment | Validate and export train/test, deployment and solver files |
-| Revisit the research | Open five original `.blend` files and six recovered graphs |
+## Installation
 
-## Try it in Blender
-
-Build the add-on from this checkout; no extra Python packages are needed:
+Build the ZIP from this checkout. The add-on needs no extra Python packages:
 
 ```sh
 python3 tools/build_addon.py
 ```
 
-1. In Blender, open **Edit → Preferences → Add-ons → Install from Disk…**
+1. In Blender, choose **Edit → Preferences → Add-ons → Install from Disk…**
    and select `dist/caffe-gui-tool-2.0.0.zip`.
-2. Enable **Caffe GUI Tool / Neural Operator Composer**. Disable an older
-   Caffe Nodes or Neural Operator Composer installation first.
-3. Open a Node Editor, choose **Neural Operator Composer**, and press **N**.
-   In the **Composer** sidebar, load an example and try **Validate Graph**.
+2. Disable any older Caffe Nodes or Neural Operator Composer installation, then
+   enable **Caffe GUI Tool / Neural Operator Composer**.
+3. Open a Node Editor, select **Neural Operator Composer**, and press **N**.
+   The **Composer** sidebar loads examples, validates graphs and exports files.
+   Add layers through **Add → Neural Operators**.
 
-Start with the compact example, then explore a recovered research graph.
-Expand nodes to edit parameters; use **Add → Neural Operators** to add your own.
+See [docs/USAGE.md](docs/USAGE.md) for data paths, export settings, CPU inference
+and test commands.
 
-[Installation, exporting, CPU inference and test commands →](docs/USAGE.md)
+![Graph editing, structural validation and Caffe export, with a schematic Beltrami update](docs/images/workflow.svg)
 
-## From an image to a geometric update
+## Validation
 
-The original idea connects image derivatives, a learned metric and a flow
-update into a stage that can be repeated. The editor makes those branches and
-shared parameters visible.
+The complete test suite passes on Blender **5.1.2** and **5.2.4 LTS**, on macOS
+Apple silicon and [Linux CI](https://github.com/twerdster/caffe-gui-tool/actions/workflows/validate.yml).
+Editor and export tests cover all 29 node types, graph round trips, original
+files, malformed imports, failed exports and installation from the ZIP.
 
-![Graph editing, validation and Caffe export, alongside the derivative, metric and flow stages](docs/images/workflow.svg)
+The CPU suite passes **527 tests**: 510 numerical cases using 487 repository
+images and 23 synthetic inputs, plus 17 failure-mode, CLI and guard tests.
+The numerical cases run an exported chain in OpenCV 4 on the CPU:
+grouped/depthwise convolution with bias, leaky ReLU, fractional Power, and
+Eltwise SUM and PROD. A separate NumPy implementation checks 602 results: five layer
+outputs for each synthetic input and one final output for each image. Repeated
+execution gives exactly equal outputs for all 510 inputs under the tested runtime.
 
-For the scientific story and the distinction between these experiments and
-the final thesis models, read [what the original work tried to achieve](docs/report-analysis.md).
+![CPU suite per run: 527 tests, 487 images and 23 synthetic inputs, 602 NumPy comparisons and 510 exact repeat checks](docs/images/validation.svg)
 
-## What we checked
+## Scope and limitations
 
-Tests exercise Blender, the installable ZIP, original research files, synthetic
-inputs and this repository's public photographs.
+The editor exports definitions; training runs separately. The CPU tests use
+deterministic test weights and do not evaluate training, gradients, convergence
+or denoising quality. Structural graph validation does not infer tensor shapes
+or establish numerical stability.
 
-![Validation summary: 29 node types, five original Blender files, 527 CPU tests, 487 public images, 23 synthetic cases and 510 identical repeat checks](docs/images/validation.svg)
+The historical `Padding` layer requires the [research Caffe fork](https://github.com/twerdster/caffe).
+The optional OpenCV 4 CPU runner does not support it. An intermediate 26-step
+checkpoint is retained here; final trained denoising models are maintained in
+[Deep Patch-Beltrami](https://github.com/twerdster/deep-patch-beltrami).
 
-**527 CPU tests per run**, using 487 photographs and 23 synthetic cases.
-Across 510 repeat checks, the same input produced exactly the same prediction.
+[Validation details](docs/VALIDATION.md) · [Research background](docs/report-analysis.md)
 
-The complete harness passed on **Blender 5.1.2 and 5.2.4 LTS**, on both
-**macOS Apple silicon and [Linux CI](https://github.com/twerdster/caffe-gui-tool/actions/runs/43260279151)**.
-Exported standard-layer networks were compared with independent NumPy calculations.
-[Read the measured results and limits →](docs/VALIDATION.md)
-
-> **Research boundary:** the compact demo is untrained. These checks establish
-> editor/export behavior and tested operator correctness; they do not establish
-> training convergence or denoising quality. Historical custom `Padding` requires
-> the [research Caffe fork](https://github.com/twerdster/caffe). Final trained
-> models are in [Deep Patch-Beltrami](https://github.com/twerdster/deep-patch-beltrami).
-
-## People and origins
+## Attribution and licenses
 
 Original node editor by [H. Tomkins](https://github.com/hctomkins/caffe-gui-tool),
-extended by **Aaron Wetzler and Rom Hershkovitz**. The visual designer appears
-in §4.5.2 and Figure 4.17 of Aaron Wetzler's *Topics in Computational Geometric
-Vision*, PhD thesis, Technion — Israel Institute of Technology, August 2017.
+extended by Aaron Wetzler and Rom Hershkovitz. The tool is described in §4.5.2
+and Figure 4.17 of Aaron Wetzler, *Topics in Computational Geometric Vision*,
+PhD thesis, Technion — Israel Institute of Technology, August 2017.
 
 Historical code, graphs and operator coefficients retain the [Unlicense](LICENSE).
 Modern interface, tests, packaging and runtime tooling use [MIT](LICENSES/MIT.txt).
 The test schema retains the [Caffe BSD license](LICENSES/Caffe-BSD.txt).
-Existing dataset images retain their original terms and are excluded from the
-add-on ZIP. See [NOTICE](NOTICE) for full attribution.
+Dataset images retain their original terms and are excluded from the add-on
+ZIP. See [NOTICE](NOTICE) for attribution.

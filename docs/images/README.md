@@ -7,10 +7,13 @@
   Blender process with private settings and temporary storage.
 - `workflow.svg` is an explanatory schematic, not a screenshot or measured
   denoising result. Its mathematical stages summarize one Beltrami-style update.
-- `validation.svg` summarizes the recorded numerical and compatibility checks.
+- `validation.svg` summarizes the recorded CPU inference checks.
   Counts are per supported-version run; 487 images and 23 synthetic cases are
   distinct from the 527 CPU test count. Chosen test coefficients do not measure
   the quality of a trained denoiser.
+  The 602 comparisons comprise five layer outputs for each synthetic case
+  and one final output for each image. Blender node-type compatibility is
+  documented separately from this numerical coverage.
 
 Regenerate the two SVGs with `python3 tools/build_readme_visuals.py`. Values are
 read from the checked-in validation record. Update the record only after a

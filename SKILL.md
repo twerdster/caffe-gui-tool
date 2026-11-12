@@ -61,10 +61,15 @@ Unlicense notices. The test schema has a separate BSD notice. Root legacy
 entry points depend on the installed package; don't distribute them alone.
 Keep existing research files immutable unless the user requests a change.
 
-Keep the README visual and approachable; place detailed commands in
+Keep the README direct, technical and readable; place detailed commands in
 docs/USAGE.md. Generate workflow/validation SVGs from recorded evidence using
 tools/build_readme_visuals.py. Use actual Blender captures for UI images and
 label the compact graph untrained. Preserve titles, descriptions, alternative
 text and the research boundary. The packaging documentation allowlist permits
 only the known screenshot and two SVGs; do not relax it to include dataset
 photos. Verify that README images and supporting docs survive ZIP installation.
+Avoid slogans, launch language, sales-oriented feature tables and claims of
+general numerical correctness. Describe actual graph operations and limits.
+Keep editor/export coverage separate from the CPU suite's tested layer chain;
+527 tests comprise 510 numerical inputs and 17 guard/failure/CLI tests. Call
+the NumPy code a separate reference implementation, not third-party review.
