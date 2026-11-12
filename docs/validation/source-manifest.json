@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-12",
+  "source_sha256": {
+    "neural_operator_blender/__init__.py": "ac2d00efdb6c689d946900991d871be0fb35b1a3c92393d3ee1b817f533c704d",
+    "neural_operator_blender/caffe_export.py": "a26c7f0cc342c1b14c0120b2b1058eebc0b227639496e8c162f0b028f5176bcd",
+    "neural_operator_blender/caffe_nodes.py": "347c04ac2605b1d62e1fc5ae1f16aabea23b5c611f6121f4ab4c3a622befb580",
+    "neural_operator_blender/composer.py": "c4350f7d5d0dfdf171661e791b1490205c114b7b2cec2510851a028fa372d209",
+    "neural_operator_blender/graph.py": "41601ba8db58dedf9ec1c2394d7235917cd12beda3053842a34eb5d7028f6d06",
+    "tests/blender_export_regressions.py": "fcf74c3e32fd4f0e75e8bea68ea133e7c5b5b21e1749465be9c5ead25342f696",
+    "tests/blender_graph_regressions.py": "80b95a4f5f09dd01b08d1b290c7eec6d8c10bda3e2b3f7f0a097d086acfd4ada",
+    "tests/blender_install.py": "95f6c1b47c7d832cb1b6ee63b6de688c9fd960a8f52919bf3eb4b9939ef60970",
+    "tests/blender_integration.py": "8e487b9bda0246df3c12628f5d5a288ea454ca9a8af098387a09e8b3776e159e",
+    "tests/blender_runtime_fixtures.py": "68aaa4a36de6bd5a5079718042c77bdc0fbf0a3921e3f1e787d14ac5ed2bb23d",
+    "tests/blender_test.py": "a3ed845088954bda83e6357e105dd6878c53cbc1ea9d1abf9fc8185e5b83ecf7",
+    "tests/test_caffe_runtime.py": "5637825be4c024064e9e790af4dd13d8365d3ca7e6abc08792699b028ac0f756",
+    "tests/test_validation_harness.py": "6bdb6550e5d417de6745e4c89f73dbadd77b9ef8dcc7e7e9752577e9bbc5e96c",
+    "tools/build_addon.py": "3197790dfef84cddad610097e3bc0776b8471f026dd35474ecf0266854a0238d",
+    "tools/create_demo.py": "de1c1d35b4ba04b6eab6a64650e38b5cf0bdf33d8fc0307da5928a4cdb9b8fe4",
+    "tools/run_caffe.py": "29beb81e51ef4bb5f8aace4cec3ec8028439ba94e1c4897217e565149a140788",
+    "tools/validate.py": "92e2787fe9dca53a6ed9421fb5632b1a991f81bd0fc3f15ad6027aac1651c073"
+  },
+  "schema_sha256": "6e9fac4972d7701de0474c675101fd127fd53ba302538c8a168e8a4d7807ed9d"
+}

@@ -1,0 +1,1952 @@
+{
+  "links": [
+    {
+      "from": "data",
+      "input": 0,
+      "output": 0,
+      "to": "Iy"
+    },
+    {
+      "from": "Ix",
+      "input": 0,
+      "output": 0,
+      "to": "IxIy"
+    },
+    {
+      "from": "Iy",
+      "input": 1,
+      "output": 0,
+      "to": "IxIy"
+    },
+    {
+      "from": "Iy",
+      "input": 0,
+      "output": 0,
+      "to": "Iy2"
+    },
+    {
+      "from": "Iy2",
+      "input": 0,
+      "output": 0,
+      "to": "g22"
+    },
+    {
+      "from": "g22",
+      "input": 1,
+      "output": 0,
+      "to": "g11g22"
+    },
+    {
+      "from": "g11",
+      "input": 0,
+      "output": 0,
+      "to": "g11g22"
+    },
+    {
+      "from": "g11",
+      "input": 0,
+      "output": 0,
+      "to": "g11_"
+    },
+    {
+      "from": "Ix",
+      "input": 0,
+      "output": 0,
+      "to": "Ixg22"
+    },
+    {
+      "from": "Iy",
+      "input": 1,
+      "output": 0,
+      "to": "Iyg12"
+    },
+    {
+      "from": "Ix",
+      "input": 0,
+      "output": 0,
+      "to": "Ixg12"
+    },
+    {
+      "from": "Iy",
+      "input": 1,
+      "output": 0,
+      "to": "Iyg11"
+    },
+    {
+      "from": "IxIy",
+      "input": 0,
+      "output": 0,
+      "to": "g12"
+    },
+    {
+      "from": "g12",
+      "input": 0,
+      "output": 0,
+      "to": "g12_sqrd"
+    },
+    {
+      "from": "gm05",
+      "input": 0,
+      "output": 0,
+      "to": "gm05_"
+    },
+    {
+      "from": "g11_",
+      "input": 0,
+      "output": 0,
+      "to": "Iyg11"
+    },
+    {
+      "from": "g12_",
+      "input": 0,
+      "output": 0,
+      "to": "Iyg12"
+    },
+    {
+      "from": "g22_",
+      "input": 1,
+      "output": 0,
+      "to": "Ixg22"
+    },
+    {
+      "from": "gm05_",
+      "input": 1,
+      "output": 0,
+      "to": "gm05_mul_Ixg22_sub_Iyg12"
+    },
+    {
+      "from": "Iyg11_sub_Ixg12.001",
+      "input": 0,
+      "output": 0,
+      "to": "Dpy"
+    },
+    {
+      "from": "g12_",
+      "input": 1,
+      "output": 0,
+      "to": "Ixg12"
+    },
+    {
+      "from": "gm05_",
+      "input": 0,
+      "output": 0,
+      "to": "Iyg11_sub_Ixg12.001"
+    },
+    {
+      "from": "data",
+      "input": 0,
+      "output": 0,
+      "to": "Ix"
+    },
+    {
+      "from": "Iyg12",
+      "input": 1,
+      "output": 0,
+      "to": "Ixg22_sub_Iyg12.001"
+    },
+    {
+      "from": "Ixg22",
+      "input": 0,
+      "output": 0,
+      "to": "Ixg22_sub_Iyg12.001"
+    },
+    {
+      "from": "Ixg22_sub_Iyg12.001",
+      "input": 0,
+      "output": 0,
+      "to": "gm05_mul_Ixg22_sub_Iyg12"
+    },
+    {
+      "from": "Iyg11",
+      "input": 1,
+      "output": 0,
+      "to": "Iyg11_sub_Ixg12.002"
+    },
+    {
+      "from": "Ixg12",
+      "input": 0,
+      "output": 0,
+      "to": "Iyg11_sub_Ixg12.002"
+    },
+    {
+      "from": "Iyg11_sub_Ixg12.002",
+      "input": 1,
+      "output": 0,
+      "to": "Iyg11_sub_Ixg12.001"
+    },
+    {
+      "from": "g12_sqrd",
+      "input": 1,
+      "output": 0,
+      "to": "detG"
+    },
+    {
+      "from": "g11g22",
+      "input": 0,
+      "output": 0,
+      "to": "detG"
+    },
+    {
+      "from": "detG",
+      "input": 0,
+      "output": 0,
+      "to": "gm05"
+    },
+    {
+      "from": "Dpx",
+      "input": 0,
+      "output": 0,
+      "to": "div_invG_gradI.001"
+    },
+    {
+      "from": "Dpy",
+      "input": 1,
+      "output": 0,
+      "to": "div_invG_gradI.001"
+    },
+    {
+      "from": "div_invG_gradI.001",
+      "input": 0,
+      "output": 0,
+      "to": "output_flow"
+    },
+    {
+      "from": "gm05_mul_Ixg22_sub_Iyg12",
+      "input": 0,
+      "output": 0,
+      "to": "Dpx"
+    },
+    {
+      "from": "output_flow",
+      "input": 0,
+      "output": 0,
+      "to": "Silence Node"
+    },
+    {
+      "from": "Ix2",
+      "input": 0,
+      "output": 0,
+      "to": "g11"
+    },
+    {
+      "from": "Ix",
+      "input": 0,
+      "output": 0,
+      "to": "Ix2"
+    },
+    {
+      "from": "g12",
+      "input": 0,
+      "output": 0,
+      "to": "g12_"
+    },
+    {
+      "from": "g22",
+      "input": 0,
+      "output": 0,
+      "to": "g22_"
+    },
+    {
+      "from": "gm05_",
+      "input": 1,
+      "output": 0,
+      "to": "output_flow"
+    }
+  ],
+  "name": "NodeTree",
+  "nodes": [
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "IxIy",
+      "label": "IxIy",
+      "location": [
+        -301.14862060546875,
+        159.62948608398438
+      ],
+      "outputs": [
+        "IxIy"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Iy2",
+      "label": "Iy^2",
+      "location": [
+        -302.5700378417969,
+        27.569442749023438
+      ],
+      "outputs": [
+        "Iy2"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": 2.0,
+        "scale": 1.0,
+        "shift": 0.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "g12_sqrd",
+      "label": "g12^2",
+      "location": [
+        -2.5967445373535156,
+        96.43041229248047
+      ],
+      "outputs": [
+        "g12_sqrd"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": 2.0,
+        "scale": 1.0,
+        "shift": 0.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "g11g22",
+      "label": "g11g22",
+      "location": [
+        -5.607490539550781,
+        228.83047485351562
+      ],
+      "outputs": [
+        "g11g22"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": false,
+      "id": "data",
+      "label": "data",
+      "location": [
+        -874.7625122070312,
+        174.20089721679688
+      ],
+      "outputs": [
+        "data"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "db_type": "HDF5Data",
+        "extra_params": false,
+        "include_in": "TEST",
+        "input_channels": 3,
+        "input_height": 256,
+        "input_width": 256,
+        "is_color": true,
+        "mean_file": "data/mean.binaryproto",
+        "mirror": false,
+        "new_height": 0,
+        "new_width": 0,
+        "output_amount": 1,
+        "rand_skip": 0,
+        "scale": 1.0,
+        "shuffle": false,
+        "test_batch_size": 1,
+        "test_data": "data/test.txt",
+        "test_path": "data/test",
+        "train_batch_size": 1,
+        "train_data": "data/train.txt",
+        "train_path": "data/train",
+        "use_custom_weight": false,
+        "use_mean_file": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "DataNodeType",
+      "use_custom_color": false,
+      "width": 320.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "detG",
+      "label": "det(G)",
+      "location": [
+        154.38499450683594,
+        165.20919799804688
+      ],
+      "outputs": [
+        "detG"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": -1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "SUM",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Iyg12",
+      "label": "Iyg12",
+      "location": [
+        761.5145874023438,
+        -71.24617004394531
+      ],
+      "outputs": [
+        "Iyg12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Ixg22",
+      "label": "Ixg22",
+      "location": [
+        759.3314208984375,
+        369.861083984375
+      ],
+      "outputs": [
+        "Ixg22"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Ixg12",
+      "label": "Ixg12",
+      "location": [
+        762.612548828125,
+        494.6685485839844
+      ],
+      "outputs": [
+        "Ixg12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Iyg11_sub_Ixg12.002",
+      "label": "-Ixg12 + Iyg11",
+      "location": [
+        1045.7054443359375,
+        108.57926177978516
+      ],
+      "outputs": [
+        "Iyg11_sub_Ixg12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": -1.0
+          },
+          {
+            "coeff": 1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "SUM",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "gm05_mul_Ixg22_sub_Iyg12",
+      "label": "gm05(Ixg22 - Iyg12)",
+      "location": [
+        1244.4991455078125,
+        304.91522216796875
+      ],
+      "outputs": [
+        "gm05_mul_Ixg22_sub_Iyg12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "div_invG_gradI.001",
+      "label": "div(inv(G)gradI)",
+      "location": [
+        1612.8450927734375,
+        233.53701782226562
+      ],
+      "outputs": [
+        "div_invG_gradI"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": 1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "SUM",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Ixg22_sub_Iyg12.001",
+      "label": "Ixg22 - Iyg12",
+      "location": [
+        1049.234619140625,
+        391.0223083496094
+      ],
+      "outputs": [
+        "Ixg22_sub_Iyg12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": -1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "SUM",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "gm05",
+      "label": "gm05=1/det(G)^0.5",
+      "location": [
+        277.8943176269531,
+        163.64303588867188
+      ],
+      "outputs": [
+        "gm05"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": -0.5,
+        "scale": 1.0,
+        "shift": 0.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Iyg11_sub_Ixg12.001",
+      "label": "gm05(-Ixg12 + Iyg11)",
+      "location": [
+        1243.0673828125,
+        155.5748291015625
+      ],
+      "outputs": [
+        "gm05_mul_Iyg11_sub_Ixg12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": false,
+      "id": "Solver Node",
+      "label": "",
+      "location": [
+        -861.888427734375,
+        985.2178344726562
+      ],
+      "outputs": [],
+      "parent": null,
+      "properties": {
+        "average_loss": 1,
+        "base_lr": 0.009999999776482582,
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "caffe_exec": "caffe/bin/",
+        "config_path": "exports/",
+        "custom_weight": "",
+        "debug_info": false,
+        "delta": 9.99999993922529e-09,
+        "display": 100,
+        "extra_params": false,
+        "gamma": 0.10000000149011612,
+        "gpus": "0",
+        "include_in": "BOTH",
+        "iter_size": 1,
+        "lr_policy": "step",
+        "max_iter": 1,
+        "momentum": 0.8999999761581421,
+        "power": 0.75,
+        "random_seed": 10,
+        "regularization_type": "L2",
+        "snapshot": 0,
+        "snapshot_after_train": true,
+        "snapshot_diff": false,
+        "snapshot_prefix": "checkpoints/model",
+        "solver_mode": "CPU",
+        "solver_type": "SGD",
+        "solvername": "quick_solve",
+        "stepsize": 5000,
+        "test_compute_loss": false,
+        "test_initialization": false,
+        "test_interval": 500,
+        "test_iter": 100,
+        "use_custom_weight": false,
+        "use_random_seed": false,
+        "weight_decay": 0.0005000000237487257,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "SolverNodeType",
+      "use_custom_color": false,
+      "width": 320.0
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "Ix",
+      "label": "Ix",
+      "location": [
+        -441.1753234863281,
+        338.7308654785156
+      ],
+      "outputs": [
+        "Ix"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "operators/Dmx.prototxt",
+        "extra_params": true,
+        "group": 3,
+        "include_in": "BOTH",
+        "kernel_h": 1,
+        "kernel_size": 3,
+        "kernel_w": 3,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 0,
+        "pad_w": 1,
+        "square_kernel": false,
+        "square_padding": false,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": true,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 279.122802734375
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "Iy",
+      "label": "Iy",
+      "location": [
+        -445.7087707519531,
+        -34.38946533203125
+      ],
+      "outputs": [
+        "Iy"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "operators/Dmy.prototxt",
+        "extra_params": true,
+        "group": 3,
+        "include_in": "BOTH",
+        "kernel_h": 3,
+        "kernel_size": 3,
+        "kernel_w": 1,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 1,
+        "pad_w": 0,
+        "square_kernel": false,
+        "square_padding": false,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": true,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 212.3187255859375
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "g11_",
+      "label": "g11=rep(g11,3)",
+      "location": [
+        502.4029235839844,
+        321.27813720703125
+      ],
+      "outputs": [
+        "g11_rep3"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 1,
+        "kernel_w": 5,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 249.197265625
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "g12_",
+      "label": "g12=rep(g12,3)",
+      "location": [
+        507.3873291015625,
+        217.01773071289062
+      ],
+      "outputs": [
+        "g12_rep3"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 1,
+        "kernel_w": 5,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 249.197265625
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "g22_",
+      "label": "g22=rep(g22,3)",
+      "location": [
+        510.8232116699219,
+        111.96949005126953
+      ],
+      "outputs": [
+        "g22_rep3"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 1,
+        "kernel_w": 5,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 249.197265625
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "gm05_",
+      "label": "gm05=rep(gm05,3)",
+      "location": [
+        511.5604553222656,
+        13.620912551879883
+      ],
+      "outputs": [
+        "gm05_rep3"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 1,
+        "kernel_w": 5,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 249.197265625
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "Dpy",
+      "label": "Dpy",
+      "location": [
+        1459.5501708984375,
+        156.16006469726562
+      ],
+      "outputs": [
+        "Dpy"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "operators/Dpy.prototxt",
+        "extra_params": true,
+        "group": 3,
+        "include_in": "BOTH",
+        "kernel_h": 3,
+        "kernel_size": 3,
+        "kernel_w": 1,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 1,
+        "pad_w": 0,
+        "square_kernel": false,
+        "square_padding": false,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": true,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 212.3187255859375
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Ix2",
+      "label": "Ix^2",
+      "location": [
+        -304.8413391113281,
+        290.6210632324219
+      ],
+      "outputs": [
+        "Ix2"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": 2.0,
+        "scale": 1.0,
+        "shift": 0.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "Iyg11",
+      "label": "Iyg11",
+      "location": [
+        761.0441284179688,
+        83.40196228027344
+      ],
+      "outputs": [
+        "Iyg11"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": false,
+      "id": "Silence Node",
+      "label": "",
+      "location": [
+        2031.9888916015625,
+        202.55126953125
+      ],
+      "outputs": [],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "SilenceNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        0.6079999804496765,
+        0.6079999804496765,
+        0.6079999804496765
+      ],
+      "hide": true,
+      "id": "output_flow",
+      "label": "gm05*(div(inv(G)gradI))",
+      "location": [
+        1776.1754150390625,
+        149.05026245117188
+      ],
+      "outputs": [
+        "output_flow"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": false,
+      "width": 140.0
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "g11",
+      "label": "g11=b+sum(Ix^2,3)",
+      "location": [
+        -198.94134521484375,
+        289.5765686035156
+      ],
+      "outputs": [
+        "g11"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 5571.375,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": true,
+        "custom_weight": "operators/Dx.prototxt",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 1,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 221.0687255859375
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "g12",
+      "label": "g12=sum(IxIy,3)",
+      "location": [
+        -192.00997924804688,
+        159.11245727539062
+      ],
+      "outputs": [
+        "g12"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "operators/Dx.prototxt",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 1,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 219.8187255859375
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "g22",
+      "label": "g22=b+sum(Iy^2,3)",
+      "location": [
+        -186.56201171875,
+        27.50640869140625
+      ],
+      "outputs": [
+        "g22"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 5571.375,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": true,
+        "custom_weight": "operators/Dx.prototxt",
+        "extra_params": true,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 1,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "constant",
+          "value": 1.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 212.3187255859375
+    },
+    {
+      "color": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "hide": true,
+      "id": "Dpx",
+      "label": "Dpx",
+      "location": [
+        1457.041259765625,
+        304.35638427734375
+      ],
+      "outputs": [
+        "Dpx"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "operators/Dpx.prototxt",
+        "extra_params": true,
+        "group": 3,
+        "include_in": "BOTH",
+        "kernel_h": 1,
+        "kernel_size": 3,
+        "kernel_w": 3,
+        "num_output": 3,
+        "pad": 0,
+        "pad_h": 0,
+        "pad_w": 1,
+        "square_kernel": false,
+        "square_padding": false,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": true,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 0.0,
+          "lr_mult": 0.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 212.3187255859375
+    }
+  ],
+  "schema": "neural-operator-composer/v1"
+}

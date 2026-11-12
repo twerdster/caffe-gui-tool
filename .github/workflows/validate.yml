@@ -1,0 +1,59 @@
+name: Blender validation
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  blender:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        include:
+          - version: 5.1.2
+            series: '5.1'
+          - version: 5.2.4
+            series: '5.2'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch verified official Blender
+        env:
+          BLENDER_VERSION: ${{ matrix.version }}
+          BLENDER_SERIES: ${{ matrix.series }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, os, pathlib, urllib.request
+          version, series = os.environ['BLENDER_VERSION'], os.environ['BLENDER_SERIES']
+          filename = f'blender-{version}-linux-x64.tar.xz'
+          base = f'https://download.blender.org/release/Blender{series}/'
+          urllib.request.urlretrieve(base + filename, 'blender.tar.xz')
+          checks = urllib.request.urlopen(base + f'blender-{version}.sha256').read().decode()
+          expected = next(line.split()[0] for line in checks.splitlines() if filename in line)
+          with open('blender.tar.xz', 'rb') as stream:
+              actual = hashlib.file_digest(stream, 'sha256').hexdigest()
+          assert actual == expected, 'Official Blender checksum mismatch'
+          PY
+          mkdir -p /tmp/blender
+          tar -xf blender.tar.xz --strip-components=1 -C /tmp/blender
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install external test dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y protobuf-compiler libxkbcommon0 libxxf86vm1 libxfixes3 libxi6 libxrender1 libgl1
+          python -m pip install -r requirements-test.txt
+      - name: Validate editor, exports, installation and numerical execution
+        run: python tools/validate.py --blender /tmp/blender/blender --python python
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-${{ matrix.version }}
+          path: |
+            artifacts/validation/*.json
+            artifacts/validation/*.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: caffe-gui-tool-${{ matrix.version }}
+          path: dist/*.zip

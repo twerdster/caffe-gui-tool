@@ -1,0 +1,92 @@
+{
+  "source": "Caffe-GUI-Tool thesis graphs",
+  "graphs": [
+    {
+      "source_file": "PatchBeltrami-aaron-base.blend",
+      "source_sha256": "4ce9dc210daa7e0451ae3fe52e8253c6d3eb3efc0402d5f6cdbd4065e005d06b",
+      "nodes": 31,
+      "links": 42,
+      "json": "patch_beltrami_base.json",
+      "validation": {
+        "nodes": 30,
+        "links": 42,
+        "blobs": 29
+      }
+    },
+    {
+      "source_file": "PatchBeltrami-aaron_BW.blend",
+      "source_sha256": "06930be3c08a28578e8f03a694b0fb5490462aa63bac55ff0b20e63f5379cab4",
+      "nodes": 303,
+      "links": 442,
+      "json": "patch_beltrami_bw.json",
+      "validation": {
+        "nodes": 302,
+        "links": 442,
+        "blobs": 303
+      }
+    },
+    {
+      "source_file": "PatchBeltrami-aaron_BW_multifilter.blend",
+      "source_sha256": "268ff7a1f2bc086fc2a08b57342a6d38a63d19c71f051dec7fe2eb3460bdc09d",
+      "nodes": 162,
+      "links": 235,
+      "json": "patch_beltrami_multifilter.json",
+      "validation": {
+        "nodes": 161,
+        "links": 235,
+        "blobs": 162
+      }
+    },
+    {
+      "source_file": "PatchBeltrami-aaron_BW_single.blend",
+      "source_sha256": "03e4282905ca7ebc09454e0c1381060076e4cd2137359bce9e651dfd222e0aa6",
+      "nodes": 30,
+      "links": 43,
+      "json": "patch_beltrami_single.json",
+      "validation": {
+        "nodes": 29,
+        "links": 43,
+        "blobs": 30
+      }
+    },
+    {
+      "source_file": "PatchBeltrami-aaron_RGB.blend",
+      "source_sha256": "8d3327067fa1b02bd3bfd10fd8169163a7e76b36003379a9554dbbc470dda7ff",
+      "nodes": 96,
+      "links": 137,
+      "json": "patch_beltrami_rgb.json",
+      "validation": {
+        "nodes": 95,
+        "links": 137,
+        "blobs": 96
+      }
+    },
+    {
+      "source_file": "PatchBeltrami_Single_RGB.blend",
+      "source_sha256": "a7e22deff4f33d3c85b0d8bba41d3b67069aadbbb4e416176005f020b4c39c56",
+      "nodes": 38,
+      "links": 51,
+      "json": "patch_beltrami_single_rgb.json",
+      "validation": {
+        "nodes": 37,
+        "links": 51,
+        "blobs": 38
+      }
+    }
+  ],
+  "historical_modules": [
+    {
+      "file": "CaffeGenerate.py",
+      "sha256": "e8429feb2bcfa48fd56dd02cb1cd4dae23539cd1a95a687c204e246174f438f7",
+      "bytes": 20549
+    },
+    {
+      "file": "CaffeNodes.py",
+      "sha256": "617b4e769efad17060d88b283e734f82231023e414aa0a6b5237665c5fc667f6",
+      "bytes": 71031
+    }
+  ],
+  "public_source": "https://github.com/twerdster/caffe-gui-tool",
+  "public_revision": "2de937d9119d6d5ca467fa184c51fc56c5f8f400",
+  "parameter_policy": "Preserve all declared node parameters and graph structure; replace machine-specific paths with editable placeholders; add deployment shape settings."
+}

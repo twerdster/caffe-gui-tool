@@ -1,0 +1,838 @@
+{
+  "links": [
+    {
+      "from": "Noisy input",
+      "input": 0,
+      "output": 0,
+      "to": "Learned Dx"
+    },
+    {
+      "from": "Noisy input",
+      "input": 0,
+      "output": 0,
+      "to": "Learned Dy"
+    },
+    {
+      "from": "Learned Dx",
+      "input": 0,
+      "output": 0,
+      "to": "Dx squared"
+    },
+    {
+      "from": "Learned Dy",
+      "input": 0,
+      "output": 0,
+      "to": "Dy squared"
+    },
+    {
+      "from": "Dx squared",
+      "input": 0,
+      "output": 0,
+      "to": "Metric energy"
+    },
+    {
+      "from": "Dy squared",
+      "input": 1,
+      "output": 0,
+      "to": "Metric energy"
+    },
+    {
+      "from": "Metric energy",
+      "input": 0,
+      "output": 0,
+      "to": "Inverse metric"
+    },
+    {
+      "from": "Learned Dx",
+      "input": 0,
+      "output": 0,
+      "to": "Flux x"
+    },
+    {
+      "from": "Inverse metric",
+      "input": 1,
+      "output": 0,
+      "to": "Flux x"
+    },
+    {
+      "from": "Learned Dy",
+      "input": 0,
+      "output": 0,
+      "to": "Flux y"
+    },
+    {
+      "from": "Inverse metric",
+      "input": 1,
+      "output": 0,
+      "to": "Flux y"
+    },
+    {
+      "from": "Flux x",
+      "input": 0,
+      "output": 0,
+      "to": "Learned divergence x"
+    },
+    {
+      "from": "Flux y",
+      "input": 0,
+      "output": 0,
+      "to": "Learned divergence y"
+    },
+    {
+      "from": "Noisy input",
+      "input": 0,
+      "output": 0,
+      "to": "Flow update"
+    },
+    {
+      "from": "Learned divergence x",
+      "input": 1,
+      "output": 0,
+      "to": "Flow update"
+    },
+    {
+      "from": "Learned divergence y",
+      "input": 2,
+      "output": 0,
+      "to": "Flow update"
+    }
+  ],
+  "name": "Learned Beltrami Operator",
+  "nodes": [
+    {
+      "color": [
+        0.10000000149011612,
+        0.41999998688697815,
+        0.6499999761581421
+      ],
+      "hide": true,
+      "id": "Noisy input",
+      "label": "Noisy input",
+      "location": [
+        0.0,
+        0.0
+      ],
+      "outputs": [
+        "noisy_input_0",
+        "noisy_input_1"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "db_type": "HDF5Data",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_channels": 1,
+        "input_height": 256,
+        "input_width": 256,
+        "is_color": true,
+        "mean_file": "",
+        "mirror": false,
+        "new_height": 0,
+        "new_width": 0,
+        "output_amount": 2,
+        "rand_skip": 0,
+        "scale": 1.0,
+        "shuffle": false,
+        "test_batch_size": 100,
+        "test_data": "",
+        "test_path": "",
+        "train_batch_size": 100,
+        "train_data": "",
+        "train_path": "",
+        "use_custom_weight": false,
+        "use_mean_file": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "DataNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.44999998807907104,
+        0.20000000298023224,
+        0.6499999761581421
+      ],
+      "hide": true,
+      "id": "Learned Dx",
+      "label": "Learned Dx",
+      "location": [
+        240.0,
+        80.0
+      ],
+      "outputs": [
+        "learned_dx_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": false,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 16,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.44999998807907104,
+        0.20000000298023224,
+        0.6499999761581421
+      ],
+      "hide": true,
+      "id": "Learned Dy",
+      "label": "Learned Dy",
+      "location": [
+        240.0,
+        -140.0
+      ],
+      "outputs": [
+        "learned_dy_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": false,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 16,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.15000000596046448,
+        0.550000011920929,
+        0.4000000059604645
+      ],
+      "hide": true,
+      "id": "Dx squared",
+      "label": "Dx squared",
+      "location": [
+        480.0,
+        80.0
+      ],
+      "outputs": [
+        "dx_squared_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": 2.0,
+        "scale": 1.0,
+        "shift": 0.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.15000000596046448,
+        0.550000011920929,
+        0.4000000059604645
+      ],
+      "hide": true,
+      "id": "Dy squared",
+      "label": "Dy squared",
+      "location": [
+        480.0,
+        -140.0
+      ],
+      "outputs": [
+        "dy_squared_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": 2.0,
+        "scale": 1.0,
+        "shift": 0.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.15000000596046448,
+        0.550000011920929,
+        0.4000000059604645
+      ],
+      "hide": true,
+      "id": "Metric energy",
+      "label": "Metric energy",
+      "location": [
+        720.0,
+        0.0
+      ],
+      "outputs": [
+        "metric_energy_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": 1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "SUM",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.15000000596046448,
+        0.550000011920929,
+        0.4000000059604645
+      ],
+      "hide": true,
+      "id": "Inverse metric",
+      "label": "Inverse metric",
+      "location": [
+        960.0,
+        0.0
+      ],
+      "outputs": [
+        "inverse_metric_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "power": -0.5,
+        "scale": 1.0,
+        "shift": 1.0,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "PowerNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.6499999761581421,
+        0.4000000059604645,
+        0.11999999731779099
+      ],
+      "hide": true,
+      "id": "Flux x",
+      "label": "Flux x",
+      "location": [
+        1200.0,
+        80.0
+      ],
+      "outputs": [
+        "flux_x_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": 1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.6499999761581421,
+        0.4000000059604645,
+        0.11999999731779099
+      ],
+      "hide": true,
+      "id": "Flux y",
+      "label": "Flux y",
+      "location": [
+        1200.0,
+        -140.0
+      ],
+      "outputs": [
+        "flux_y_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": 1.0
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 2,
+        "operation": "PROD",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.44999998807907104,
+        0.20000000298023224,
+        0.6499999761581421
+      ],
+      "hide": true,
+      "id": "Learned divergence x",
+      "label": "Learned divergence x",
+      "location": [
+        1440.0,
+        80.0
+      ],
+      "outputs": [
+        "learned_divergence_x_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": false,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 1,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.44999998807907104,
+        0.20000000298023224,
+        0.6499999761581421
+      ],
+      "hide": true,
+      "id": "Learned divergence y",
+      "label": "Learned divergence y",
+      "location": [
+        1440.0,
+        -140.0
+      ],
+      "outputs": [
+        "learned_divergence_y_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "bias_term": false,
+        "custom_weight": "",
+        "extra_params": false,
+        "group": 1,
+        "include_in": "BOTH",
+        "kernel_h": 5,
+        "kernel_size": 7,
+        "kernel_w": 5,
+        "num_output": 1,
+        "pad": 3,
+        "pad_h": 0,
+        "pad_w": 0,
+        "square_kernel": true,
+        "square_padding": true,
+        "square_stride": true,
+        "stride": 1,
+        "stride_h": 1,
+        "stride_w": 1,
+        "use_custom_weight": false,
+        "weight_filler": {
+          "is_sparse": false,
+          "max": 1.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "sparse": 100,
+          "std": 1.0,
+          "type": "xavier",
+          "value": 0.0,
+          "variance_norm": "FAN_IN"
+        },
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "ConvNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.10000000149011612,
+        0.41999998688697815,
+        0.6499999761581421
+      ],
+      "hide": true,
+      "id": "Flow update",
+      "label": "Flow update",
+      "location": [
+        1680.0,
+        0.0
+      ],
+      "outputs": [
+        "flow_update_0"
+      ],
+      "parent": null,
+      "properties": {
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "coeffs": [
+          {
+            "coeff": 1.0
+          },
+          {
+            "coeff": -0.15000000596046448
+          },
+          {
+            "coeff": -0.15000000596046448
+          }
+        ],
+        "custom_weight": "",
+        "extra_params": false,
+        "include_in": "BOTH",
+        "input_amount": 3,
+        "operation": "SUM",
+        "stable_prod_grad": true,
+        "use_custom_weight": false,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "EltwiseNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    },
+    {
+      "color": [
+        0.6499999761581421,
+        0.4000000059604645,
+        0.11999999731779099
+      ],
+      "hide": true,
+      "id": "Training settings",
+      "label": "Training settings",
+      "location": [
+        1680.0,
+        -260.0
+      ],
+      "outputs": [],
+      "parent": null,
+      "properties": {
+        "average_loss": 1,
+        "base_lr": 9.999999747378752e-05,
+        "bias_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        },
+        "caffe_exec": "",
+        "config_path": "",
+        "custom_weight": "",
+        "debug_info": false,
+        "delta": 9.99999993922529e-09,
+        "display": 100,
+        "extra_params": false,
+        "gamma": 0.10000000149011612,
+        "gpus": "0",
+        "include_in": "BOTH",
+        "iter_size": 1,
+        "lr_policy": "step",
+        "max_iter": 50000,
+        "momentum": 0.8999999761581421,
+        "power": 0.75,
+        "random_seed": 10,
+        "regularization_type": "L2",
+        "snapshot": 0,
+        "snapshot_after_train": true,
+        "snapshot_diff": false,
+        "snapshot_prefix": "",
+        "solver_mode": "CPU",
+        "solver_type": "SGD",
+        "solvername": "learned_beltrami",
+        "stepsize": 5000,
+        "test_compute_loss": false,
+        "test_initialization": true,
+        "test_interval": 500,
+        "test_iter": 100,
+        "use_custom_weight": false,
+        "use_random_seed": false,
+        "weight_decay": 0.0005000000237487257,
+        "weight_params": {
+          "decay_mult": 1.0,
+          "lr_mult": 1.0,
+          "name": ""
+        }
+      },
+      "type": "SolverNodeType",
+      "use_custom_color": true,
+      "width": 180.0
+    }
+  ],
+  "schema": "neural-operator-composer/v1"
+}

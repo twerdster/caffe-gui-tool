@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-12",
+  "scope": "Technical README and diagram copy after Claude editorial review; numerical modules unchanged",
+  "package": {
+    "bytes": 273050,
+    "sha256": "34e48b32b0b26a395996963cc71315229fd202a0d7a581b8ca5591b23fd61808",
+    "reproducible": true
+  },
+  "editorial_review": {
+    "provider": "Claude Code",
+    "model": "claude-opus-5-5",
+    "passes": 2,
+    "changes": [
+      "removed slogans and sales-style feature table",
+      "named the tested CPU operator chain",
+      "separated editor/export coverage from numerical coverage",
+      "specified 527 tests, 510 inputs and 602 reference comparisons",
+      "clarified structural validation, training and checkpoint limits"
+    ]
+  },
+  "checks": [
+    "SVG XML and rendered diagrams inspected",
+    "local README and guide links resolve",
+    "media allowlist excludes datasets/models",
+    "two harness regression tests pass",
+    "numerical module hashes match initial full-validation record",
+    "Revised README rendered with GitHub Markdown and inspected in a browser"
+  ],
+  "installation": [
+    {
+      "blender": "5.1.2",
+      "checks": [
+        "actual ZIP installs, enables, loads example and disables",
+        "installed documentation and README images are available"
+      ],
+      "graph": {
+        "nodes": 12,
+        "links": 16,
+        "blobs": 13
+      }
+    },
+    {
+      "blender": "5.2.4 LTS",
+      "checks": [
+        "actual ZIP installs, enables, loads example and disables",
+        "installed documentation and README images are available"
+      ],
+      "graph": {
+        "nodes": 12,
+        "links": 16,
+        "blobs": 13
+      }
+    }
+  ],
+  "visuals": {
+    "composer-overview.png": {
+      "bytes": 189371,
+      "sha256": "6310a0654f27744eb863ce80ae7c086167e97de09822700368072ae3547d8bb2"
+    },
+    "workflow.svg": {
+      "bytes": 6585,
+      "sha256": "de2e64fe95deac2787fd17f61323c28ed3004690c79280cf5a3188b139943509"
+    },
+    "validation.svg": {
+      "bytes": 2688,
+      "sha256": "e4b72fdcfd84d385b46dd8e6c4ba59be3fccad1606fe7c781d5933d952b7088d"
+    }
+  }
+}

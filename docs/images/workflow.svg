@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="552" viewBox="0 0 1200 552" role="img" aria-labelledby="title desc">
+<title id="title">Editing and exporting a Caffe network</title><desc id="desc">Three steps: compose an editable node graph, check its connections and export JSON and Caffe definitions. A Beltrami-style update consists of image input, derivatives, metric, flux, divergence and update. This is a schematic, not a trained result. Tensor shapes are not inferred.</desc>
+<style>text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.mono{font-family:"SFMono-Regular",Consolas,monospace}</style>
+<rect x="0" y="0" width="1200" height="552" rx="24" fill="#f3f7f5" stroke="none"/>
+<text x="36" y="40" font-size="13" fill="#527568" font-weight="700" letter-spacing="2">CAFFE GUI TOOL  /  GRAPH EXPORT</text>
+<text x="36" y="89" font-size="36" fill="#142d31" font-weight="700" >Editing and exporting a Caffe network</text>
+<text x="36" y="120" font-size="18" fill="#526a6d" font-weight="400" >Set layer parameters in Blender, validate the graph, and write Caffe definitions.</text>
+<rect x="36" y="151" width="352" height="241" rx="18" fill="#ffffff" stroke="#dbe5e1"/>
+<rect x="56" y="170" width="38" height="30" rx="9" fill="#e9e3f8" stroke="none"/>
+<text x="65" y="191" font-size="14" fill="#294445" font-weight="700" >01</text>
+<text x="108" y="194" font-size="24" fill="#173339" font-weight="700" >Edit graph</text>
+<text x="56" y="225" font-size="15" fill="#526a6d" font-weight="400" >Configure layers, links and shared parameters.</text>
+<rect x="424" y="151" width="352" height="241" rx="18" fill="#ffffff" stroke="#dbe5e1"/>
+<rect x="444" y="170" width="38" height="30" rx="9" fill="#def1e7" stroke="none"/>
+<text x="453" y="191" font-size="14" fill="#294445" font-weight="700" >02</text>
+<text x="496" y="194" font-size="24" fill="#173339" font-weight="700" >Validate</text>
+<text x="444" y="225" font-size="15" fill="#526a6d" font-weight="400" >Structural checks; phase checks on export.</text>
+<rect x="812" y="151" width="352" height="241" rx="18" fill="#ffffff" stroke="#dbe5e1"/>
+<rect x="832" y="170" width="38" height="30" rx="9" fill="#e1ecf7" stroke="none"/>
+<text x="841" y="191" font-size="14" fill="#294445" font-weight="700" >03</text>
+<text x="884" y="194" font-size="24" fill="#173339" font-weight="700" >Export</text>
+<text x="832" y="225" font-size="15" fill="#526a6d" font-weight="400" >Write portable graphs and Caffe definitions.</text>
+<rect x="57" y="274" width="83" height="33" rx="8" fill="#dcecf8" stroke="none"/>
+<text x="69" y="296" font-size="14" fill="#294445" font-weight="600" >Image</text>
+<rect x="180" y="255" width="120" height="33" rx="8" fill="#e9e3f8" stroke="none"/>
+<text x="192" y="277" font-size="14" fill="#294445" font-weight="600" >Derivative</text>
+<rect x="180" y="325" width="120" height="33" rx="8" fill="#def1e7" stroke="none"/>
+<text x="192" y="347" font-size="14" fill="#294445" font-weight="600" >Metric</text>
+<path d="M140 290 C163 290 157 271 180 271 M240 288 V325" fill="none" stroke="#85a49c" stroke-width="2"/>
+<circle cx="455" cy="266" r="9" fill="#e0f1e7"/>
+<path d="M450 266 l4 4 6 -8" fill="none" stroke="#267252" stroke-width="2"/>
+<text x="474" y="271" font-size="17" fill="#34544b" font-weight="400" >Required inputs</text>
+<circle cx="455" cy="301" r="9" fill="#e0f1e7"/>
+<path d="M450 301 l4 4 6 -8" fill="none" stroke="#267252" stroke-width="2"/>
+<text x="474" y="306" font-size="17" fill="#34544b" font-weight="400" >Unique output names</text>
+<circle cx="455" cy="336" r="9" fill="#e0f1e7"/>
+<path d="M450 336 l4 4 6 -8" fill="none" stroke="#267252" stroke-width="2"/>
+<text x="474" y="341" font-size="17" fill="#34544b" font-weight="400" >Acyclic connections</text>
+<rect x="832" y="249" width="312" height="31" rx="7" fill="#f0f5fa" stroke="none"/>
+<text x="845" y="271" font-size="15" fill="#355976" font-weight="400" class="mono">graph.json</text>
+<rect x="832" y="284" width="312" height="31" rx="7" fill="#f0f5fa" stroke="none"/>
+<text x="845" y="306" font-size="15" fill="#355976" font-weight="400" class="mono">*_deploy.prototxt</text>
+<rect x="832" y="319" width="312" height="31" rx="7" fill="#f0f5fa" stroke="none"/>
+<text x="845" y="341" font-size="15" fill="#355976" font-weight="400" class="mono">*_solver.prototxt</text>
+<text x="36" y="429" font-size="12" fill="#527568" font-weight="700" letter-spacing="1.8">ONE BELTRAMI-STYLE UPDATE</text>
+<rect x="36" y="447" width="100" height="42" rx="10" fill="#dcecf8" stroke="none"/>
+<text x="86.0" y="474" font-size="17" fill="#294445" font-weight="600" text-anchor="middle">Image</text>
+<path d="M144 468 H175" fill="none" stroke="#64817c" stroke-width="2"/><path d="M169 463 L175 468 L169 473" fill="none" stroke="#64817c" stroke-width="2"/>
+<rect x="187" y="447" width="166" height="42" rx="10" fill="#e9e3f8" stroke="none"/>
+<text x="270.0" y="474" font-size="17" fill="#294445" font-weight="600" text-anchor="middle">Derivatives</text>
+<path d="M361 468 H392" fill="none" stroke="#64817c" stroke-width="2"/><path d="M386 463 L392 468 L386 473" fill="none" stroke="#64817c" stroke-width="2"/>
+<rect x="404" y="447" width="126" height="42" rx="10" fill="#def1e7" stroke="none"/>
+<text x="467.0" y="474" font-size="17" fill="#294445" font-weight="600" text-anchor="middle">Metric</text>
+<path d="M538 468 H569" fill="none" stroke="#64817c" stroke-width="2"/><path d="M563 463 L569 468 L563 473" fill="none" stroke="#64817c" stroke-width="2"/>
+<rect x="581" y="447" width="100" height="42" rx="10" fill="#f8e9d4" stroke="none"/>
+<text x="631.0" y="474" font-size="17" fill="#294445" font-weight="600" text-anchor="middle">Flux</text>
+<path d="M689 468 H720" fill="none" stroke="#64817c" stroke-width="2"/><path d="M714 463 L720 468 L714 473" fill="none" stroke="#64817c" stroke-width="2"/>
+<rect x="732" y="447" width="164" height="42" rx="10" fill="#e9e3f8" stroke="none"/>
+<text x="814.0" y="474" font-size="17" fill="#294445" font-weight="600" text-anchor="middle">Divergence</text>
+<path d="M904 468 H935" fill="none" stroke="#64817c" stroke-width="2"/><path d="M929 463 L935 468 L929 473" fill="none" stroke="#64817c" stroke-width="2"/>
+<rect x="947" y="447" width="128" height="42" rx="10" fill="#dcecf8" stroke="none"/>
+<text x="1011.0" y="474" font-size="17" fill="#294445" font-weight="600" text-anchor="middle">Update</text>
+<text x="36" y="526" font-size="15" fill="#526a6d" font-weight="400" >Schematic only. No tensor-shape inference; training runs outside Blender.</text>
+</svg>

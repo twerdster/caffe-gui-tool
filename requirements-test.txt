@@ -1,0 +1,6 @@
+# The Blender add-on has no third-party Python dependencies.
+# Optional external CPU inference/test environment, separate from Blender Python.
+numpy>=1.26,<3
+opencv-python-headless>=4.10,<5
+Pillow>=10,<14
+pytest>=8,<10
