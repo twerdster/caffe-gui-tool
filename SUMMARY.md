@@ -24,6 +24,11 @@ tests. Read README.md, docs/report-analysis.md, docs/VALIDATION.md and NOTICE.
 - Generated logs, fixtures and results stay in ignored `artifacts/` and dist/.
   All original `.blend`, MATLAB, image, prototxt and checkpoint assets are
   preserved; no large new datasets or training runs were created.
+- The README is a visual introduction with a real Blender screenshot,
+  workflow diagram and measured-test cards. Detailed commands live in
+  docs/USAGE.md. Regenerate the SVGs with tools/build_readme_visuals.py;
+  image provenance is documented in docs/images/README.md. The add-on ZIP
+  includes the supporting docs and these three explicitly allowed visuals.
 
 ## Research boundaries
 
@@ -59,10 +64,16 @@ prior results alone do not validate changed code.
 Apple silicon, with protoc enabled and installed-ZIP verification. Each run
 passes 527 CPU tests across 23 synthetic cases and 487 public images, 602
 NumPy comparisons and 510 exact repeat checks (maximum absolute error
-7.15e-6). Both deterministic ZIPs are 83,437 bytes with SHA-256
+7.15e-6). The initial code-validation ZIPs were 83,437 bytes with SHA-256
 04c4b50b81e294465462e244882f3df92f4840ac20af6fc832a58058e20743d0.
+The later visual README refresh adds documentation assets to the ZIP;
+docs/validation/documentation-update.json records that package's checks.
 Linux CI runs the same full harness on both versions; consult its live check
 results for remote status. No Caffe training/gradient/convergence test was run.
 The full harness explicitly preflights external runtime dependencies and
 requires a newly written numerical report. Two harness regressions prevent
 an old report from certifying skipped tests when reusing an output directory.
+
+Visual documentation package verification passes actual ZIP installation in
+Blender 5.1.2 and 5.2.4 LTS, including all README images. The current archive
+is 273049 bytes; SHA-256 be91b366e5726e61f9fe440e9bb92c931805d282462a88fd78f46e902f3876fb.

@@ -33,9 +33,17 @@ chosen coefficients, not a denoising quality measurement.
 
 Sanitized full records: [Blender 5.1](validation/macos-blender-5.1.json),
 [Blender 5.2](validation/macos-blender-5.2.json), and
-[source hashes](validation/source-manifest.json). Both builds produced the
+[source hashes](validation/source-manifest.json). The initial code-validation builds produced the
 same 83,437-byte ZIP, SHA-256
 `04c4b50b81e294465462e244882f3df92f4840ac20af6fc832a58058e20743d0`.
+
+The later visual README refresh adds a real Blender capture, workflow and
+validation diagrams, and an approachable usage guide. These documentation
+assets are included in the installable ZIP, so its size/hash changes. The
+numerical modules are unchanged from the full runs above. Documentation and
+installation checks for that refresh are recorded separately in the repository
+as `docs/validation/documentation-update.json`; the original numerical evidence
+and source manifest remain a record of the initial code-validation revision.
 
 ## Historical derivative repair
 

@@ -81,7 +81,10 @@ def main():
             assert hashlib.sha256(archive.read_bytes()).hexdigest() == digest
             with zipfile.ZipFile(archive) as package:
                 assert package.testzip() is None
-                assert all(not name.endswith(('.blend', '.pyc', '.caffemodel', '.png', '.h5')) for name in package.namelist())
+                for name in package.namelist():
+                    assert not name.endswith(('.blend', '.pyc', '.caffemodel', '.h5'))
+                    if name.endswith('.png'):
+                        assert name == 'neural_operator_blender/docs/images/composer-overview.png'
             report['package'] = {'bytes': archive.stat().st_size, 'sha256': digest, 'reproducible': True}
             run('blender_install', base + ['--python', str(ROOT / 'tests/blender_install.py')], environment)
             fixtures = output / 'runtime-fixtures'
