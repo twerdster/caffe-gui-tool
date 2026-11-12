@@ -2,9 +2,13 @@
   "status": "passed",
   "schema_validation": true,
   "suites": {
+    "runtime_dependencies": {
+      "exit_code": 0,
+      "seconds": 0.367
+    },
     "blender_test": {
       "exit_code": 0,
-      "seconds": 7.124,
+      "seconds": 7.314,
       "results": {
         "blender": "5.1.2",
         "checks": [
@@ -70,7 +74,7 @@
     },
     "blender_graph_regressions": {
       "exit_code": 0,
-      "seconds": 1.452,
+      "seconds": 1.537,
       "results": {
         "blender": "5.1.2",
         "checks": [
@@ -87,7 +91,7 @@
     },
     "blender_export_regressions": {
       "exit_code": 0,
-      "seconds": 1.84,
+      "seconds": 1.896,
       "results": {
         "blender": "5.1.2",
         "checks": [
@@ -105,7 +109,7 @@
     },
     "blender_integration": {
       "exit_code": 0,
-      "seconds": 0.867,
+      "seconds": 0.898,
       "results": {
         "blender": "5.1.2",
         "checks": [
@@ -144,15 +148,15 @@
     },
     "build_addon": {
       "exit_code": 0,
-      "seconds": 0.044
+      "seconds": 0.045
     },
     "build_reproducibility": {
       "exit_code": 0,
-      "seconds": 0.041
+      "seconds": 0.042
     },
     "blender_install": {
       "exit_code": 0,
-      "seconds": 0.525,
+      "seconds": 0.534,
       "results": {
         "blender": "5.1.2",
         "checks": [
@@ -167,11 +171,15 @@
     },
     "blender_runtime_fixtures": {
       "exit_code": 0,
-      "seconds": 0.517
+      "seconds": 0.523
     },
     "runtime": {
       "exit_code": 0,
-      "seconds": 2.414
+      "seconds": 2.484
+    },
+    "harness_regressions": {
+      "exit_code": 0,
+      "seconds": 0.134
     }
   },
   "package": {
@@ -220,5 +228,6 @@
   },
   "host_platform": "macOS Apple silicon",
   "external_python": "3.13.11",
-  "runtime_pytest_passed": 527
+  "runtime_pytest_passed": 527,
+  "harness_pytest_passed": 2
 }

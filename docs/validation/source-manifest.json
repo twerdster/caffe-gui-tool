@@ -13,10 +13,11 @@
     "tests/blender_runtime_fixtures.py": "68aaa4a36de6bd5a5079718042c77bdc0fbf0a3921e3f1e787d14ac5ed2bb23d",
     "tests/blender_test.py": "a3ed845088954bda83e6357e105dd6878c53cbc1ea9d1abf9fc8185e5b83ecf7",
     "tests/test_caffe_runtime.py": "5637825be4c024064e9e790af4dd13d8365d3ca7e6abc08792699b028ac0f756",
+    "tests/test_validation_harness.py": "6bdb6550e5d417de6745e4c89f73dbadd77b9ef8dcc7e7e9752577e9bbc5e96c",
     "tools/build_addon.py": "3197790dfef84cddad610097e3bc0776b8471f026dd35474ecf0266854a0238d",
     "tools/create_demo.py": "de1c1d35b4ba04b6eab6a64650e38b5cf0bdf33d8fc0307da5928a4cdb9b8fe4",
     "tools/run_caffe.py": "29beb81e51ef4bb5f8aace4cec3ec8028439ba94e1c4897217e565149a140788",
-    "tools/validate.py": "181af4b8c727e600d521ae3a1e4a3356b00f623b181c17365a5784283f4ae3f4"
+    "tools/validate.py": "92e2787fe9dca53a6ed9421fb5632b1a991f81bd0fc3f15ad6027aac1651c073"
   },
   "schema_sha256": "6e9fac4972d7701de0474c675101fd127fd53ba302538c8a168e8a4d7807ed9d"
 }

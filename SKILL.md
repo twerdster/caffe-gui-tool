@@ -41,6 +41,8 @@ use the existing public images without adding them to the add-on ZIP.
 Numerical execution tests use deterministic test coefficients, not trained
 denoising weights. Missing required runtime dependencies are failures in the
 full harness, not evidence of successful execution.
+Delete prior numerical evidence before every run and require a fresh report;
+keep the stale-report rejection regressions in the full harness.
 
 OpenCV Caffe loading requires version 4.x. Preserve finite-value checks and
 any documented geometry guards; named intermediate inspection must avoid

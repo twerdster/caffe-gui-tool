@@ -18,6 +18,8 @@ actual ZIP installation. Runtime versions were Python 3.13.11, OpenCV 4.14.0
 and NumPy 2.5.4. Each run made 602 numerical comparisons and 510 bit-identical
 repeat checks. Maximum absolute error against NumPy was
 `7.152557373046875e-6`, within `rtol=4e-6, atol=3e-5`.
+Two additional harness regressions require fresh numerical evidence and
+prevent a skipped run from reusing an older successful report.
 The public corpus comprises 68 test images, 400 additional images and 19
 BM3D-style images at native resolution, including grayscale and color data.
 Procedural cases cover constants, asymmetric ramps, impulses, checkerboards,

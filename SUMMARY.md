@@ -63,3 +63,6 @@ NumPy comparisons and 510 exact repeat checks (maximum absolute error
 04c4b50b81e294465462e244882f3df92f4840ac20af6fc832a58058e20743d0.
 Linux CI runs the same full harness on both versions; consult its live check
 results for remote status. No Caffe training/gradient/convergence test was run.
+The full harness explicitly preflights external runtime dependencies and
+requires a newly written numerical report. Two harness regressions prevent
+an old report from certifying skipped tests when reusing an output directory.

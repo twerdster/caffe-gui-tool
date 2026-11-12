@@ -54,6 +54,9 @@ def main():
         print(f'Passed {label} ({entry["seconds"]}s)', flush=True)
 
     try:
+        run('runtime_dependencies', [args.python, '-c',
+            'import numpy, cv2, pytest, PIL; '
+            'assert hasattr(cv2.dnn, "readNetFromCaffe"), "OpenCV 4 Caffe importer is required"'])
         with tempfile.TemporaryDirectory(prefix='caffe-gui-validation-') as temporary:
             environment = os.environ.copy()
             for setting, directory in [('BLENDER_USER_CONFIG', 'config'),
@@ -84,13 +87,16 @@ def main():
             fixtures = output / 'runtime-fixtures'
             run('blender_runtime_fixtures', base + ['--python', str(ROOT / 'tests/blender_runtime_fixtures.py'),
                                                   '--', '--output', str(fixtures)], environment)
+            runtime_report = output / 'runtime.json'
+            runtime_report.unlink(missing_ok=True)
             runtime_environment = environment | {'CAFFE_RUNTIME_FIXTURES': str(fixtures),
-                'CAFFE_RUNTIME_REPORT': str(output / 'runtime.json')}
+                'CAFFE_RUNTIME_REPORT': str(runtime_report)}
             run('runtime', [args.python, '-m', 'pytest', '-q', 'tests/test_caffe_runtime.py'], runtime_environment)
-            report['runtime'] = json.loads((output / 'runtime.json').read_text())
+            report['runtime'] = json.loads(runtime_report.read_text())
             assert report['runtime']['public_image_cases'] == 487, 'Public-image coverage was incomplete'
             assert report['runtime']['synthetic_cases'] >= 23, 'Synthetic coverage was incomplete'
             assert report['runtime']['repeat_identical'] >= 510, 'Repeatability coverage was incomplete'
+            run('harness_regressions', [args.python, '-m', 'pytest', '-q', 'tests/test_validation_harness.py'])
             report['status'] = 'passed'
     except Exception as error:
         report['status'] = 'failed'
