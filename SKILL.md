@@ -23,3 +23,12 @@ Read both scripts before documenting loading or export. Treat the Text Editor re
 Node/registration/exporter source inspection only; no Blender session, export, Caffe parse, inference or training. No automated suite or saved runtime validation.
 
 No exact verified Blender version; legacy APIs and incomplete branches; subset of caffe.proto templates; output overwrite behavior.
+
+## Modern update navigation
+
+Keep the local New! badge and exact “Updated and ported for modern hardware”
+link immediately below the root README title, targeting `updated/README.md`.
+Put modernization summaries and links under its matching heading. Describe
+Blender Neural Composer and `codex/modernize-and-validate` as separate
+implementations with their own evidence; never apply their results to the
+preserved historical master. Retain the reference body and original source.

@@ -21,3 +21,12 @@ Node/registration/exporter source inspection only; no Blender session, export, C
 ## Limitations
 
 No exact verified Blender version; legacy APIs and incomplete branches; subset of caffe.proto templates; output overwrite behavior.
+
+## Modern update navigation — 2026-11-14
+
+The root README adds a local New! badge and the exact
+“Updated and ported for modern hardware” link to `updated/README.md`.
+That guide distinguishes this unchanged historical implementation from the
+separate Blender Neural Composer continuation and the public
+`codex/modernize-and-validate` branch. Existing README body, source, attribution
+and validation limits are retained; no modern runtime claim applies to master.

@@ -1,5 +1,7 @@
 # Caffe-GUI-Tool
 
+[![New!](updated/assets/new-badge.svg)](updated/README.md#updated-and-ported-for-modern-hardware) **[Updated and ported for modern hardware](updated/README.md#updated-and-ported-for-modern-hardware)**
+
 [![Python](https://img.shields.io/badge/code-Python-3776AB?logo=python&logoColor=white)](CaffeGenerate.py)
 [![Historical Blender add-on](https://img.shields.io/badge/Blender-historical%20add--on-E87D0D?logo=blender&logoColor=white)](CaffeNodes.py)
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-green)](LICENSE)
